@@ -1,9 +1,21 @@
 Name: universal-vendor-analysis
-Summary: Exhaustive, evidence-linked vendor and public-company analysis using multi-agent orchestration across ChatGPT Online, Google Gemini AI Studio, Claude Online, OpenAI API, Anthropic API, Google Gemini API, and Perplexity API.
-description: Produces a single Markdown artifact, artifacts/exhaustive_final_report.md, containing detailed vendor analysis, SEC filing review, products and services, customers, suppliers, government contracts, competitive Pugh Matrix, evidence appendix, and final quality evaluation JSON.
+Summary: VendorIQ is a reusable AI skill that generates evidence-backed vendor strategy intelligence for any target company. It can research and organize a vendor’s identity, business model, product portfolio, AI/GenAI capabilities, customer segments, partner ecosystem, public-sector signals, security and ESG posture, risks, competitors, strengths, gaps, and weighted Pugh Matrix.
+
+Its value is not only the depth of research, but the ease of use. 
+
+This skill can be used:
+
+- Triggering directly from ChatGPT, Claude, or Google Gemini using a simple natural-language instruction:
+
+  Execute the skill from here https://github.com/arvindrkrishnen/VendorIQ for Microsoft.”
+  
+- Installation and configuration in VS Code, Claude Code and Coding assistant
 
 Author: Arvind Radhakrishnen
 LinkedIn: https://www.linkedin.com/in/arvindradhakrishnen/
+
+
+<img width="1247" height="647" alt="image" src="https://github.com/user-attachments/assets/88201d39-4540-4b40-8ae3-56fb65f0c814" />
 
 # Universal Vendor Analysis Skill
 
