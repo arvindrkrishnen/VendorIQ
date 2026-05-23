@@ -7,13 +7,14 @@
 
 VendorIQ is a reusable AI skill that generates evidence-backed vendor strategy intelligence for any target company. It can research and organize a vendor’s identity, business model, product portfolio, AI/GenAI capabilities, customer segments, partner ecosystem, public-sector signals, security and ESG posture, risks, competitors, strengths, gaps, and a weighted Pugh Matrix.
 
-The value of VendorIQ is not only the depth of research, but also the ease of use. Users can run the skill in two ways:
-
-1. **Online chat execution** — use ChatGPT, Google Gemini AI Studio, or Claude by uploading the skill package or pointing the model to the GitHub repository.
-2. **Local / VS Code execution** — run the Python orchestrator locally from VS Code or another coding environment using a supported LLM provider.
-
 
 <img width="1247" height="647" alt="image" src="https://github.com/user-attachments/assets/88201d39-4540-4b40-8ae3-56fb65f0c814" />
+
+
+The value of VendorIQ is not only the depth of research, but also the ease of use. Users can run the skill in two ways:
+
+1. **Prompt directly from the GitHub repository** — ask ChatGPT, Google Gemini AI Studio, Claude, or another capable AI assistant to execute the skill from the GitHub repository URL.
+2. **Clone and configure the GitHub repository locally** — clone the VendorIQ skill from GitHub and run the Python orchestrator from VS Code, Claude Code, Cursor, or another coding environment using a supported LLM provider.
 
 Both execution paths produce the same final deliverable:
 
@@ -21,7 +22,7 @@ Both execution paths produce the same final deliverable:
 artifacts/exhaustive_final_report.md
 ```
 
-In online chat execution, the model should return the same Markdown report content as the final answer or as a downloadable Markdown artifact named:
+When triggered directly from the GitHub repository, the model should return the same Markdown report content as the final answer or as a downloadable Markdown artifact named:
 
 ```text
 exhaustive_final_report.md
@@ -39,23 +40,26 @@ artifacts/exhaustive_final_report.md
 
 ## Two Ways to Use VendorIQ
 
-### Option 1 — Online Chat Execution
+### Option 1 — Prompt Directly using the GitHub Repository
 
-Use this option when you want ChatGPT, Gemini AI Studio, or Claude to execute the skill directly.
+Use this option when you want ChatGPT, Google Gemini AI Studio, Claude, or another capable AI assistant to execute VendorIQ directly from the public GitHub repository.
 
-Users can run the online mode in either of these ways:
+The user simply points the AI assistant to the repository and asks it to execute the skill for a target vendor.
 
-- **Upload the skill package zip** to ChatGPT, Gemini AI Studio, or Claude.
-- **Point the model to the GitHub repository** and ask it to read the repository instructions.
-
-Online execution does not require users to run Python locally. The quality of the output depends on the model’s available tools, especially file upload, long-context handling, and web browsing or grounding.
-
-#### Online Prompt — Upload Zip
+#### Recommended Prompt
 
 ```text
-You are executing the uploaded Universal Vendor Analysis Skill package.
-Read README.md first, then skills.md, guardrails/README.md, agents/agent_registry.md, and the playbooks/ folder.
-Execute the skill for the vendor: <VENDOR NAME>
+Execute the skill from here https://github.com/arvindrkrishnen/VendorIQ for Microsoft.
+```
+
+#### Expanded Prompt Template
+
+```text
+Use this GitHub repository as the VendorIQ skill package:
+https://github.com/arvindrkrishnen/VendorIQ
+
+Read README.md, skills.md, guardrails/, agents/, and playbooks/.
+Execute the Universal Vendor Analysis Skill for vendor: <VENDOR NAME>.
 Optional ticker: <TICKER>
 Optional website: <WEBSITE>
 
@@ -72,52 +76,42 @@ Follow the package rules:
 Example:
 
 ```text
-Execute the uploaded Universal Vendor Analysis Skill for Rubrik, Inc. Ticker: RBRK. Website: https://www.rubrik.com. Produce only exhaustive_final_report.md.
-```
+Use this GitHub repository as the VendorIQ skill package:
+https://github.com/arvindrkrishnen/VendorIQ
 
-#### Online Prompt — GitHub Repository
-
-```text
-Use this GitHub repository as a skill package: <GITHUB_REPO_URL>
-Read README.md, skills.md, guardrails/, agents/, and playbooks/.
-Execute the Universal Vendor Analysis Skill for vendor: <VENDOR NAME>.
-Optional ticker: <TICKER>
-Optional website: <WEBSITE>
-Return one final Markdown file named exhaustive_final_report.md.
-```
-
-Example:
-
-```text
-Use this GitHub repository as a skill package: https://github.com/arvindrkrishnen/VendorIQ
-Read README.md, skills.md, guardrails/, agents/, and playbooks/.
 Execute the Universal Vendor Analysis Skill for Microsoft.
 Return one final Markdown file named exhaustive_final_report.md.
 ```
 
 #### ChatGPT Online Notes
 
-- Use ChatGPT with file upload enabled.
-- Upload the package zip or provide the GitHub repository URL.
+- Provide the GitHub repository URL in the prompt.
 - Ask ChatGPT to browse the web when available.
 - Ask for the final deliverable as a downloadable Markdown file.
 - Recommended prompt file: `prompts/online/chatgpt_execute_skill.md`.
 
 #### Google Gemini AI Studio Online Notes
 
-- Upload the zip or paste the key files into the prompt context.
+- Provide the GitHub repository URL or paste the key repository files into the prompt context if repository access is unavailable.
 - Enable grounding/search tools if available in your AI Studio setup.
 - Recommended prompt file: `prompts/online/gemini_ai_studio_execute_skill.md`.
 
 #### Claude Online Notes
 
-- Upload the zip or connect the GitHub repository if your Claude environment supports repository context.
+- Provide the GitHub repository URL, or connect the repository if your Claude environment supports repository context.
 - Claude is well suited for long-context synthesis, but you must explicitly require evidence URLs.
 - Recommended prompt file: `prompts/online/claude_execute_skill.md`.
 
-### Option 2 — Local / VS Code Execution
+### Option 2 — Clone and Configure the GitHub Repository
 
-Use this option when you want to run the skill from a local development environment such as VS Code, Claude Code, Cursor, or another coding assistant.
+Use this option when you want to clone the VendorIQ repository and run the skill from a local development environment such as VS Code, Claude Code, Cursor, or another coding assistant.
+
+Clone the repository:
+
+```bash
+git clone https://github.com/arvindrkrishnen/VendorIQ.git
+cd VendorIQ
+```
 
 Local execution uses the included Python orchestrator:
 
@@ -173,14 +167,14 @@ artifacts/exhaustive_final_report.md
 
 | Usage path | Mode | How users run it | API keys needed by user | Output |
 |---|---|---|---:|---|
-| Online chat execution | ChatGPT Online | Upload zip or point to GitHub and prompt ChatGPT to execute | No local key required; depends on ChatGPT plan/tools | `exhaustive_final_report.md` |
-| Online chat execution | Gemini AI Studio Online | Upload zip, paste repo files, or point to repo and run the Gemini prompt | No local key required inside zip; AI Studio access required | `exhaustive_final_report.md` |
-| Online chat execution | Claude Online | Upload zip or connect repository and run the Claude prompt | No local key required; depends on Claude plan/tools | `exhaustive_final_report.md` |
-| Local / VS Code execution | VS Code / local OpenAI | Run Python script with `--provider openai` | `OPENAI_API_KEY` | `artifacts/exhaustive_final_report.md` |
-| Local / VS Code execution | VS Code / local Anthropic | Run Python script with `--provider anthropic` | `ANTHROPIC_API_KEY` | `artifacts/exhaustive_final_report.md` |
-| Local / VS Code execution | VS Code / local Gemini | Run Python script with `--provider gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `artifacts/exhaustive_final_report.md` |
-| Local / VS Code execution | VS Code / local Perplexity | Run Python script with `--provider perplexity` | `PERPLEXITY_API_KEY` | `artifacts/exhaustive_final_report.md` |
-| Local / VS Code execution | Offline scaffold | Run Python script with `--provider offline` | None | Scaffold report only |
+| Prompt directly from GitHub repository | ChatGPT Online | Provide `https://github.com/arvindrkrishnen/VendorIQ` and prompt ChatGPT to execute the skill | No local key required; depends on ChatGPT plan/tools | `exhaustive_final_report.md` |
+| Prompt directly from GitHub repository | Gemini AI Studio Online | Provide the repository URL or paste key repo files if repository access is unavailable | No local key required inside the repo; AI Studio access required | `exhaustive_final_report.md` |
+| Prompt directly from GitHub repository | Claude Online | Provide or connect the GitHub repository and run the Claude prompt | No local key required; depends on Claude plan/tools | `exhaustive_final_report.md` |
+| Clone and configure GitHub repository | VS Code / local OpenAI | Clone the repo and run Python script with `--provider openai` | `OPENAI_API_KEY` | `artifacts/exhaustive_final_report.md` |
+| Clone and configure GitHub repository | VS Code / local Anthropic | Clone the repo and run Python script with `--provider anthropic` | `ANTHROPIC_API_KEY` | `artifacts/exhaustive_final_report.md` |
+| Clone and configure GitHub repository | VS Code / local Gemini | Clone the repo and run Python script with `--provider gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `artifacts/exhaustive_final_report.md` |
+| Clone and configure GitHub repository | VS Code / local Perplexity | Clone the repo and run Python script with `--provider perplexity` | `PERPLEXITY_API_KEY` | `artifacts/exhaustive_final_report.md` |
+| Clone and configure GitHub repository | Offline scaffold | Clone the repo and run Python script with `--provider offline` | None | Scaffold report only |
 
 ## Repository Layout
 
@@ -244,13 +238,13 @@ artifacts/exhaustive_final_report.md
 ```text
 User
   |
-  +-- Option 1: Online Chat Execution
-  |      +-- Upload zip or provide GitHub URL
+  +-- Option 1: Prompt Directly from GitHub Repository
+  |      +-- User provides https://github.com/arvindrkrishnen/VendorIQ
   |      +-- Model reads README.md, skills.md, agents/, playbooks/, guardrails/
   |      +-- Model executes sub-agent playbooks in its own context
   |      +-- Model returns exhaustive_final_report.md
   |
-  +-- Option 2: Local / VS Code Execution
+  +-- Option 2: Clone and Configure GitHub Repository
          +-- universal_vendor_orchestrator.py
          +-- Provider adapter: OpenAI / Anthropic / Gemini / Perplexity / Offline
          +-- Section task orchestration
@@ -331,7 +325,7 @@ Agents and playbooks are intentionally separated:
 - Update `guardrails/*.md` when you want to tighten validation rules.
 - Update `skills.md` when you want to change the top-level behavior of the skill.
 
-This separation makes the package easier to maintain in GitHub and easier for ChatGPT, Gemini, and Claude to understand when a user points to the repository.
+This separation makes the package easier to maintain in GitHub and easier for ChatGPT, Gemini, Claude, VS Code, Claude Code, Cursor, and other coding assistants to understand when a user points to or clones the repository.
 
 ## Best Practices
 
@@ -347,10 +341,10 @@ This separation makes the package easier to maintain in GitHub and easier for Ch
 
 ### ChatGPT, Gemini, or Claude says it cannot execute code
 
-Use online chat execution. Tell the model:
+Use the direct GitHub-repository prompt. Tell the model:
 
 ```text
-Do not run code; read the package files as instructions and produce the final Markdown report using your available browsing/search capability.
+Do not run code; read the GitHub repository files as instructions and produce the final Markdown report using your available browsing/search capability.
 ```
 
 ### The report lacks current web URLs
