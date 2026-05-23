@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Vendor Analysis - Offline Scaffold",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/universal_vendor_orchestrator.py", "--vendor", "Rubrik", "--ticker", "RBRK", "--provider", "offline"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Vendor Analysis - OpenAI",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/universal_vendor_orchestrator.py", "--vendor", "Rubrik", "--ticker", "RBRK", "--provider", "openai", "--model", "gpt-4.1"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Vendor Analysis - Anthropic",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/universal_vendor_orchestrator.py", "--vendor", "Rubrik", "--ticker", "RBRK", "--provider", "anthropic", "--model", "claude-3-5-sonnet-latest"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Vendor Analysis - Gemini",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/universal_vendor_orchestrator.py", "--vendor", "Rubrik", "--ticker", "RBRK", "--provider", "gemini", "--model", "gemini-2.5-pro"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Vendor Analysis - Perplexity",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/universal_vendor_orchestrator.py", "--vendor", "Rubrik", "--ticker", "RBRK", "--provider", "perplexity", "--model", "sonar-pro"],
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}
