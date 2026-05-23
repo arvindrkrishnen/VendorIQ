@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Universal Vendor Analysis",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/universal_vendor_orchestrator.py",
+      "args": ["--vendor", "Rubrik", "--ticker", "RBRK", "--provider", "offline"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
