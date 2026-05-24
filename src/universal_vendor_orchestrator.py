@@ -5,8 +5,14 @@ Universal Vendor Analysis Orchestrator
 Generates exactly one persistent output file:
     artifacts/exhaustive_final_report.md
 
-Supports OpenAI, Anthropic Claude, Google Gemini, Perplexity, and offline scaffold mode. The same package can also be executed by online chat models by reading README.md, skills.md, agents/, playbooks/, and guardrails/.
+Refresh highlights:
+- Converts raw URLs into numbered citations like [1], [2], [3].
+- Renders all references in a central "Reference Links" section.
+- Strengthens annual report / quarterly report / investor report source priority.
+- Adds leadership credentials and public-company financial-metrics sections.
+- Keeps Quality Document JSON as the final section.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -14,12 +20,11 @@ import json
 import os
 import re
 import shutil
-import sys
 import tempfile
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 try:
     import requests
@@ -39,9 +44,7 @@ def load_dotenv(path: Path) -> None:
         if not line or line.startswith("#") or "=" not in line:
             continue
         key, value = line.split("=", 1)
-        key = key.strip()
-        value = value.strip().strip('"').strip("'")
-        os.environ.setdefault(key, value)
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 
 @dataclass
@@ -66,6 +69,49 @@ class SectionResult:
     quality_notes: List[str]
 
 
+@dataclass
+class ReferenceRecord:
+    id: int
+    url: str
+    section: str
+
+
+class ReferenceManager:
+    """Assign stable numbered references and render a central Reference Links section."""
+
+    URL_PATTERN = re.compile(r"https?://[^\s)\]>\",']+")
+
+    def __init__(self) -> None:
+        self.url_to_id: Dict[str, int] = {}
+        self.records: List[ReferenceRecord] = []
+
+    @staticmethod
+    def clean_url(url: str) -> str:
+        return url.rstrip(".,;:)")
+
+    def register(self, url: str, section: str) -> str:
+        cleaned = self.clean_url(url)
+        if cleaned not in self.url_to_id:
+            ref_id = len(self.records) + 1
+            self.url_to_id[cleaned] = ref_id
+            self.records.append(ReferenceRecord(id=ref_id, url=cleaned, section=section))
+        return f"[{self.url_to_id[cleaned]}]"
+
+    def replace_urls_with_refs(self, markdown: str, section: str) -> str:
+        def repl(match: re.Match[str]) -> str:
+            return self.register(match.group(0), section)
+        return self.URL_PATTERN.sub(repl, markdown)
+
+    def render_reference_links(self) -> str:
+        if not self.records:
+            return "## Reference Links\n\n- No URLs detected. Rerun with a web-enabled provider."
+        lines = ["## Reference Links", ""]
+        for record in self.records:
+            section_note = f" — {record.section}" if record.section else ""
+            lines.append(f"[{record.id}] {record.url}{section_note}")
+        return "\n".join(lines)
+
+
 class ProviderError(RuntimeError):
     pass
 
@@ -79,7 +125,7 @@ class LLMProvider:
         if self.provider == "offline":
             return self._offline_response(prompt)
         if requests is None:
-            raise ProviderError("The 'requests' package is required for provider execution. Run: pip install -r requirements.txt")
+            raise ProviderError("The 'requests' package is required. Run: pip install -r requirements.txt")
         if self.provider == "openai":
             return self._openai(system, prompt, max_tokens)
         if self.provider == "anthropic":
@@ -109,13 +155,15 @@ class LLMProvider:
         url = "https://api.openai.com/v1/responses"
         payload = {
             "model": self.model,
-            "input": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": prompt},
-            ],
+            "input": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
             "max_output_tokens": max_tokens,
         }
-        resp = requests.post(url, headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"}, json=payload, timeout=180)
+        resp = requests.post(
+            url,
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json=payload,
+            timeout=180,
+        )
         if resp.status_code >= 400:
             raise ProviderError(f"OpenAI error {resp.status_code}: {resp.text[:1000]}")
         data = resp.json()
@@ -139,11 +187,7 @@ class LLMProvider:
             "system": system,
             "messages": [{"role": "user", "content": prompt}],
         }
-        headers = {
-            "x-api-key": key,
-            "anthropic-version": "2023-06-01",
-            "content-type": "application/json",
-        }
+        headers = {"x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json"}
         resp = requests.post(url, headers=headers, json=payload, timeout=180)
         if resp.status_code >= 400:
             raise ProviderError(f"Anthropic error {resp.status_code}: {resp.text[:1000]}")
@@ -178,14 +222,16 @@ class LLMProvider:
         url = "https://api.perplexity.ai/chat/completions"
         payload = {
             "model": self.model,
-            "messages": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": prompt},
-            ],
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
             "max_tokens": max_tokens,
             "temperature": 0.2,
         }
-        resp = requests.post(url, headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"}, json=payload, timeout=180)
+        resp = requests.post(
+            url,
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json=payload,
+            timeout=180,
+        )
         if resp.status_code >= 400:
             raise ProviderError(f"Perplexity error {resp.status_code}: {resp.text[:1000]}")
         data = resp.json()
@@ -193,28 +239,57 @@ class LLMProvider:
 
 
 SECTION_TASKS: List[Tuple[str, str, str]] = [
-    ("identity_sec_resolution_agent", "Vendor Identity, Ticker, Website, and SEC Resolution", "Resolve exact entity identity, legal name, ticker, exchange, CIK, headquarters, website, investor relations URL, and latest filing URLs."),
-    ("market_position_agent", "Company Overview and Market Position", "Provide a detailed company history, mission, business focus, target customers, industries, geographies, and market perception."),
-    ("business_model_agent", "Business Model and Revenue Model", "Explain revenue model, pricing approach where public, operating segments, go-to-market channels, and economic drivers."),
-    ("product_services_agent", "Detailed Products and Services Catalog", "Detail all products, platforms, services, features, sub-capabilities, deployment models, integrations, APIs, certifications, and target users."),
+    (
+        "identity_sec_resolution_agent",
+        "Vendor Identity, Ticker, Website, and SEC Resolution",
+        "Resolve legal entity, ticker, exchange, CIK, headquarters, website, investor relations URL, latest annual report / 10-K / 20-F / 40-F, latest quarterly report / 10-Q, investor presentation, proxy statement, and filing URLs.",
+    ),
+    (
+        "market_position_agent",
+        "Company Overview and Market Position",
+        "Use annual report, quarterly report, investor report, official website, Bloomberg, FactSet, Yahoo Finance, Investing.com, or other reputable sources to describe company overview, business model, leadership credentials, financial metrics, market position, customers, geographies, and strategic narrative.",
+    ),
+    (
+        "business_model_agent",
+        "Business Model and Revenue Model",
+        "Explain revenue model, pricing approach where public, operating segments, go-to-market channels, and economic drivers. Anchor public-company claims in annual report / 10-K or investor report.",
+    ),
+    (
+        "financial_metrics_agent",
+        "Financial Metrics and Valuation Narrative",
+        "For public companies, collect EPS, P/E, PEG, free cash flow, cash and equivalents, total debt, debt as % of cash, revenue growth, margin signals, and valuation/liquidity narrative from annual report, quarterly report, Yahoo Finance, Investing.com, Bloomberg, FactSet, or equivalent reputable sources. For private firms, state public-market metrics are unavailable and use verified private disclosures only.",
+    ),
+    (
+        "leadership_credentials_agent",
+        "Leadership and Credentials",
+        "Identify executive leadership from annual report, proxy statement, official leadership pages, and investor materials. Enrich with LinkedIn or official bios for prior roles, education, credentials, and board memberships when publicly verifiable.",
+    ),
+    ("product_services_agent", "Detailed Products and Services Catalog", "Detail products, platforms, services, features, deployment models, integrations, APIs, certifications, and target users."),
     ("architecture_agent", "Technology, Information, Application, Security, Standards, and Resiliency Architecture", "Assess technology architecture, information architecture, application architecture, security, interoperability, standards, DR, stability, and uptime signals."),
-    ("ai_ml_genai_agent", "AI, Machine Learning, Automation, and GenAI Capabilities", "Identify all AI, ML, automation, LLM, and GenAI capabilities, product use cases, and benefits."),
+    ("ai_ml_genai_agent", "AI, Machine Learning, Automation, and GenAI Capabilities", "Identify AI, ML, automation, LLM, and GenAI capabilities, product use cases, and benefits."),
     ("customer_intelligence_agent", "Key Customers and Customer Segments", "Identify named customers, customer stories, customer concentration disclosures, verticals, and measurable benefits."),
     ("supplier_ecosystem_agent", "Key Suppliers, Partners, and Ecosystem Dependencies", "Identify suppliers, cloud providers, technology partners, channel partners, integration partners, and dependency risks."),
-    ("government_contracts_agent", "Government Contracts and Public-Sector Signals", "Identify recent government contracts, agency awards, public-sector procurement vehicles, FedRAMP/public marketplace listings, grants, and public-sector customers."),
+    ("government_contracts_agent", "Government Contracts and Public-Sector Signals", "Identify government contracts, agency awards, procurement vehicles, FedRAMP/public marketplace listings, grants, and public-sector customers."),
     ("milestones_partnerships_agent", "Milestones, Acquisitions, Partnerships, and Recognitions", "Create a reverse-chronology timeline with major milestones, acquisitions, partnerships, recognitions, launches, and notable events."),
     ("case_studies_agent", "Case Studies and Measurable Client Benefits", "Extract official and reputable case studies with client name, benefit, summary, process impact, and URL."),
     ("esg_privacy_agent", "ESG, Sustainability, Privacy, and Responsible Business", "Detail sustainability, ESG, privacy, trust, governance, responsible AI, accessibility, and compliance posture."),
-    ("analyst_market_agent", "Analyst Reviews, Market Sentiment, and External Perception", "Summarize analyst ratings, price targets if public, investment sentiment, peer standing, G2/Gartner/Forrester-style perception where available."),
+    ("analyst_market_agent", "Analyst Reviews, Market Sentiment, and External Perception", "Summarize analyst ratings, price targets if public, investment sentiment, peer standing, and external perception where available."),
     ("cyber_risk_agent", "Cybersecurity Incidents, Vulnerabilities, Litigation, and Regulatory Signals", "Identify known incidents, CVEs, regulatory issues, litigation, privacy concerns, security disclosures, and remediation signals."),
-    ("sec_filings_agent", "SEC Filing Scan and Bullet Summary", "Scan latest 10-K, 10-Q, 8-K, S-1/prospectus, proxy and summarize material business, risk, financial, customer, supplier, cyber, litigation, and strategy signals in bullets."),
+    ("sec_filings_agent", "SEC Filing Scan and Bullet Summary", "Scan latest 10-K, 10-Q, 8-K, S-1/prospectus, and proxy. Summarize business, revenue model, leadership, financial metrics, liquidity, customer/supplier concentration, cyber, litigation, risks, and strategy signals in bullets."),
     ("future_actions_agent", "Future Actions and Forward-Looking Signals", "Extract disclosed future actions, roadmap signals, R&D priorities, GTM expansion, public-sector plans, AI/platform investments, and strategic direction."),
-    ("competitive_pugh_matrix_agent", "Competitive Landscape and Pugh Matrix", "Identify competitors and produce a Pugh Matrix. Include a Markdown table with criterion, target score, competitor benchmark, evidence URLs, and gaps."),
-    ("quality_eval_agent", "Strengths, Gaps, Risks, Differentiation, Evidence Appendix, and Quality Document JSON", "Synthesize strengths, gaps, risks, differentiation, evidence appendix, and produce Quality Document JSON for final report section."),
+    ("competitive_pugh_matrix_agent", "Competitive Landscape and Pugh Matrix", "Identify competitors and produce a Pugh Matrix as a Markdown table with criteria, target score, competitor benchmark, evidence URLs, and gaps."),
+    ("quality_eval_agent", "Strengths, Gaps, Risks, Differentiation, Evidence Appendix, and Quality Document JSON", "Synthesize strengths, gaps, risks, differentiation, source coverage, numbered-reference quality, and produce Quality Document JSON for final report section."),
 ]
 
 
-SYSTEM_PROMPT = """You are a senior vendor research analyst and enterprise architect. You produce detailed, evidence-backed vendor analysis. You must not invent facts. Every factual claim must include a visible web reference URL in the same paragraph, bullet, or table row. If a claim cannot be verified, write 'Not found in public sources reviewed.' Do not produce separate output files. Return only Markdown for the requested section."""
+SYSTEM_PROMPT = """You are a senior vendor research analyst and enterprise architect. Produce detailed, evidence-backed vendor analysis. Do not invent facts.
+
+Evidence requirements:
+- Include raw source URLs in each section while drafting; the orchestrator will convert them into numbered citations such as [1].
+- Prefer annual reports, 10-K/20-F/40-F, 10-Q, quarterly reports, investor presentations, proxy statements, official company websites, SEC filings, official leadership pages, Bloomberg, FactSet, Yahoo Finance, Investing.com, and reputable analyst/financial sources.
+- If a claim cannot be verified, write: Not found in public sources reviewed.
+- For public companies, include leadership credentials and key financial metrics when publicly available.
+- Return only Markdown for the requested section."""
 
 
 def build_section_prompt(config: RunConfig, agent: str, title: str, objective: str) -> str:
@@ -232,29 +307,26 @@ Objective:
 {objective}
 
 Mandatory requirements:
-1. Produce an elaborated, exhaustive Markdown section, not a short summary.
-2. Include evidence URLs for every factual claim.
-3. Prefer official website, SEC filings, investor relations, public-sector portals, official customer stories, compliance/trust centers, and reputable analyst/financial sources.
-4. Do not invent customers, suppliers, government contracts, product names, certifications, or analyst opinions.
-5. Where evidence is absent, state: 'Not found in public sources reviewed.'
-6. Use bullets and tables where they improve readability, but include detailed explanation under each table.
-7. Do not mention that you are an AI or a sub-agent.
-8. Do not return JSON except when the section explicitly requests Quality Document JSON.
+1. Produce an elaborated Markdown section, not a short summary.
+2. Include raw evidence URLs for every factual claim while drafting; final assembly will convert URLs into [n] references.
+3. Source priority for public companies: annual report / 10-K, latest quarterly report / 10-Q, investor presentation, proxy statement, official website, Bloomberg, FactSet, Yahoo Finance, Investing.com, then reputable secondary sources.
+4. Company overview must include business model, revenue model, operating segments, target customers, geographies, market position, leadership credentials, and strategic narrative where evidence exists.
+5. Leadership credentials must include current role, prior roles, education or credentials if publicly verifiable, LinkedIn or official bio if available, and why the background matters.
+6. Public-company financial metrics must include EPS, P/E, PEG, FCF, cash, debt, debt as % of cash, and a narrative on liquidity/valuation when publicly available.
+7. Calculate Debt as % of Cash = Total Debt / Cash and Cash Equivalents * 100. Clearly state the period and source.
+8. Do not invent customers, suppliers, government contracts, product names, certifications, financial metrics, or analyst opinions.
+9. Where evidence is absent, state: Not found in public sources reviewed.
+10. Do not return JSON except when the section explicitly requests Quality Document JSON.
 """.strip()
 
 
 def extract_urls(text: str) -> List[str]:
-    return sorted(set(re.findall(r"https?://[^\s)\]>\"']+", text)))
+    return sorted(set(ReferenceManager.clean_url(u) for u in ReferenceManager.URL_PATTERN.findall(text)))
 
 
 def count_unsupported(text: str) -> int:
-    markers = [
-        "not found in public sources",
-        "not found in public sources reviewed",
-        "unable to verify",
-        "no public source",
-    ]
     lower = text.lower()
+    markers = ["not found in public sources", "not found in public sources reviewed", "unable to verify", "no public source"]
     return sum(lower.count(m) for m in markers)
 
 
@@ -270,7 +342,7 @@ def run_sections(config: RunConfig, provider: LLMProvider) -> List[SectionResult
     for idx, (agent, title, objective) in enumerate(SECTION_TASKS, start=1):
         prompt = build_section_prompt(config, agent, title, objective)
         try:
-            max_tokens = 5500 if config.depth == "exhaustive" else 3500
+            max_tokens = 6500 if config.depth == "exhaustive" else 4000
             raw = provider.generate(SYSTEM_PROMPT, prompt, max_tokens=max_tokens)
         except Exception as exc:
             raw = (
@@ -294,52 +366,70 @@ def run_sections(config: RunConfig, provider: LLMProvider) -> List[SectionResult
     return results
 
 
-def render_quality_document(config: RunConfig, results: List[SectionResult], cleanup_status: str, single_output_status: str) -> str:
+def render_quality_document(
+    config: RunConfig,
+    results: List[SectionResult],
+    cleanup_status: str,
+    single_output_status: str,
+    reference_count: int = 0,
+) -> str:
     section_scores = []
     unsupported_total = 0
     for r in results:
         unsupported_total += len(r.unsupported_claims)
         score = "A" if r.evidence_urls and len(r.markdown) > 1200 else "B" if r.evidence_urls else "C"
-        section_scores.append({
-            "section": r.title,
-            "quality_rating": score,
-            "evidence_url_count": len(r.evidence_urls),
-            "unsupported_claim_markers": len(r.unsupported_claims),
-            "notes": r.quality_notes,
-        })
+        section_scores.append(
+            {
+                "section": r.title,
+                "quality_rating": score,
+                "evidence_url_count": len(r.evidence_urls),
+                "unsupported_claim_markers": len(r.unsupported_claims),
+                "notes": r.quality_notes,
+            }
+        )
+
     authenticity_gate = "PASS" if all(r.evidence_urls or "Offline scaffold" in r.markdown for r in results) else "REVIEW_REQUIRED"
     quality = {
         "overall_quality_rating": "A-" if authenticity_gate == "PASS" and unsupported_total <= 3 else "B",
         "vendor": config.vendor,
         "ticker": config.ticker,
-        "provider_configuration": {
-            "provider": config.provider,
-            "model": config.model,
-            "depth": config.depth,
-        },
+        "provider_configuration": {"provider": config.provider, "model": config.model, "depth": config.depth},
         "authenticity_gate": authenticity_gate,
         "unsupported_claim_count": unsupported_total,
+        "numbered_reference_links_count": reference_count,
         "single_output_compliance": single_output_status,
         "cleanup_status": cleanup_status,
         "pugh_matrix_embedded_as_markdown_table": "PASS",
+        "reference_links_section_present": "PASS" if reference_count else "REVIEW_REQUIRED",
         "quality_document_embedded_as_final_section": "PASS",
         "section_scores": section_scores,
         "recommendations": [
-            "Rerun sections with REVIEW_REQUIRED status using a web-grounded provider such as Perplexity or with explicit source URLs supplied.",
-            "For public companies, periodically rerun after each 10-K, 10-Q, 8-K, earnings release, or investor day.",
-            "For government contracts, rerun against agency portals and procurement databases when new award data becomes available.",
+            "Rerun REVIEW_REQUIRED sections with a web-grounded provider such as Perplexity or with explicit source URLs supplied.",
+            "For public companies, rerun after each 10-K, 10-Q, 8-K, earnings release, investor day, or proxy update.",
+            "Review financial metrics manually when premium sources such as Bloomberg or FactSet are unavailable.",
         ],
         "generated_at_epoch_seconds": int(time.time()),
     }
     return "## Quality Document JSON\n\n```json\n" + json.dumps(quality, indent=2) + "\n```\n"
 
 
-def assemble_report(config: RunConfig, results: List[SectionResult], quality_markdown: str) -> str:
-    all_urls = sorted(set(url for r in results for url in r.evidence_urls))
+def assemble_report(config: RunConfig, results: List[SectionResult], quality_markdown: str | None = None) -> Tuple[str, int]:
+    ref_mgr = ReferenceManager()
+
     header = f"""# Exhaustive Vendor Analysis Final Report: {config.vendor}{' (' + config.ticker + ')' if config.ticker else ''}
 
 ## Evidence Methodology
-This report was generated through the Universal Vendor Analysis multi-agent skill. Each factual section is expected to include visible web reference URLs in the relevant paragraph, bullet, or table row. Unsupported items are explicitly marked as `Not found in public sources reviewed.`
+This report was generated through the Universal Vendor Analysis multi-agent skill. Factual claims use numbered references such as [1], [2], and [3]. Each numbered reference resolves to a URL in the `Reference Links` section.
+
+Preferred evidence hierarchy for public companies:
+1. Annual report / 10-K / 20-F / 40-F.
+2. Latest quarterly report / 10-Q.
+3. Investor presentation, investor day material, proxy statement, and official investor relations pages.
+4. Official company website, product pages, trust/security/privacy pages, and customer stories.
+5. Bloomberg, FactSet, Yahoo Finance, Investing.com, and reputable analyst/financial sources.
+6. Reputable news, analyst, market-research, and government sources.
+
+Unsupported items are explicitly marked as `Not found in public sources reviewed.`
 
 **Provider:** `{config.provider}`  
 **Model:** `{config.model}`  
@@ -348,11 +438,30 @@ This report was generated through the Universal Vendor Analysis multi-agent skil
 
 ---
 """
-    body = "\n\n---\n\n".join(r.markdown for r in results if r.title != "Strengths, Gaps, Risks, Differentiation, Evidence Appendix, and Quality Document JSON")
-    final_synth = next((r.markdown for r in results if r.title == "Strengths, Gaps, Risks, Differentiation, Evidence Appendix, and Quality Document JSON"), "")
-    evidence_appendix = "\n".join(f"- {url}" for url in all_urls) if all_urls else "- No URLs detected. Rerun with a web-enabled provider."
-    report = f"{header}\n{body}\n\n---\n\n{final_synth}\n\n---\n\n## Evidence Appendix\n\n{evidence_appendix}\n\n---\n\n{quality_markdown}"
-    return report.strip() + "\n"
+
+    body_sections = []
+    final_synth = ""
+
+    for r in results:
+        normalized = ref_mgr.replace_urls_with_refs(r.markdown, r.title)
+        if r.title == "Strengths, Gaps, Risks, Differentiation, Evidence Appendix, and Quality Document JSON":
+            final_synth = normalized
+        else:
+            body_sections.append(normalized)
+
+    body = "\n\n---\n\n".join(body_sections)
+    reference_links = ref_mgr.render_reference_links()
+    if quality_markdown is None:
+        quality_markdown = render_quality_document(
+            config,
+            results,
+            cleanup_status="PENDING_FINAL_CLEANUP",
+            single_output_status="PENDING",
+            reference_count=len(ref_mgr.records),
+        )
+
+    report = f"{header}\n{body}\n\n---\n\n{final_synth}\n\n---\n\n{reference_links}\n\n---\n\n{quality_markdown}"
+    return report.strip() + "\n", len(ref_mgr.records)
 
 
 def cleanup_outputs(output: Path) -> str:
@@ -408,17 +517,25 @@ def main() -> int:
     provider = LLMProvider(config.provider, config.model)
 
     with tempfile.TemporaryDirectory(prefix="vendor_analysis_runtime_") as tmp:
-        _ = Path(tmp)  # reserved for future transient caching only
+        _ = Path(tmp)
         results = run_sections(config, provider)
-        # First cleanup removes stale artifacts before final write.
+
         cleanup_outputs(config.output)
-        preliminary_quality = render_quality_document(config, results, cleanup_status="PENDING_FINAL_CLEANUP", single_output_status="PENDING")
-        report = assemble_report(config, results, preliminary_quality)
-        config.output.write_text(report, encoding="utf-8")
+
+        preliminary_report, preliminary_ref_count = assemble_report(config, results)
+        config.output.write_text(preliminary_report, encoding="utf-8")
+
         cleanup_status = cleanup_outputs(config.output)
         single_output_status = verify_single_output(config.output)
-        final_quality = render_quality_document(config, results, cleanup_status=cleanup_status, single_output_status=single_output_status)
-        final_report = assemble_report(config, results, final_quality)
+
+        final_quality = render_quality_document(
+            config,
+            results,
+            cleanup_status=cleanup_status,
+            single_output_status=single_output_status,
+            reference_count=preliminary_ref_count,
+        )
+        final_report, _ = assemble_report(config, results, final_quality)
         config.output.write_text(final_report, encoding="utf-8")
 
     print(f"Final report written to: {config.output}")
