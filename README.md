@@ -28,6 +28,8 @@ exhaustive_final_report.html
 
 The Markdown report is an intermediate representation used to assemble and validate the content. The final deliverable must be HTML.
 
+
+
 ## What the Skill Does
 
 VendorIQ follows a multi-agent orchestration pattern. An orchestrator decomposes the vendor-analysis assignment into section-level work, delegates each section to a specialized sub-agent, validates evidence and completeness through guardrails, assembles a complete Markdown report, and then converts that Markdown into a final interactive HTML report.
@@ -44,6 +46,8 @@ The report supports:
 - product-level Pugh Matrix;
 - linked references;
 - Quality Document JSON as the final visible section.
+
+<img width="1247" height="647" alt="image" src="https://github.com/user-attachments/assets/791b8505-95cb-469d-966f-971248e66281" />
 
 ## Output Files
 
