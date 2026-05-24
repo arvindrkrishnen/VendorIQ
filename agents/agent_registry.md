@@ -20,6 +20,9 @@ The orchestrator owns the final output. Sub-agents produce section-ready Markdow
 | `ai_ml_genai_agent` | AI/ML/automation/GenAI capabilities and benefits | AI capability section |
 | `competitive_pugh_matrix_agent` | Competitors and Pugh Matrix table | Competitive section and table |
 | `quality_evaluation_agent` | Evidence authenticity, completeness, output compliance | Quality Document JSON |
+| `financial_metrics_agent` | Extracts EPS, P/E, PEG, FCF, cash, debt, debt/cash ratio, market cap, revenue growth, margin signals, and valuation/liquidity narrative for public companies | Financial metrics and valuation narrative |
+| `leadership_credentials_agent` | Extracts leadership from annual report/proxy/company site and enriches credentials from official bios and LinkedIn/public profiles | Leadership credentials subsection |
+| `reference_normalization_agent` | Deduplicates source URLs, assigns numeric references, replaces raw URLs with `[n]`, and renders `Reference Links` | Numbered reference map |
 
 ## Universal Agent Output Contract
 Each agent must return:
