@@ -8,6 +8,31 @@
 
 ## 4. Company Overview and Market Position
 
+### 4.1 Authoritative Source Basis
+- Annual report / 10-K / 20-F:
+- Latest quarterly report / 10-Q:
+- Investor presentation:
+- Official website:
+- Bloomberg / FactSet / Yahoo / Investing.com source, if used:
+
+### 4.2 Business Description from Annual Report
+Describe the company’s business using annual-report language, including segments, customers, geographies, and core economic drivers. Use numbered references such as [1].
+
+### 4.3 Business Model
+Explain how the company makes money, including revenue streams, pricing model, sales channels, customer types, operating segments, and margin drivers. Use annual-report and investor-report evidence first.
+
+### 4.4 Leadership and Credentials
+| Leader | Role | Background / Credentials | Strategic Relevance | Sources |
+|---|---|---|---|---|
+
+### 4.5 Financial Metrics and Valuation Narrative
+| Metric | Value | Period / Date | Interpretation | Source |
+|---|---:|---|---|---|
+
+Include EPS, P/E, PEG, free cash flow, cash, total debt, and debt as % of cash for public companies.
+
+---
+
 ## 5. Business Model and Revenue Model
 
 ## 6. Detailed Products and Services Catalog
@@ -54,7 +79,13 @@
 
 ## 27. Strengths, Gaps, Risks, and Differentiation
 
+
 ## 28. Evidence Appendix with URLs Grouped by Section
+
+[1] Source URL  
+[2] Source URL  
+
+---
 
 ## 29. Quality Document JSON
 
