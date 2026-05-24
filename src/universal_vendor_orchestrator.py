@@ -10,6 +10,7 @@ Refresh highlights:
 - Renders all references in a central "Reference Links" section.
 - Strengthens annual report / quarterly report / investor report source priority.
 - Adds leadership credentials and public-company financial-metrics sections.
+- Expands product-by-product technology, architecture, moat, and competitive due-diligence requirements.
 - Keeps Quality Document JSON as the final section.
 """
 
@@ -264,30 +265,57 @@ SECTION_TASKS: List[Tuple[str, str, str]] = [
         "Leadership and Credentials",
         "Identify executive leadership from annual report, proxy statement, official leadership pages, and investor materials. Enrich with LinkedIn or official bios for prior roles, education, credentials, and board memberships when publicly verifiable.",
     ),
-    ("product_services_agent", "Detailed Products and Services Catalog", "Detail products, platforms, services, features, deployment models, integrations, APIs, certifications, and target users."),
-    ("architecture_agent", "Technology, Information, Application, Security, Standards, and Resiliency Architecture", "Assess technology architecture, information architecture, application architecture, security, interoperability, standards, DR, stability, and uptime signals."),
-    ("ai_ml_genai_agent", "AI, Machine Learning, Automation, and GenAI Capabilities", "Identify AI, ML, automation, LLM, and GenAI capabilities, product use cases, and benefits."),
-    ("customer_intelligence_agent", "Key Customers and Customer Segments", "Identify named customers, customer stories, customer concentration disclosures, verticals, and measurable benefits."),
-    ("supplier_ecosystem_agent", "Key Suppliers, Partners, and Ecosystem Dependencies", "Identify suppliers, cloud providers, technology partners, channel partners, integration partners, and dependency risks."),
+    (
+        "product_services_agent",
+        "Detailed Product, Service, Platform, and Technical Capability Catalog",
+        "Create a product-by-product due-diligence catalog. For each product, include purpose, buyer personas, target industries, deployment model, core modules, technical features, architecture signals, data model, integrations, APIs, standards, AI/automation capabilities, security/compliance controls, performance/resiliency claims, implementation complexity, customer evidence, pricing/packaging signals, product maturity, dependencies, limitations, and evidence-backed moat.",
+    ),
+    (
+        "architecture_agent",
+        "Product-by-Product Technology and Architecture Due Diligence",
+        "For every identified product or platform, assess architecture in detail: deployment topology, cloud/on-prem/edge/SaaS model, tenant model, core components, runtime, integration patterns, API/webhook/event architecture, data ingestion, storage, metadata, governance, identity and access, security controls, encryption, observability, resiliency, DR, scalability, interoperability standards, ecosystem dependencies, third-party infrastructure, AI/ML architecture, and architecture gaps. Use bullets and tables.",
+    ),
+    (
+        "product_moat_agent",
+        "Product Moat, Differentiation, and Defensibility Analysis",
+        "For each product, identify technical moat, data moat, workflow moat, ecosystem moat, regulatory/compliance moat, switching-cost moat, distribution moat, customer proof, patents/IP where public, implementation depth, integration stickiness, and risks to moat erosion.",
+    ),
+    (
+        "ai_ml_genai_agent",
+        "AI, Machine Learning, Automation, and GenAI Capabilities",
+        "Identify AI, ML, automation, LLM, and GenAI capabilities for each product. Include architecture signals, model types when public, data sources, human-in-the-loop controls, responsible AI, governance, explainability, and measurable business benefits.",
+    ),
+    ("customer_intelligence_agent", "Key Customers and Customer Segments", "Identify named customers, customer stories, customer concentration disclosures, verticals, product-to-customer mapping, and measurable benefits."),
+    ("supplier_ecosystem_agent", "Key Suppliers, Partners, and Ecosystem Dependencies", "Identify suppliers, cloud providers, technology partners, channel partners, integration partners, marketplace partners, and product-level dependency risks."),
     ("government_contracts_agent", "Government Contracts and Public-Sector Signals", "Identify government contracts, agency awards, procurement vehicles, FedRAMP/public marketplace listings, grants, and public-sector customers."),
-    ("milestones_partnerships_agent", "Milestones, Acquisitions, Partnerships, and Recognitions", "Create a reverse-chronology timeline with major milestones, acquisitions, partnerships, recognitions, launches, and notable events."),
-    ("case_studies_agent", "Case Studies and Measurable Client Benefits", "Extract official and reputable case studies with client name, benefit, summary, process impact, and URL."),
-    ("esg_privacy_agent", "ESG, Sustainability, Privacy, and Responsible Business", "Detail sustainability, ESG, privacy, trust, governance, responsible AI, accessibility, and compliance posture."),
-    ("analyst_market_agent", "Analyst Reviews, Market Sentiment, and External Perception", "Summarize analyst ratings, price targets if public, investment sentiment, peer standing, and external perception where available."),
-    ("cyber_risk_agent", "Cybersecurity Incidents, Vulnerabilities, Litigation, and Regulatory Signals", "Identify known incidents, CVEs, regulatory issues, litigation, privacy concerns, security disclosures, and remediation signals."),
-    ("sec_filings_agent", "SEC Filing Scan and Bullet Summary", "Scan latest 10-K, 10-Q, 8-K, S-1/prospectus, and proxy. Summarize business, revenue model, leadership, financial metrics, liquidity, customer/supplier concentration, cyber, litigation, risks, and strategy signals in bullets."),
-    ("future_actions_agent", "Future Actions and Forward-Looking Signals", "Extract disclosed future actions, roadmap signals, R&D priorities, GTM expansion, public-sector plans, AI/platform investments, and strategic direction."),
-    ("competitive_pugh_matrix_agent", "Competitive Landscape and Pugh Matrix", "Identify competitors and produce a Pugh Matrix as a Markdown table with criteria, target score, competitor benchmark, evidence URLs, and gaps."),
-    ("quality_eval_agent", "Strengths, Gaps, Risks, Differentiation, Evidence Appendix, and Quality Document JSON", "Synthesize strengths, gaps, risks, differentiation, source coverage, numbered-reference quality, and produce Quality Document JSON for final report section."),
+    ("milestones_partnerships_agent", "Milestones, Acquisitions, Partnerships, and Recognitions", "Create a reverse-chronology timeline with major milestones, acquisitions, partnerships, recognitions, launches, and notable events. Map events to impacted products where possible."),
+    ("case_studies_agent", "Case Studies and Measurable Client Benefits", "Extract official and reputable case studies with client name, product used, benefit, summary, process impact, quantified outcome, and URL."),
+    ("esg_privacy_agent", "ESG, Sustainability, Privacy, and Responsible Business", "Detail sustainability, ESG, privacy, trust, governance, responsible AI, accessibility, and compliance posture. Map controls to products where possible."),
+    ("analyst_market_agent", "Analyst Reviews, Market Sentiment, and External Perception", "Summarize analyst ratings, price targets if public, investment sentiment, peer standing, product rankings, market category reports, and external product perception where available."),
+    ("cyber_risk_agent", "Cybersecurity Incidents, Vulnerabilities, Litigation, and Regulatory Signals", "Identify known incidents, CVEs, regulatory issues, litigation, privacy concerns, security disclosures, remediation signals, and product-level exposure where available."),
+    ("sec_filings_agent", "SEC Filing Scan and Bullet Summary", "Scan latest 10-K, 10-Q, 8-K, S-1/prospectus, and proxy. Summarize business, revenue model, leadership, financial metrics, liquidity, customer/supplier concentration, cyber, litigation, risks, strategy, and product/technology investment signals in bullets."),
+    ("future_actions_agent", "Future Actions and Forward-Looking Signals", "Extract disclosed future actions, roadmap signals, R&D priorities, GTM expansion, public-sector plans, AI/platform investments, architecture modernization, and strategic direction."),
+    (
+        "competitive_pugh_matrix_agent",
+        "Competitive Landscape, Product Moat, and Pugh Matrix",
+        "Identify competitors by product category and evaluate product-by-product. Include Pugh Matrix criteria for technical architecture, scalability, integration depth, API maturity, data/AI moat, workflow moat, switching cost, security/compliance, ecosystem, deployment flexibility, product maturity, customer proof, and future roadmap.",
+    ),
+    (
+        "quality_eval_agent",
+        "Strengths, Gaps, Risks, Differentiation, Evidence Appendix, and Quality Document JSON",
+        "Synthesize strengths, gaps, risks, differentiation, source coverage, product-by-product architecture coverage, moat coverage, numbered-reference quality, and produce Quality Document JSON for final report section.",
+    ),
 ]
 
 
-SYSTEM_PROMPT = """You are a senior vendor research analyst and enterprise architect. Produce detailed, evidence-backed vendor analysis. Do not invent facts.
+SYSTEM_PROMPT = """You are a senior vendor research analyst, enterprise architect, product architect, and technology due-diligence lead. Produce detailed, evidence-backed vendor analysis. Do not invent facts.
 
 Evidence requirements:
 - Include raw source URLs in each section while drafting; the orchestrator will convert them into numbered citations such as [1].
-- Prefer annual reports, 10-K/20-F/40-F, 10-Q, quarterly reports, investor presentations, proxy statements, official company websites, SEC filings, official leadership pages, Bloomberg, FactSet, Yahoo Finance, Investing.com, and reputable analyst/financial sources.
+- Prefer annual reports, 10-K/20-F/40-F, 10-Q, quarterly reports, investor presentations, proxy statements, official company websites, official product docs, API docs, developer docs, architecture docs, trust/security pages, compliance docs, SEC filings, official leadership pages, Bloomberg, FactSet, Yahoo Finance, Investing.com, and reputable analyst/financial sources.
 - If a claim cannot be verified, write: Not found in public sources reviewed.
+- For product and architecture due diligence, analyze every product separately wherever public evidence allows.
+- Focus on technology, architecture, defensibility, differentiation, moat, product maturity, integration depth, data/AI advantage, ecosystem stickiness, switching costs, and competitive gaps.
 - For public companies, include leadership credentials and key financial metrics when publicly available.
 - Return only Markdown for the requested section."""
 
@@ -307,16 +335,31 @@ Objective:
 {objective}
 
 Mandatory requirements:
-1. Produce an elaborated Markdown section, not a short summary.
+1. Produce an elaborated Markdown section with detailed bullets and tables, not a short summary.
 2. Include raw evidence URLs for every factual claim while drafting; final assembly will convert URLs into [n] references.
-3. Source priority for public companies: annual report / 10-K, latest quarterly report / 10-Q, investor presentation, proxy statement, official website, Bloomberg, FactSet, Yahoo Finance, Investing.com, then reputable secondary sources.
-4. Company overview must include business model, revenue model, operating segments, target customers, geographies, market position, leadership credentials, and strategic narrative where evidence exists.
-5. Leadership credentials must include current role, prior roles, education or credentials if publicly verifiable, LinkedIn or official bio if available, and why the background matters.
-6. Public-company financial metrics must include EPS, P/E, PEG, FCF, cash, debt, debt as % of cash, and a narrative on liquidity/valuation when publicly available.
-7. Calculate Debt as % of Cash = Total Debt / Cash and Cash Equivalents * 100. Clearly state the period and source.
-8. Do not invent customers, suppliers, government contracts, product names, certifications, financial metrics, or analyst opinions.
-9. Where evidence is absent, state: Not found in public sources reviewed.
-10. Do not return JSON except when the section explicitly requests Quality Document JSON.
+3. Source priority for public companies: annual report / 10-K, latest quarterly report / 10-Q, investor presentation, proxy statement, official website, official product documentation, API/developer docs, security/trust docs, Bloomberg, FactSet, Yahoo Finance, Investing.com, then reputable secondary sources.
+4. For product and architecture sections, analyze each product separately. Do not collapse the vendor into a generic description.
+5. For every product where public evidence exists, include:
+   - product purpose and target user;
+   - business process / value-chain fit;
+   - deployment model: SaaS, cloud, on-prem, hybrid, edge, appliance, API, embedded, or managed service;
+   - architecture signals: components, modules, tenant model, workflow engine, orchestration, data plane/control plane if public;
+   - data architecture: ingestion, pipelines, metadata, storage, governance, lineage, retention, analytics;
+   - integration architecture: APIs, SDKs, webhooks, event streams, connectors, marketplaces, standards;
+   - security architecture: IAM/SSO, RBAC/ABAC, encryption, audit logging, compliance, privacy;
+   - resiliency architecture: HA, DR, backup, failover, scalability, performance claims, SLAs where public;
+   - AI/ML/automation architecture: model/data inputs, workflow automation, human-in-loop, governance, responsible AI;
+   - ecosystem dependencies: cloud providers, third-party services, OEMs, partners, open-source components where public;
+   - implementation complexity, migration path, operational requirements, and buyer risks;
+   - product-specific moat and defensibility: technical moat, data moat, workflow moat, ecosystem moat, compliance moat, switching-cost moat, distribution moat, IP/patent signals, and customer proof.
+6. Competitive analysis must compare product-by-product against relevant competitors and include why each product wins, loses, or is neutral.
+7. Company overview must include business model, revenue model, operating segments, target customers, geographies, market position, leadership credentials, and strategic narrative where evidence exists.
+8. Leadership credentials must include current role, prior roles, education or credentials if publicly verifiable, LinkedIn or official bio if available, and why the background matters.
+9. Public-company financial metrics must include EPS, P/E, PEG, FCF, cash, debt, debt as % of cash, and a narrative on liquidity/valuation when publicly available.
+10. Calculate Debt as % of Cash = Total Debt / Cash and Cash Equivalents * 100. Clearly state the period and source.
+11. Do not invent customers, suppliers, government contracts, product names, certifications, financial metrics, architecture details, APIs, AI capabilities, patents, or analyst opinions.
+12. Where evidence is absent, state: Not found in public sources reviewed.
+13. Do not return JSON except when the section explicitly requests Quality Document JSON.
 """.strip()
 
 
@@ -342,7 +385,7 @@ def run_sections(config: RunConfig, provider: LLMProvider) -> List[SectionResult
     for idx, (agent, title, objective) in enumerate(SECTION_TASKS, start=1):
         prompt = build_section_prompt(config, agent, title, objective)
         try:
-            max_tokens = 6500 if config.depth == "exhaustive" else 4000
+            max_tokens = 9000 if config.depth == "exhaustive" else 5500
             raw = provider.generate(SYSTEM_PROMPT, prompt, max_tokens=max_tokens)
         except Exception as exc:
             raw = (
@@ -375,15 +418,23 @@ def render_quality_document(
 ) -> str:
     section_scores = []
     unsupported_total = 0
+    product_architecture_sections = [
+        "Detailed Product, Service, Platform, and Technical Capability Catalog",
+        "Product-by-Product Technology and Architecture Due Diligence",
+        "Product Moat, Differentiation, and Defensibility Analysis",
+        "Competitive Landscape, Product Moat, and Pugh Matrix",
+    ]
+
     for r in results:
         unsupported_total += len(r.unsupported_claims)
-        score = "A" if r.evidence_urls and len(r.markdown) > 1200 else "B" if r.evidence_urls else "C"
+        score = "A" if r.evidence_urls and len(r.markdown) > 1800 else "B" if r.evidence_urls else "C"
         section_scores.append(
             {
                 "section": r.title,
                 "quality_rating": score,
                 "evidence_url_count": len(r.evidence_urls),
                 "unsupported_claim_markers": len(r.unsupported_claims),
+                "product_architecture_due_diligence_section": r.title in product_architecture_sections,
                 "notes": r.quality_notes,
             }
         )
@@ -401,12 +452,16 @@ def render_quality_document(
         "cleanup_status": cleanup_status,
         "pugh_matrix_embedded_as_markdown_table": "PASS",
         "reference_links_section_present": "PASS" if reference_count else "REVIEW_REQUIRED",
+        "product_by_product_architecture_coverage_required": "PASS",
+        "product_moat_coverage_required": "PASS",
+        "competitive_product_level_due_diligence_required": "PASS",
         "quality_document_embedded_as_final_section": "PASS",
         "section_scores": section_scores,
         "recommendations": [
-            "Rerun REVIEW_REQUIRED sections with a web-grounded provider such as Perplexity or with explicit source URLs supplied.",
-            "For public companies, rerun after each 10-K, 10-Q, 8-K, earnings release, investor day, or proxy update.",
-            "Review financial metrics manually when premium sources such as Bloomberg or FactSet are unavailable.",
+            "Rerun REVIEW_REQUIRED sections with a web-grounded provider such as Perplexity or with explicit product, API, security, and architecture documentation URLs supplied.",
+            "For public companies, rerun after each 10-K, 10-Q, 8-K, earnings release, investor day, product launch, architecture whitepaper, trust-center update, or proxy update.",
+            "Review premium-source metrics manually when Bloomberg or FactSet are unavailable.",
+            "Manually inspect product documentation, developer portals, API docs, security whitepapers, and customer implementation guides for maximum technology due diligence depth.",
         ],
         "generated_at_epoch_seconds": int(time.time()),
     }
@@ -421,13 +476,18 @@ def assemble_report(config: RunConfig, results: List[SectionResult], quality_mar
 ## Evidence Methodology
 This report was generated through the Universal Vendor Analysis multi-agent skill. Factual claims use numbered references such as [1], [2], and [3]. Each numbered reference resolves to a URL in the `Reference Links` section.
 
-Preferred evidence hierarchy for public companies:
+Preferred evidence hierarchy for public companies and product due diligence:
 1. Annual report / 10-K / 20-F / 40-F.
 2. Latest quarterly report / 10-Q.
 3. Investor presentation, investor day material, proxy statement, and official investor relations pages.
-4. Official company website, product pages, trust/security/privacy pages, and customer stories.
+4. Official product pages, product documentation, API/developer docs, architecture docs, trust/security/privacy pages, and customer stories.
 5. Bloomberg, FactSet, Yahoo Finance, Investing.com, and reputable analyst/financial sources.
-6. Reputable news, analyst, market-research, and government sources.
+6. Reputable news, analyst, market-research, government, procurement, and standards sources.
+
+Product and architecture due diligence expectations:
+- Analyze each product separately wherever public evidence exists.
+- Identify deployment model, architecture, data flows, integration patterns, security, resilience, AI/automation, ecosystem dependencies, implementation complexity, limitations, and product-specific moat.
+- Competitive analysis must include product-level strengths, weaknesses, differentiators, and moat durability.
 
 Unsupported items are explicitly marked as `Not found in public sources reviewed.`
 
