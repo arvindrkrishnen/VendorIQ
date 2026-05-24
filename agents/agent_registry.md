@@ -16,16 +16,18 @@ During drafting, agents may include raw source URLs. The orchestrator converts r
 | `business_model_agent` | Revenue model, segment model, GTM, operating drivers, recurring vs. transactional revenue, and annual-report-backed business model | Business model section |
 | `financial_metrics_agent` | EPS, P/E, PEG, FCF, cash, debt, debt as % of cash, revenue growth, margin signals, valuation narrative, and liquidity narrative for public companies | Financial metrics and valuation narrative |
 | `leadership_credentials_agent` | Leadership extraction from annual report/proxy/company site and credential enrichment from official bios, LinkedIn, or other public sources | Leadership credentials subsection |
-| `product_services_agent` | Exhaustive products/services catalog and capability map | Product section |
-| `customer_supplier_agent` | Named customers, customer segments, suppliers, cloud providers, partners | Commercial ecosystem section |
+| `product_services_agent` | Exhaustive product-by-product catalog, capability map, technical features, deployment model, integrations, security, resiliency, AI/automation, customer proof, and product-specific moat | Product due-diligence section |
+| `architecture_agent` | Product-by-product technology architecture: deployment topology, tenant model, components, data architecture, APIs, integrations, security, observability, resiliency, AI/ML architecture, dependencies, risks, and architecture moat | Architecture due-diligence section |
+| `product_moat_agent` | Product-specific defensibility: technical moat, data moat, workflow moat, ecosystem moat, compliance moat, switching-cost moat, distribution moat, IP, moat durability, and erosion risk | Product moat section |
+| `customer_supplier_agent` | Named customers, customer segments, suppliers, cloud providers, partners, product-to-customer mapping, and ecosystem dependencies | Commercial ecosystem section |
 | `government_contracts_agent` | Direct awards, agency contracts, FedRAMP, marketplaces, public-sector signals | Government/public-sector section |
-| `sec_filings_agent` | 10-K/10-Q/8-K/S-1/proxy scan, risk factors, strategy, customers/suppliers, future actions, leadership, liquidity, and financial metrics | SEC filing scan bullets |
-| `future_actions_agent` | Disclosed plans, roadmap, capital allocation, hiring/geography/product expansion | Future actions section |
-| `architecture_agent` | Technology, application, information, security, standards, resiliency | Architecture section |
-| `ai_ml_genai_agent` | AI/ML/automation/GenAI capabilities and benefits | AI capability section |
-| `competitive_pugh_matrix_agent` | Competitors and Pugh Matrix table | Competitive section and table |
+| `sec_filings_agent` | 10-K/10-Q/8-K/S-1/proxy scan, risk factors, strategy, customers/suppliers, future actions, leadership, liquidity, financial metrics, R&D, product investment, and technology disclosures | SEC filing scan bullets |
+| `future_actions_agent` | Disclosed plans, roadmap, capital allocation, hiring/geography/product expansion, product launches, architecture modernization, AI/platform investment | Future actions section |
+| `architecture_agent` | Technology, application, information, security, standards, resiliency, and product architecture | Architecture section |
+| `ai_ml_genai_agent` | AI/ML/automation/GenAI capabilities by product, including data inputs, model signals, governance, human-in-loop, and measurable benefits | AI capability section |
+| `competitive_pugh_matrix_agent` | Competitors, product-level competitive comparison, product moat comparison, and Pugh Matrix table | Competitive section and table |
 | `reference_normalization_agent` | Deduplicates source URLs, assigns numeric references, replaces raw URLs with `[n]`, and renders `Reference Links` | Numbered reference map |
-| `quality_evaluation_agent` | Evidence authenticity, numbered-reference completeness, annual-report source coverage, financial-metric completeness, and output compliance | Quality Document JSON |
+| `quality_evaluation_agent` | Evidence authenticity, numbered-reference completeness, annual-report source coverage, financial-metric completeness, product architecture coverage, moat coverage, and output compliance | Quality Document JSON |
 
 ## Universal Agent Output Contract
 
@@ -44,8 +46,33 @@ When the target company is public, agents must prioritize:
 2. Latest 10-Q or quarterly report.
 3. Investor presentation / investor day material.
 4. Proxy statement / DEF 14A for leadership and compensation context.
-5. Official website and investor relations pages.
+5. Official website, product docs, API/developer docs, architecture docs, trust/security pages, and investor relations pages.
 6. Bloomberg, FactSet, Yahoo Finance, Investing.com, and reputable analyst/financial sources.
+
+## Product and Architecture Due-Diligence Contract
+
+For every major product where public evidence exists, agents must attempt to identify:
+
+- Product purpose and target buyer.
+- Value-chain / workflow fit.
+- Deployment model.
+- Tenant model.
+- Core components and modules.
+- Data architecture.
+- Integration architecture.
+- API / SDK / developer ecosystem.
+- AI / ML / automation architecture.
+- Security and compliance architecture.
+- Privacy and data residency posture.
+- Observability and operations.
+- Scalability, resiliency, backup, DR, failover, RPO/RTO, and SLA signals.
+- Implementation complexity and migration risks.
+- Ecosystem dependencies.
+- Product maturity.
+- Product-specific limitations.
+- Product-specific moat and moat durability.
+
+If information is unavailable, state `Not found in public sources reviewed`.
 
 ## Financial Metrics Contract
 
