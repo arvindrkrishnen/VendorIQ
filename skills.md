@@ -2,48 +2,66 @@
 
 ## Purpose
 
-Create one exhaustive, evidence-linked vendor-analysis Markdown report for a vendor, public company, or private firm.
+Create one exhaustive, evidence-linked vendor-analysis report for a vendor, public company, or private firm.
 
 The skill supports detailed technology, architecture, product, moat, financial, leadership, and competitive due diligence.
 
+## Required Output Flow
+
+VendorIQ follows a two-stage output flow:
+
+1. Generate the complete report as Markdown.
+2. Convert the completed Markdown into one self-contained interactive HTML report.
+
+The final deliverable is:
+
+```text
+artifacts/exhaustive_final_report.html
+```
+
+In online chat execution, return a downloadable self-contained HTML artifact named:
+
+```text
+exhaustive_final_report.html
+```
+
+The Markdown report is an intermediate representation. It is used to structure the report, validate evidence, normalize citations, build tables, and prepare the content for HTML conversion. It is not the final user-facing artifact unless the user explicitly asks for Markdown.
+
 ## Single Output Rule
 
-Produce only one persistent deliverable:
+Produce only one final persistent user-facing deliverable:
 
 ```text
-artifacts/exhaustive_final_report.md
+artifacts/exhaustive_final_report.html
 ```
 
-In online chat execution, return a downloadable Markdown artifact named:
+Do not produce separate progress JSON, evidence JSON, Pugh Matrix JSON, quality JSON, SEC JSON, government-contract JSON, reference JSON, leadership JSON, financial JSON, product JSON, architecture JSON, moat JSON, CSS file, JavaScript file, or image asset.
 
-```text
-exhaustive_final_report.md
-```
-
-Do not produce separate progress JSON, evidence JSON, Pugh Matrix JSON, quality JSON, SEC JSON, government-contract JSON, reference JSON, leadership JSON, financial JSON, product JSON, architecture JSON, or moat JSON files. These can exist only as temporary reasoning or runtime state and must be embedded in the final Markdown report.
+Intermediate Markdown may be generated during runtime or reasoning, but the final deliverable must be the converted HTML file.
 
 ## Execution Entry Point for Online Models
 
-When a user uploads this package to ChatGPT, Gemini AI Studio, or Claude, the model must:
+When a user uploads this package to ChatGPT, Gemini AI Studio, Claude, or another model, the model must:
 
-1. Read `README.md`.
-2. Read this `skills.md` file.
-3. Read `agents/agent_registry.md`.
-4. Read the relevant playbooks in `playbooks/`.
-5. Read guardrails in `guardrails/`.
-6. Ask for the vendor name only if the user did not provide it.
-7. Execute all required sub-agent sections.
-8. Use browsing/search if available.
-9. Produce one final Markdown report.
+1. Read `SKILL.md`.
+2. Read `README.md`.
+3. Read this `skills.md` file.
+4. Read `agents/agent_registry.md`.
+5. Read the relevant playbooks in `playbooks/`.
+6. Read guardrails in `guardrails/`.
+7. Ask for the vendor name only if the user did not provide it.
+8. Execute all required sub-agent sections.
+9. Use browsing/search if available.
+10. Generate the complete report as Markdown.
+11. Validate the Markdown report.
+12. Convert the Markdown report into one final self-contained interactive HTML report.
 
 ## Required Inputs
 
 Minimum:
-
 - vendor name
 
 Optional:
-
 - ticker;
 - official website;
 - SEC CIK;
@@ -57,7 +75,6 @@ Optional:
 The skill must trigger each major report section through a sub-agent.
 
 Required agents include:
-
 - identity and SEC resolution;
 - market position;
 - business model;
@@ -76,12 +93,13 @@ Required agents include:
 - competitive landscape;
 - product-level Pugh Matrix;
 - reference normalization;
+- Markdown report assembly;
+- Markdown-to-HTML conversion;
 - quality evaluation.
 
 ## Report Quality Requirements
 
-Each section must be elaborated, not summarized. The final report must include:
-
+Each section must be elaborated, not summarized. The Markdown assembly and final HTML report must include:
 - annual-report-led company overview for public companies;
 - business model and revenue model from annual report, investor report, or official company sources;
 - leadership credentials and strategic relevance;
@@ -97,14 +115,51 @@ Each section must be elaborated, not summarized. The final report must include:
 - SEC filing scan in bulleted format for public companies;
 - future actions and forward-looking indicators;
 - product-level competitive analysis;
-- Pugh Matrix rendered as a Markdown table;
+- Pugh Matrix;
 - Reference Links section with numbered links;
-- Quality Document JSON as the final section.
+- Quality Document JSON as the final visible section.
+
+## Markdown Assembly Requirements
+
+The Markdown report must:
+- contain all required sections;
+- use numbered references such as `[1]`, `[2]`, and `[3]`;
+- include a `Reference Links` section;
+- place `Reference Links` immediately before `Quality Document JSON`;
+- place `Quality Document JSON` as the final Markdown section;
+- render Pugh Matrix and due-diligence matrices as Markdown tables;
+- include `Not found in public sources reviewed` where evidence is unavailable.
+
+## Interactive HTML Conversion Requirements
+
+The converted HTML report must:
+- start with `<!doctype html>`;
+- include `<html lang="en">`;
+- include viewport metadata;
+- include internal CSS in a `<style>` block;
+- include internal JavaScript in a `<script>` block;
+- include semantic `<header>`, `<nav>`, `<main>`, `<section>`, and `<footer>` elements;
+- include a sticky header;
+- include a clickable table of contents;
+- include a section search/filter box;
+- include collapsible major sections;
+- include expand-all and collapse-all buttons;
+- convert Markdown tables into sortable HTML tables;
+- include due-diligence cards where useful;
+- include linked citations and reference backlinks;
+- include print CSS;
+- use sufficient contrast and accessible button labels.
+
+The HTML report must not require:
+- external CSS;
+- external JavaScript;
+- CDN links;
+- remote fonts;
+- external images or assets.
 
 ## Product and Architecture Due-Diligence Requirements
 
 For every major product where public evidence exists, include:
-
 - product purpose and target buyer;
 - business process / value-chain fit;
 - deployment model;
@@ -144,7 +199,6 @@ Not found in public sources reviewed.
 Competitive analysis must be product-specific.
 
 For each major vendor product, compare against relevant competitors and substitutes across:
-
 - product-market fit;
 - architecture maturity;
 - deployment flexibility;
@@ -166,16 +220,17 @@ For each major vendor product, compare against relevant competitors and substitu
 
 ## Evidence Requirements
 
-Every factual claim must include a numbered reference such as `[1]`, `[2]`, or `[3]`, or a raw URL during drafting that will be converted to a numbered reference during final report assembly.
+Every factual claim must include a numbered reference such as `[1]`, `[2]`, or `[3]`.
 
-The final report must include:
+The Markdown report must include:
 
 ```markdown
 ## Reference Links
 ```
 
-Preferred evidence order:
+The converted HTML report must include the same references as clickable links.
 
+Preferred evidence order:
 1. SEC filings, official annual reports, quarterly reports, and investor relations pages.
 2. Official company website, product pages, product documentation, developer/API documentation, architecture documentation, trust/security/privacy pages, leadership pages, and customer stories.
 3. Proxy statements and official executive biographies for leadership credentials.
@@ -188,7 +243,6 @@ Do not invent data. Use `Not found in public sources reviewed` when evidence is 
 ## Public Company Financial Metrics
 
 For public companies, attempt to include:
-
 - EPS;
 - P/E;
 - PEG;
@@ -212,7 +266,6 @@ Debt as % of Cash = Total Debt / Cash and Cash Equivalents * 100
 Use annual report, proxy statement, company leadership pages, investor reports, official biographies, and LinkedIn or public profiles where available.
 
 For each leader, include:
-
 - current role;
 - prior roles;
 - education or certifications where verified;
@@ -234,14 +287,17 @@ The Python orchestrator supports:
 ## Completion Definition
 
 A run is complete only when:
-
-- the final Markdown report exists;
+- the Markdown report content has been generated or assembled;
+- the Markdown report has been converted to HTML;
+- the final HTML report exists;
+- the final artifact is named `exhaustive_final_report.html`;
 - every required section is present;
 - factual claims include numbered references, raw URLs converted to numbered references, or explicit not-found markers;
 - all numbered references resolve in `Reference Links`;
+- `Reference Links` appears immediately before `Quality Document JSON`;
 - public-company financial metrics and leadership credentials are attempted;
 - product-by-product technology and architecture due diligence is attempted;
 - product moat and competitive moat are attempted;
-- product-level Pugh Matrix is rendered as a Markdown table;
-- Quality Document JSON is the last section;
-- no extra persistent output files are required.
+- product-level Pugh Matrix is converted into an HTML table;
+- Quality Document JSON is the final visible section;
+- no extra persistent user-facing output files are required.

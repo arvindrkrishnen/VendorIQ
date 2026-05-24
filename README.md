@@ -5,38 +5,101 @@
 **Author:** Arvind Radhakrishnen  
 **LinkedIn:** https://www.linkedin.com/in/arvindradhakrishnen/
 
-VendorIQ is a reusable AI skill that generates evidence-backed vendor strategy intelligence for any target company. It can research and organize a vendor’s identity, business model, product portfolio, AI/GenAI capabilities, customer segments, partner ecosystem, public-sector signals, security and ESG posture, risks, competitors, strengths, gaps, and a weighted Pugh Matrix.
+VendorIQ is a reusable AI skill that generates evidence-backed vendor strategy and technology due-diligence intelligence for any target company. It researches and organizes a vendor’s identity, business model, product portfolio, product-level technology architecture, AI/GenAI capabilities, customer segments, partner ecosystem, public-sector signals, security and ESG posture, risks, competitors, strengths, gaps, financial metrics, leadership credentials, product moat, and a weighted Pugh Matrix.
 
+## Final Output Flow
 
-<img width="1247" height="647" alt="image" src="https://github.com/user-attachments/assets/88201d39-4540-4b40-8ae3-56fb65f0c814" />
+VendorIQ follows a two-step output flow:
 
+1. Generate the full report content as Markdown.
+2. Convert the generated Markdown report into one self-contained interactive HTML file.
 
-The value of VendorIQ is not only the depth of research, but also the ease of use. Users can run the skill in two ways:
-
-1. **Prompt directly from the GitHub repository** — ask ChatGPT, Google Gemini AI Studio, Claude, or another capable AI assistant to execute the skill from the GitHub repository URL.
-2. **Clone and configure the GitHub repository locally** — clone the VendorIQ skill from GitHub and run the Python orchestrator from VS Code, Claude Code, Cursor, or another coding environment using a supported LLM provider.
-
-Both execution paths produce the same final deliverable:
+The final user-facing deliverable is:
 
 ```text
-artifacts/exhaustive_final_report.md
+artifacts/exhaustive_final_report.html
 ```
 
-When triggered directly from the GitHub repository, the model should return the same Markdown report content as the final answer or as a downloadable Markdown artifact named:
+When triggered directly from ChatGPT, Gemini AI Studio, Claude, or another online model, the model should return one downloadable self-contained HTML artifact named:
+
+```text
+exhaustive_final_report.html
+```
+
+The Markdown report is an intermediate representation used to assemble and validate the content. The final deliverable must be HTML.
+
+## What the Skill Does
+
+VendorIQ follows a multi-agent orchestration pattern. An orchestrator decomposes the vendor-analysis assignment into section-level work, delegates each section to a specialized sub-agent, validates evidence and completeness through guardrails, assembles a complete Markdown report, and then converts that Markdown into a final interactive HTML report.
+
+The report supports:
+- annual-report-led public-company analysis;
+- business model and revenue model analysis;
+- leadership credentials;
+- public-company financial metrics where available;
+- product-by-product technology due diligence;
+- product-by-product architecture analysis;
+- product moat and defensibility analysis;
+- product-level competitive analysis;
+- product-level Pugh Matrix;
+- linked references;
+- Quality Document JSON as the final visible section.
+
+## Output Files
+
+### Intermediate Markdown
+
+The system may generate Markdown internally as an intermediate report representation:
 
 ```text
 exhaustive_final_report.md
 ```
 
-## What the Skill Does
-
-VendorIQ follows a multi-agent orchestration pattern. An orchestrator decomposes the vendor-analysis assignment into section-level work, delegates each section to a specialized sub-agent, validates evidence and completeness through guardrails, and assembles one final report.
-
-The skill intentionally produces only one persistent user-facing output:
+or, in local execution:
 
 ```text
 artifacts/exhaustive_final_report.md
 ```
+
+This Markdown file is not the final user-facing artifact unless the user explicitly requests Markdown.
+
+### Final HTML
+
+The final deliverable must be:
+
+```text
+exhaustive_final_report.html
+```
+
+or, in local execution:
+
+```text
+artifacts/exhaustive_final_report.html
+```
+
+The HTML report must be self-contained:
+- all CSS embedded inside the HTML file;
+- all JavaScript embedded inside the HTML file;
+- no external CSS frameworks;
+- no external JavaScript libraries;
+- no remote fonts;
+- no CDN links;
+- no dependency on external assets.
+
+## Interactive HTML Requirements
+
+The converted HTML report should include:
+- sticky header;
+- clickable table of contents;
+- section search/filter;
+- expand-all and collapse-all controls;
+- collapsible major sections;
+- sortable HTML tables;
+- due-diligence cards;
+- product-level matrices;
+- clickable citations;
+- reference backlinks;
+- print-friendly CSS.
 
 ## Two Ways to Use VendorIQ
 
@@ -44,12 +107,11 @@ artifacts/exhaustive_final_report.md
 
 Use this option when you want ChatGPT, Google Gemini AI Studio, Claude, or another capable AI assistant to execute VendorIQ directly from the public GitHub repository.
 
-The user simply points the AI assistant to the repository and asks it to execute the skill for a target vendor.
-
 #### Recommended Prompt
 
 ```text
 Execute the skill from here https://github.com/arvindrkrishnen/VendorIQ for Microsoft.
+Generate the full report as Markdown first, then convert it into one self-contained interactive HTML file named exhaustive_final_report.html.
 ```
 
 #### Expanded Prompt Template
@@ -58,7 +120,7 @@ Execute the skill from here https://github.com/arvindrkrishnen/VendorIQ for Micr
 Use this GitHub repository as the VendorIQ skill package:
 https://github.com/arvindrkrishnen/VendorIQ
 
-Read README.md, skills.md, guardrails/, agents/, and playbooks/.
+Read README.md, SKILL.md, skills.md, guardrails/, agents/, playbooks/, and templates/.
 Execute the Universal Vendor Analysis Skill for vendor: <VENDOR NAME>.
 Optional ticker: <TICKER>
 Optional website: <WEBSITE>
@@ -66,72 +128,24 @@ Optional website: <WEBSITE>
 Follow the package rules:
 - Use the agents and playbooks as the execution plan.
 - Use web browsing/search if available.
-- Every factual claim must include a source URL.
-- Do not invent customers, suppliers, government contracts, certifications, SEC details, or analyst commentary.
-- Produce only one final Markdown artifact named exhaustive_final_report.md.
-- Embed the Pugh Matrix as a Markdown table.
-- Make the last section Quality Document JSON.
+- Generate the full report content as Markdown first.
+- Every factual claim in the Markdown report must include a numbered citation such as [1], [2], or [3].
+- Every numbered citation must resolve to a source URL in the Reference Links section.
+- Do not invent customers, suppliers, government contracts, certifications, SEC details, product names, APIs, architecture details, financial metrics, leadership credentials, or analyst commentary.
+- After the Markdown report is complete, convert the Markdown into one self-contained interactive HTML artifact named exhaustive_final_report.html.
+- Embed the Pugh Matrix and all due-diligence matrices as sortable HTML tables.
+- Put Reference Links immediately before Quality Document JSON.
+- Make Quality Document JSON the final visible section in the HTML report.
 ```
-
-Example:
-
-```text
-Use this GitHub repository as the VendorIQ skill package:
-https://github.com/arvindrkrishnen/VendorIQ
-
-Execute the Universal Vendor Analysis Skill for Microsoft.
-Return one final Markdown file named exhaustive_final_report.md.
-```
-
-#### ChatGPT Online Notes
-
-- Provide the GitHub repository URL in the prompt.
-- Ask ChatGPT to browse the web when available.
-- Ask for the final deliverable as a downloadable Markdown file.
-- Recommended prompt file: `prompts/online/chatgpt_execute_skill.md`.
-
-#### Google Gemini AI Studio Online Notes
-
-- Provide the GitHub repository URL or paste the key repository files into the prompt context if repository access is unavailable.
-- Enable grounding/search tools if available in your AI Studio setup.
-- Recommended prompt file: `prompts/online/gemini_ai_studio_execute_skill.md`.
-
-#### Claude Online Notes
-
-- Provide the GitHub repository URL, or connect the repository if your Claude environment supports repository context.
-- Claude is well suited for long-context synthesis, but you must explicitly require evidence URLs.
-- Recommended prompt file: `prompts/online/claude_execute_skill.md`.
 
 ### Option 2 — Clone and Configure the GitHub Repository
 
-Use this option when you want to clone the VendorIQ repository and run the skill from a local development environment such as VS Code, Claude Code, Cursor, or another coding assistant.
-
-Clone the repository:
+Use this option when you want to clone the VendorIQ repository and run the skill from a local development environment such as VS Code, Claude Code, Cursor, GitHub Copilot Chat, or another coding assistant.
 
 ```bash
 git clone https://github.com/arvindrkrishnen/VendorIQ.git
 cd VendorIQ
-```
-
-Local execution uses the included Python orchestrator:
-
-```text
-src/universal_vendor_orchestrator.py
-```
-
-It supports OpenAI, Anthropic Claude, Google Gemini, Perplexity, and offline scaffold mode.
-
-#### Install Dependencies
-
-```bash
 pip install -r requirements.txt
-```
-
-#### Configure Environment Variables
-
-Copy the environment template:
-
-```bash
 cp .env.example .env
 ```
 
@@ -145,7 +159,7 @@ GOOGLE_API_KEY="your-google-key-if-needed"
 PERPLEXITY_API_KEY="your-perplexity-key"
 ```
 
-#### Run the Orchestrator
+Run the orchestrator so it generates Markdown first and then converts it to HTML:
 
 ```bash
 python src/universal_vendor_orchestrator.py \
@@ -154,153 +168,86 @@ python src/universal_vendor_orchestrator.py \
   --website https://www.rubrik.com \
   --provider perplexity \
   --model sonar-pro \
-  --depth exhaustive
+  --depth exhaustive \
+  --output artifacts/exhaustive_final_report.html
 ```
 
 The final output is:
 
 ```text
-artifacts/exhaustive_final_report.md
+artifacts/exhaustive_final_report.html
 ```
 
 ## Supported Execution Modes
 
-| Usage path | Mode | How users run it | API keys needed by user | Output |
+| Usage path | Mode | How users run it | API keys needed by user | Final Output |
 |---|---|---|---:|---|
-| Prompt directly from GitHub repository | ChatGPT Online | Provide `https://github.com/arvindrkrishnen/VendorIQ` and prompt ChatGPT to execute the skill | No local key required; depends on ChatGPT plan/tools | `exhaustive_final_report.md` |
-| Prompt directly from GitHub repository | Gemini AI Studio Online | Provide the repository URL or paste key repo files if repository access is unavailable | No local key required inside the repo; AI Studio access required | `exhaustive_final_report.md` |
-| Prompt directly from GitHub repository | Claude Online | Provide or connect the GitHub repository and run the Claude prompt | No local key required; depends on Claude plan/tools | `exhaustive_final_report.md` |
-| Clone and configure GitHub repository | VS Code / local OpenAI | Clone the repo and run Python script with `--provider openai` | `OPENAI_API_KEY` | `artifacts/exhaustive_final_report.md` |
-| Clone and configure GitHub repository | VS Code / local Anthropic | Clone the repo and run Python script with `--provider anthropic` | `ANTHROPIC_API_KEY` | `artifacts/exhaustive_final_report.md` |
-| Clone and configure GitHub repository | VS Code / local Gemini | Clone the repo and run Python script with `--provider gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `artifacts/exhaustive_final_report.md` |
-| Clone and configure GitHub repository | VS Code / local Perplexity | Clone the repo and run Python script with `--provider perplexity` | `PERPLEXITY_API_KEY` | `artifacts/exhaustive_final_report.md` |
-| Clone and configure GitHub repository | Offline scaffold | Clone the repo and run Python script with `--provider offline` | None | Scaffold report only |
-
-## Repository Layout
-
-```text
-.
-├── README.md
-├── CONTRIBUTIONS.md
-├── skills.md
-├── agents.md                         # index pointing to agents/ folder
-├── playbooks.md                      # index pointing to playbooks/ folder
-├── requirements.txt
-├── .env.example
-├── .gitignore
-├── .vscode/
-│   ├── tasks.json
-│   └── launch.json
-├── agents/
-│   ├── README.md
-│   ├── agent_registry.md
-│   ├── orchestrator_agent.md
-│   ├── identity_sec_resolution_agent.md
-│   ├── product_services_agent.md
-│   ├── customer_supplier_agent.md
-│   ├── government_contracts_agent.md
-│   ├── sec_filings_agent.md
-│   ├── competitive_pugh_matrix_agent.md
-│   └── quality_evaluation_agent.md
-├── playbooks/
-│   ├── README.md
-│   ├── 01_online_chat_execution.md
-│   ├── 02_local_vscode_execution.md
-│   ├── 03_vendor_identity_sec_resolution.md
-│   ├── 04_products_services_customers_suppliers.md
-│   ├── 05_government_contracts_public_sector.md
-│   ├── 06_sec_filings_future_actions.md
-│   ├── 07_competitive_pugh_matrix.md
-│   └── 08_final_report_assembly.md
-├── guardrails/
-│   ├── README.md
-│   ├── evidence_authenticity.md
-│   ├── single_output.md
-│   └── quality_eval.md
-├── prompts/
-│   ├── online/
-│   │   ├── chatgpt_execute_skill.md
-│   │   ├── gemini_ai_studio_execute_skill.md
-│   │   ├── claude_execute_skill.md
-│   │   └── github_repo_execute_skill.md
-│   └── local/
-│       └── cli_prompt_template.md
-├── templates/
-│   └── exhaustive_final_report_template.md
-├── src/
-│   └── universal_vendor_orchestrator.py
-└── artifacts/
-    └── .gitkeep
-```
-
-## Architecture
-
-```text
-User
-  |
-  +-- Option 1: Prompt Directly from GitHub Repository
-  |      +-- User provides https://github.com/arvindrkrishnen/VendorIQ
-  |      +-- Model reads README.md, skills.md, agents/, playbooks/, guardrails/
-  |      +-- Model executes sub-agent playbooks in its own context
-  |      +-- Model returns exhaustive_final_report.md
-  |
-  +-- Option 2: Clone and Configure GitHub Repository
-         +-- universal_vendor_orchestrator.py
-         +-- Provider adapter: OpenAI / Anthropic / Gemini / Perplexity / Offline
-         +-- Section task orchestration
-         +-- Guardrail validation
-         +-- Final report assembly
-         +-- Single output cleanup
-```
+| Prompt directly from GitHub repository | ChatGPT Online | Provide the repo URL and prompt ChatGPT to execute the skill | No local key required; depends on ChatGPT tools | `exhaustive_final_report.html` |
+| Prompt directly from GitHub repository | Gemini AI Studio Online | Provide the repo URL or paste selected files | No local key required inside the repo; AI Studio access required | `exhaustive_final_report.html` |
+| Prompt directly from GitHub repository | Claude Online | Provide or connect the GitHub repository | No local key required; depends on Claude tools | `exhaustive_final_report.html` |
+| Clone and configure GitHub repository | VS Code / local OpenAI | Clone the repo and run Python script with `--provider openai` | `OPENAI_API_KEY` | `artifacts/exhaustive_final_report.html` |
+| Clone and configure GitHub repository | VS Code / local Anthropic | Clone the repo and run Python script with `--provider anthropic` | `ANTHROPIC_API_KEY` | `artifacts/exhaustive_final_report.html` |
+| Clone and configure GitHub repository | VS Code / local Gemini | Clone the repo and run Python script with `--provider gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `artifacts/exhaustive_final_report.html` |
+| Clone and configure GitHub repository | VS Code / local Perplexity | Clone the repo and run Python script with `--provider perplexity` | `PERPLEXITY_API_KEY` | `artifacts/exhaustive_final_report.html` |
+| Clone and configure GitHub repository | Offline scaffold | Clone the repo and run Python script with `--provider offline` | None | Scaffold HTML report |
 
 ## Multi-Agent Execution Flow
 
 1. **Orchestrator reads the vendor request.**
 2. **Identity agent resolves the exact company, ticker, website, SEC CIK, and filing sources.**
-3. **Section agents generate detailed content for products, customers, suppliers, government contracts, SEC filings, future actions, architecture, AI, market position, ESG, risks, and competitors.**
-4. **Pugh Matrix agent creates scoring logic and renders the matrix as a Markdown table.**
-5. **Quality evaluation agent validates evidence authenticity, completeness, unsupported claims, and single-output compliance.**
-6. **Final report assembler creates `exhaustive_final_report.md` with Quality Document JSON as the last section.**
+3. **Company, financial, and leadership agents build annual-report-led company context.**
+4. **Product and architecture agents perform product-by-product technology due diligence.**
+5. **Product moat agent evaluates defensibility for each major product.**
+6. **Competitive agent creates product-level competitive analysis and Pugh Matrix.**
+7. **Quality evaluation agent validates evidence authenticity, completeness, unsupported claims, reference links, and single-output compliance.**
+8. **Final report assembly generates the complete Markdown report.**
+9. **Markdown-to-HTML conversion creates `exhaustive_final_report.html`.**
 
 ## Required Final Report Sections
 
-1. Title page and evidence methodology
-2. Vendor identity, ticker, website, headquarters, public/private status
-3. Executive thesis with evidence-linked conclusions
-4. Company overview and market position
-5. Business model and revenue model
-6. Detailed products and services catalog
-7. Product-to-capability map
-8. Technology architecture and platform capabilities
-9. Information architecture assessment
-10. Application architecture assessment
-11. Security architecture assessment
-12. Technology standards and interoperability assessment
-13. Resiliency, disaster recovery, and stability assessment
-14. AI, machine learning, automation, and GenAI capabilities
-15. Key customers and customer segments
-16. Key suppliers, cloud providers, technology partners, channel partners, and ecosystem dependencies
-17. Government contracts, public-sector awards, FedRAMP status, marketplaces, and procurement vehicles
-18. Major milestones, acquisitions, partnerships, and recognitions
-19. Case studies and measurable client benefits
-20. ESG, sustainability, privacy, and responsible-business posture
-21. Analyst reviews, market sentiment, and external perception
-22. Cybersecurity incidents, vulnerabilities, regulatory issues, and litigation signals
-23. SEC filing scan in bulleted format
-24. Future actions and forward-looking indicators
-25. Competitive landscape and competitor identification
-26. Pugh Matrix table
-27. Strengths, gaps, risks, and differentiation
-28. Evidence appendix with URLs grouped by section
-29. Quality Document JSON as the final section
+The Markdown report and final HTML report must include:
+
+1. Title Page and Evidence Methodology
+2. Vendor Identity, Ticker, Website, Headquarters, Public/Private Status
+3. Executive Thesis with Evidence-Linked Conclusions
+4. Company Overview and Market Position
+5. Business Model and Revenue Model
+6. Detailed Product, Service, Platform, and Technical Capability Catalog
+7. Product-to-Capability Map
+8. Product-by-Product Technology and Architecture Due Diligence
+9. Information Architecture Assessment
+10. Application Architecture Assessment
+11. Security Architecture Assessment
+12. Technology Standards and Interoperability Assessment
+13. Resiliency, Disaster Recovery, and Stability Assessment
+14. AI, Machine Learning, Automation, and GenAI Capabilities by Product
+15. Product Moat, Differentiation, and Defensibility Analysis
+16. Key Customers and Customer Segments
+17. Key Suppliers, Cloud Providers, Technology Partners, Channel Partners, and Ecosystem Dependencies
+18. Government Contracts, Public-Sector Awards, FedRAMP Status, Marketplaces, and Procurement Vehicles
+19. Major Milestones, Acquisitions, Partnerships, and Recognitions
+20. Case Studies and Measurable Client Benefits
+21. ESG, Sustainability, Privacy, and Responsible-Business Posture
+22. Analyst Reviews, Market Sentiment, and External Perception
+23. Cybersecurity Incidents, Vulnerabilities, Regulatory Issues, and Litigation Signals
+24. SEC Filing Scan in Bulleted Format
+25. Future Actions and Forward-Looking Indicators
+26. Competitive Landscape, Product Moat, and Pugh Matrix
+27. Strengths, Gaps, Risks, and Differentiation
+28. Reference Links
+29. Quality Document JSON
 
 ## Evidence and Authenticity Requirements
 
-Every factual claim should include a source URL. Preferred source classes:
+Every factual claim should include a numbered citation such as `[1]`, `[2]`, or `[3]`. Each numbered citation must resolve to a source URL in the `Reference Links` section.
 
+Preferred source classes:
 - SEC filings and official annual reports;
 - investor relations pages;
 - official vendor product pages;
+- product documentation;
+- API/developer documentation;
+- architecture documentation;
 - official trust, security, privacy, compliance, and sustainability pages;
 - official customer stories and case studies;
 - government procurement databases and agency award notices;
@@ -309,33 +256,23 @@ Every factual claim should include a source URL. Preferred source classes:
 - reputable financial, analyst, and market-research references.
 
 Rules:
-
-- Do not invent customers, suppliers, certifications, or contracts.
+- Do not invent customers, suppliers, certifications, contracts, product names, APIs, architecture details, leadership credentials, or financial metrics.
 - Do not infer government contracts from vague public-sector marketing language.
 - Mark unavailable information as `Not found in public sources reviewed`.
 - Treat SEC filings and official company disclosures as higher-priority evidence than secondary commentary.
 - Include filing date, fiscal period, and form type when citing SEC filings.
 
-## Updating Agents and Playbooks Independently
-
-Agents and playbooks are intentionally separated:
-
-- Update `agents/*.md` when you want to change role boundaries, inputs, outputs, or agent behavior.
-- Update `playbooks/*.md` when you want to change execution steps, evidence requirements, or passing criteria.
-- Update `guardrails/*.md` when you want to tighten validation rules.
-- Update `skills.md` when you want to change the top-level behavior of the skill.
-
-This separation makes the package easier to maintain in GitHub and easier for ChatGPT, Gemini, Claude, VS Code, Claude Code, Cursor, and other coding assistants to understand when a user points to or clones the repository.
-
 ## Best Practices
 
 1. Use web-enabled execution for current analysis.
 2. Use SEC filings as the anchor source for public companies.
-3. Use official product pages for products and capabilities.
+3. Use official product pages, product docs, developer docs, trust pages, and architecture docs for product-level due diligence.
 4. Separate named customers from inferred customer segments.
 5. Separate direct government awards from marketplace availability or partner-led resale.
 6. Put unsupported claims in the report as `Not found in public sources reviewed` rather than guessing.
-7. Keep the final report as the only persistent output.
+7. Generate Markdown first.
+8. Convert the completed Markdown to `exhaustive_final_report.html`.
+9. Keep the HTML file as the final user-facing artifact.
 
 ## Troubleshooting
 
@@ -344,7 +281,7 @@ This separation makes the package easier to maintain in GitHub and easier for Ch
 Use the direct GitHub-repository prompt. Tell the model:
 
 ```text
-Do not run code; read the GitHub repository files as instructions and produce the final Markdown report using your available browsing/search capability.
+Do not run code; read the GitHub repository files as instructions, generate the full Markdown report first, then convert that Markdown into one self-contained interactive HTML report using your available browsing/search capability.
 ```
 
 ### The report lacks current web URLs
@@ -353,12 +290,12 @@ Ask the online model to enable browsing/search, or use local Perplexity mode.
 
 ### The output creates extra files
 
-The package rule is one output only. Ask the model to consolidate all content into `exhaustive_final_report.md` and delete or ignore intermediate artifacts.
+The package rule is one final user-facing output only. Ask the model to consolidate all content into `exhaustive_final_report.html` and delete or ignore intermediate artifacts.
 
 ### Gemini AI Studio has token limits
 
-Start with `skills.md`, `agents/agent_registry.md`, `playbooks/01_online_chat_execution.md`, `guardrails/README.md`, and the vendor name. Then add agent/playbook files section by section if needed.
+Start with `SKILL.md`, `skills.md`, `agents/agent_registry.md`, `playbooks/01_online_chat_execution.md`, `playbooks/08_final_report_assembly.md`, `guardrails/README.md`, and the vendor name. Then add agent/playbook files section by section if needed.
 
 ### Claude produces a narrative but not a file
 
-Ask Claude to return the content as a Markdown artifact named `exhaustive_final_report.md` and make the final section `Quality Document JSON`.
+Ask Claude to generate the report as Markdown first, then return the converted result as a downloadable self-contained HTML artifact named `exhaustive_final_report.html`.
