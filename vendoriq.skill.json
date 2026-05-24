@@ -1,0 +1,62 @@
+
+---
+
+### 2. Add `vendoriq.skill.json`
+
+This helps ChatGPT-like agents parse the repo as a tool/skill package.
+
+```json
+{
+  "name": "VendorIQ Universal Vendor Analysis",
+  "version": "1.0.0",
+  "entrypoint": "SKILL.md",
+  "description": "Evidence-backed vendor strategy intelligence skill for public and private companies.",
+  "required_inputs": ["vendor_name"],
+  "optional_inputs": [
+    "ticker",
+    "website",
+    "sec_cik",
+    "competitors",
+    "geography",
+    "depth"
+  ],
+  "supported_depths": ["standard", "exhaustive"],
+  "online_execution": {
+    "requires_code_execution": false,
+    "requires_browsing": true,
+    "read_order": [
+      "SKILL.md",
+      "README.md",
+      "skills.md",
+      "agents/agent_registry.md",
+      "guardrails/",
+      "playbooks/",
+      "templates/exhaustive_final_report_template.md"
+    ]
+  },
+  "local_execution": {
+    "entrypoint": "src/universal_vendor_orchestrator.py",
+    "default_output": "artifacts/exhaustive_final_report.md",
+    "supported_providers": [
+      "openai",
+      "anthropic",
+      "gemini",
+      "perplexity",
+      "offline"
+    ]
+  },
+  "output": {
+    "single_output_only": true,
+    "file_name": "exhaustive_final_report.md",
+    "must_include_pugh_matrix": true,
+    "final_section": "Quality Document JSON"
+  },
+  "guardrails": {
+    "every_factual_claim_requires_url": true,
+    "use_not_found_marker_when_unverified": true,
+    "do_not_invent_customers": true,
+    "do_not_invent_suppliers": true,
+    "do_not_invent_government_contracts": true,
+    "do_not_invent_certifications": true
+  }
+}
