@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendorIQ Architecture Diagram</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f7f8fa;
+    --bg3: #eef0f4;
+    --bg4: #e4e7ed;
+    --border: rgba(0,0,0,0.08);
+    --border-bright: rgba(0,0,0,0.16);
+    --text: #1a1c22;
+    --text2: #5a5e6b;
+    --text3: #8a8e9b;
+    --purple: #5b4fcf;
+    --purple-light: #4638b8;
+    --purple-dim: rgba(91,79,207,0.10);
+    --purple-dim2: rgba(91,79,207,0.05);
+    --teal: #0e8f63;
+    --teal-light: #0a7050;
+    --teal-dim: rgba(14,143,99,0.10);
+    --coral: #c94b20;
+    --coral-light: #a83a13;
+    --coral-dim: rgba(201,75,32,0.10);
+    --blue: #1a6dbf;
+    --blue-light: #124f8c;
+    --blue-dim: rgba(26,109,191,0.10);
+    --amber: #b87010;
+    --amber-light: #8c520a;
+    --amber-dim: rgba(184,112,16,0.10);
+    --green: #2e7d18;
+    --green-light: #1e5c0e;
+    --green-dim: rgba(46,125,24,0.10);
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0f2f5;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .diagram-wrapper {
+    background: var(--bg);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05);
+    max-width: 1148px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .page-header .subtitle {
+    color: var(--text2);
+    font-size: 13px;
+  }
+
+  .page-header a {
+    color: var(--purple-light);
+    text-decoration: none;
+  }
+
+  .page-header a:hover { text-decoration: underline; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .diagram {
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Connector line between stages ── */
+  .connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    position: relative;
+  }
+
+  .connector::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--border-bright), var(--border));
+  }
+
+  .connector-arrow {
+    width: 20px;
+    height: 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border-bright);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--text2);
+    position: relative;
+    z-index: 1;
+  }
+
+  .connector-label {
+    position: absolute;
+    left: calc(50% + 16px);
+    font-size: 10px;
+    color: var(--text3);
+    white-space: nowrap;
+  }
+
+  /* ── Stage boxes ── */
+  .stage {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .stage:hover { border-color: var(--border-bright); }
+
+  .stage-label {
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 1px 8px;
+    border-radius: 4px;
+  }
+
+  .stage-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .stage-desc {
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  /* Color themes */
+  .theme-purple { background: var(--purple-dim2); border-color: rgba(91,79,207,0.22); }
+  .theme-purple .stage-label { background: var(--purple-dim); color: var(--purple-light); }
+  .theme-purple .stage-title { color: var(--purple-light); }
+
+  .theme-teal { background: rgba(14,143,99,0.05); border-color: rgba(14,143,99,0.18); }
+  .theme-teal .stage-label { background: var(--teal-dim); color: var(--teal-light); }
+  .theme-teal .stage-title { color: var(--teal-light); }
+
+  .theme-coral { background: rgba(201,75,32,0.05); border-color: rgba(201,75,32,0.18); }
+  .theme-coral .stage-label { background: var(--coral-dim); color: var(--coral-light); }
+  .theme-coral .stage-title { color: var(--coral-light); }
+
+  .theme-blue { background: rgba(26,109,191,0.05); border-color: rgba(26,109,191,0.18); }
+  .theme-blue .stage-label { background: var(--blue-dim); color: var(--blue-light); }
+  .theme-blue .stage-title { color: var(--blue-light); }
+
+  .theme-amber { background: rgba(184,112,16,0.05); border-color: rgba(184,112,16,0.18); }
+  .theme-amber .stage-label { background: var(--amber-dim); color: var(--amber-light); }
+  .theme-amber .stage-title { color: var(--amber-light); }
+
+  .theme-green { background: rgba(46,125,24,0.05); border-color: rgba(46,125,24,0.18); }
+  .theme-green .stage-label { background: var(--green-dim); color: var(--green-light); }
+  .theme-green .stage-title { color: var(--green-light); }
+
+  /* ── User input stage ── */
+  .input-stage {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+  }
+
+  .input-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--purple-dim);
+    border: 1px solid rgba(91,79,207,0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .input-fields {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .input-pill {
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 20px;
+    background: var(--bg4);
+    border: 1px solid var(--border-bright);
+    color: var(--text2);
+    font-family: var(--mono);
+  }
+
+  /* ── Orchestrator ── */
+  .orchestrator {
+    background: var(--purple-dim2);
+    border: 1px solid rgba(91,79,207,0.22);
+    border-radius: 10px;
+    padding: 16px 20px;
+    position: relative;
+  }
+
+  .orch-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .orch-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--purple-dim);
+    color: var(--purple-light);
+    border: 1px solid rgba(91,79,207,0.22);
+  }
+
+  .orch-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--purple-light);
+  }
+
+  .orch-tasks {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .orch-task {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .orch-task::before {
+    content: '→';
+    color: var(--purple);
+    font-size: 10px;
+  }
+
+  /* ── Agent Clusters ── */
+  .clusters-section {
+    background: var(--bg2);
+    border: 1px solid rgba(14,143,99,0.16);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .clusters-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .clusters-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal-light);
+  }
+
+  .parallel-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--teal-dim);
+    color: var(--teal-light);
+    border: 1px solid rgba(14,143,99,0.22);
+  }
+
+  .phase-note {
+    font-size: 11px;
+    color: var(--text3);
+    margin-left: auto;
+  }
+
+  .clusters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .cluster {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cluster::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .cluster-a::before { background: var(--blue); }
+  .cluster-b::before { background: var(--teal); }
+  .cluster-c::before { background: var(--purple); }
+  .cluster-d::before { background: var(--amber); }
+  .cluster-e::before { background: var(--coral); }
+  .cluster-f::before { background: var(--green); }
+
+  .cluster:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-1px);
+  }
+
+  .cluster.active {
+    border-color: var(--border-bright);
+    background: var(--bg4);
+  }
+
+  .cluster-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+  }
+
+  .cluster-id {
+    font-size: 10px;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .cluster-a .cluster-id { background: rgba(26,109,191,0.16); color: var(--blue-light); }
+  .cluster-b .cluster-id { background: var(--teal-dim); color: var(--teal-light); }
+  .cluster-c .cluster-id { background: var(--purple-dim); color: var(--purple-light); }
+  .cluster-d .cluster-id { background: var(--amber-dim); color: var(--amber-light); }
+  .cluster-e .cluster-id { background: var(--coral-dim); color: var(--coral-light); }
+  .cluster-f .cluster-id { background: var(--green-dim); color: var(--green-light); }
+
+  .cluster-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .cluster-phase {
+    margin-left: auto;
+    font-size: 9px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  .cluster-agents {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .agent-tag {
+    font-size: 10px;
+    color: var(--text2);
+    padding: 2px 6px;
+    background: var(--bg);
+    border-radius: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cluster-expand {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .cluster-expand::before { content: '▾'; }
+
+  /* Collaboration arrows between clusters */
+  .collaboration-band {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-size: 11px;
+    color: var(--text2);
+    overflow: hidden;
+  }
+
+  .collab-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .collab-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .collab-dot-a { background: rgba(26,109,191,0.16); color: var(--blue-light); border: 1px solid rgba(26,109,191,0.30); }
+  .collab-dot-b { background: var(--teal-dim); color: var(--teal-light); border: 1px solid rgba(14,143,99,0.30); }
+  .collab-dot-c { background: var(--purple-dim); color: var(--purple-light); border: 1px solid rgba(91,79,207,0.30); }
+  .collab-dot-d { background: var(--amber-dim); color: var(--amber-light); border: 1px solid rgba(184,112,16,0.30); }
+  .collab-dot-e { background: var(--coral-dim); color: var(--coral-light); border: 1px solid rgba(201,75,32,0.30); }
+  .collab-dot-f { background: var(--green-dim); color: var(--green-light); border: 1px solid rgba(46,125,24,0.30); }
+
+  .collab-label {
+    font-size: 9px;
+    text-align: center;
+    color: var(--text3);
+    max-width: 70px;
+    line-height: 1.2;
+  }
+
+  .collab-arrow {
+    font-size: 14px;
+    color: var(--border-bright);
+    padding: 0 2px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+
+  /* ── LLM Layer ── */
+  .llm-layer {
+    background: var(--bg2);
+    border: 1px solid rgba(26,109,191,0.16);
+    border-radius: 10px;
+    padding: 14px 20px;
+  }
+
+  .llm-providers {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .llm-provider {
+    flex: 1;
+    min-width: 140px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .llm-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .llm-models {
+    font-size: 10px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  /* ── Pipeline stages ── */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pipe-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .pipe-stage {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .pipe-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pipe-content { flex: 1; min-width: 0; }
+
+  .pipe-name {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .pipe-detail {
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  /* ── Quality Gate ── */
+  .quality-gate {
+    background: var(--bg2);
+    border: 1px solid rgba(201,75,32,0.22);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+
+  .quality-gate::before {
+    content: 'CRITICAL CHECKPOINT';
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--coral-dim);
+    color: var(--coral-light);
+    border: 1px solid rgba(201,75,32,0.22);
+  }
+
+  .qg-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .qg-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--coral-light);
+  }
+
+  .qg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .qg-check {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .qg-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .qg-icon-pass { background: var(--green-dim); color: var(--green-light); }
+  .qg-icon-warn { background: var(--amber-dim); color: var(--amber-light); }
+  .qg-icon-fail { background: var(--coral-dim); color: var(--coral-light); }
+
+  .qg-check-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .qg-check-detail {
+    font-size: 10px;
+    color: var(--text3);
+    line-height: 1.4;
+  }
+
+  .qg-outcome {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .qg-pass {
+    flex: 1;
+    background: var(--green-dim);
+    border: 1px solid rgba(46,125,24,0.22);
+    border-radius: 7px;
+    padding: 10px 14px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green-light);
+  }
+
+  .qg-fail {
+    flex: 1;
+    background: var(--coral-dim);
+    border: 1px solid rgba(201,75,32,0.22);
+    border-radius: 7px;
+    padding: 10px 14px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--coral-light);
+  }
+
+  .qg-score {
+    margin-top: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 12px;
+  }
+
+  .qg-score-title {
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 8px;
+  }
+
+  .qg-score-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .qg-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .qg-bar-label { font-size: 10px; color: var(--text3); width: 140px; flex-shrink: 0; }
+
+  .qg-bar-track {
+    flex: 1;
+    height: 5px;
+    background: var(--bg4);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .qg-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .qg-bar-pct { font-size: 10px; color: var(--text3); width: 32px; text-align: right; }
+
+  /* ── Final deliverable ── */
+  .final-stage {
+    background: linear-gradient(135deg, rgba(91,79,207,0.05) 0%, rgba(14,143,99,0.05) 100%);
+    border: 1px solid rgba(91,79,207,0.20);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .final-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: var(--purple-dim);
+    color: var(--purple-light);
+    border: 1px solid rgba(91,79,207,0.22);
+    margin-bottom: 10px;
+  }
+
+  .final-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    font-family: var(--mono);
+  }
+
+  .final-features {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+
+  .final-feature {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  /* ── Cluster detail panel ── */
+  .cluster-detail {
+    background: var(--bg4);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 10px;
+    display: none;
+  }
+
+  .cluster-detail.open { display: block; }
+
+  .cluster-detail-title {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .detail-agents {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .detail-agent {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 7px 10px;
+  }
+
+  .detail-agent-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .detail-agent-output {
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  .close-btn {
+    float: right;
+    font-size: 11px;
+    color: var(--text3);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .close-btn:hover { background: var(--bg2); color: var(--text); }
+
+  /* ── Sub-output contract note ── */
+  .contract-note {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--bg);
+    border-left: 2px solid var(--teal);
+    border-radius: 0 5px 5px 0;
+    font-size: 10px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  .contract-note strong { color: var(--teal-light); }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    .clusters-grid { grid-template-columns: repeat(2, 1fr); }
+    .qg-grid { grid-template-columns: 1fr; }
+    .llm-providers { flex-direction: column; }
+  }
+
+  @media (max-width: 480px) {
+    .clusters-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="diagram-wrapper">
+
+<div class="page-header">
+  <h1>VendorIQ — Multi-Agent Architecture</h1>
+  <div class="subtitle">
+    Parallel sub-agent orchestration, quality-gated evidence assembly, and self-contained HTML delivery ·
+    <a href="https://github.com/arvindrkrishnen/VendorIQ" target="_blank">github.com/arvindrkrishnen/VendorIQ</a>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Orchestration layer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>Specialized section agents</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>LLM provider layer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Pipeline transforms</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--coral)"></div>Quality gate / eval</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Final deliverable</div>
+</div>
+
+<div class="diagram">
+
+  <!-- ── 1. User Input ── -->
+  <div class="input-stage">
+    <div class="input-icon">👤</div>
+    <div>
+      <div class="stage-title" style="color:var(--text);font-size:14px;margin-bottom:6px;">User / Analyst</div>
+      <div class="input-fields">
+        <span class="input-pill">vendor_name</span>
+        <span class="input-pill">ticker (optional)</span>
+        <span class="input-pill">website (optional)</span>
+        <span class="input-pill">competitors (optional)</span>
+        <span class="input-pill">sec_cik (optional)</span>
+        <span class="input-pill">depth: standard | exhaustive</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="connector-arrow">↓</div>
+    <span class="connector-label">Vendor request</span>
+  </div>
+
+  <!-- ── 2. Orchestrator ── -->
+  <div class="orchestrator">
+    <div class="orch-header">
+      <span class="orch-badge">Phase 0</span>
+      <span class="orch-name">VendorIQ Master Orchestrator</span>
+    </div>
+    <div class="stage-desc" style="margin-bottom:10px;">Interprets vendor request · builds provider config · decomposes work into section-level tasks · enforces timeouts, retries, and fallback behavior · owns the final answer</div>
+    <div class="orch-tasks">
+      <span class="orch-task">Resolve vendor identity</span>
+      <span class="orch-task">Select sub-agents</span>
+      <span class="orch-task">Assign task objects</span>
+      <span class="orch-task">Run clusters in parallel</span>
+      <span class="orch-task">Detect contradictions</span>
+      <span class="orch-task">Resolve conflicts (evidence hierarchy)</span>
+      <span class="orch-task">Assemble final Markdown</span>
+      <span class="orch-task">Trigger HTML conversion</span>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="connector-arrow">↓</div>
+    <span class="connector-label">Task decomposition → parallel dispatch</span>
+  </div>
+
+  <!-- ── 3. Agent Clusters ── -->
+  <div class="clusters-section">
+    <div class="clusters-header">
+      <div class="clusters-title">Specialized Section Agents — 6 Parallel Clusters</div>
+      <span class="parallel-badge">⚡ Parallel Execution</span>
+      <span class="phase-note">max 6 concurrent · 90s timeout · 2 retries</span>
+    </div>
+
+    <div class="clusters-grid">
+      <!-- Cluster A -->
+      <div class="cluster cluster-a" onclick="toggleCluster('a')">
+        <div class="cluster-header">
+          <div class="cluster-id">A</div>
+          <div class="cluster-name">Identity, Financials & Leadership</div>
+          <span class="cluster-phase">P1</span>
+        </div>
+        <div class="cluster-agents">
+          <div class="agent-tag">Identity & financial metrics</div>
+          <div class="agent-tag">Executive leadership</div>
+          <div class="agent-tag">Market position</div>
+          <div class="agent-tag">SEC filing scan (if public)</div>
+        </div>
+        <div class="cluster-expand">Click to expand agents</div>
+      </div>
+
+      <!-- Cluster B -->
+      <div class="cluster cluster-b" onclick="toggleCluster('b')">
+        <div class="cluster-header">
+          <div class="cluster-id">B</div>
+          <div class="cluster-name">Business Model, Products & AI/ML</div>
+          <span class="cluster-phase">P2</span>
+        </div>
+        <div class="cluster-agents">
+          <div class="agent-tag">Business & revenue model</div>
+          <div class="agent-tag">Product / service catalog</div>
+          <div class="agent-tag">Product-to-capability map</div>
+          <div class="agent-tag">AI / ML / GenAI capabilities</div>
+        </div>
+        <div class="cluster-expand">Click to expand agents</div>
+      </div>
+
+      <!-- Cluster C -->
+      <div class="cluster cluster-c" onclick="toggleCluster('c')">
+        <div class="cluster-header">
+          <div class="cluster-id">C</div>
+          <div class="cluster-name">Architecture & Technical Due Diligence</div>
+          <span class="cluster-phase">P3</span>
+        </div>
+        <div class="cluster-agents">
+          <div class="agent-tag">Architecture (product-by-product)</div>
+          <div class="agent-tag">Information architecture</div>
+          <div class="agent-tag">Application architecture</div>
+          <div class="agent-tag">Security architecture</div>
+          <div class="agent-tag">Standards & interoperability</div>
+          <div class="agent-tag">Resiliency & DR</div>
+        </div>
+        <div class="cluster-expand">Click to expand agents</div>
+      </div>
+
+      <!-- Cluster D -->
+      <div class="cluster cluster-d" onclick="toggleCluster('d')">
+        <div class="cluster-header">
+          <div class="cluster-id">D</div>
+          <div class="cluster-name">Ecosystem, Customers & Public Sector</div>
+          <span class="cluster-phase">P3</span>
+        </div>
+        <div class="cluster-agents">
+          <div class="agent-tag">Key customer segments</div>
+          <div class="agent-tag">Suppliers, cloud & partners</div>
+          <div class="agent-tag">Gov contracts & public sector</div>
+          <div class="agent-tag">Milestones & acquisitions</div>
+          <div class="agent-tag">Case studies & client benefits</div>
+        </div>
+        <div class="cluster-expand">Click to expand agents</div>
+      </div>
+
+      <!-- Cluster E -->
+      <div class="cluster cluster-e" onclick="toggleCluster('e')">
+        <div class="cluster-header">
+          <div class="cluster-id">E</div>
+          <div class="cluster-name">Competitive, Risk & Market Perception</div>
+          <span class="cluster-phase">P4</span>
+        </div>
+        <div class="cluster-agents">
+          <div class="agent-tag">ESG, sustainability & privacy</div>
+          <div class="agent-tag">Analyst & market sentiment</div>
+          <div class="agent-tag">Cybersecurity & litigation</div>
+          <div class="agent-tag">Forward-looking indicators</div>
+          <div class="agent-tag">Product moat & differentiation</div>
+          <div class="agent-tag">Competitive Pugh Matrix</div>
+          <div class="agent-tag">Strengths, gaps & risks</div>
+        </div>
+        <div class="cluster-expand">Click to expand agents</div>
+      </div>
+
+      <!-- Cluster F -->
+      <div class="cluster cluster-f" onclick="toggleCluster('f')">
+        <div class="cluster-header">
+          <div class="cluster-id">F</div>
+          <div class="cluster-name">Finalization & Synthesis</div>
+          <span class="cluster-phase">P5</span>
+        </div>
+        <div class="cluster-agents">
+          <div class="agent-tag">Reference normalization</div>
+          <div class="agent-tag">Quality evaluation</div>
+          <div class="agent-tag">Markdown → HTML conversion</div>
+        </div>
+        <div class="cluster-expand">Click to expand agents</div>
+      </div>
+    </div>
+
+    <!-- Cluster detail panels -->
+    <div class="cluster-detail" id="detail-a">
+      <span class="close-btn" onclick="closeCluster('a')">✕ close</span>
+      <div class="cluster-detail-title" style="color:var(--blue-light)">Cluster A — Identity, Financials & Leadership (Phase 1 · Runs first)</div>
+      <div class="detail-agents">
+        <div class="detail-agent">
+          <div class="detail-agent-name">Identity & Financial Metrics Agent</div>
+          <div class="detail-agent-output">Resolves ticker, SEC CIK, HQ, public/private status, revenue, ARR, EBITDA, P/E, market cap. SEC 10-K / 10-Q as primary evidence.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Executive Leadership Agent</div>
+          <div class="detail-agent-output">CEO, CTO, CFO, board — credentials, tenure, LinkedIn, LinkedIn connections to customers / investors.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Market Position Agent</div>
+          <div class="detail-agent-output">TAM/SAM/SOM, analyst quadrant positioning, market share signals, growth trajectory.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">SEC Filing Scan Agent</div>
+          <div class="detail-agent-output">Risk factors, revenue segments, MD&A, litigation, guidance. Requires public ticker or CIK. Cites filing date + form type.</div>
+        </div>
+      </div>
+      <div class="contract-note"><strong>Output contract:</strong> Section-ready Markdown only · raw evidence URLs inline · "Not found in public sources reviewed" for gaps · no HTML/CSS/JSON artifacts</div>
+    </div>
+
+    <div class="cluster-detail" id="detail-b">
+      <span class="close-btn" onclick="closeCluster('b')">✕ close</span>
+      <div class="cluster-detail-title" style="color:var(--teal-light)">Cluster B — Business Model, Products & AI/ML (Phase 2 · After identity is known)</div>
+      <div class="detail-agents">
+        <div class="detail-agent">
+          <div class="detail-agent-name">Business & Revenue Model Agent</div>
+          <div class="detail-agent-output">SaaS, usage-based, marketplace, perpetual, channel — pricing model, revenue mix, cohort retention where available.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Product / Service Catalog Agent</div>
+          <div class="detail-agent-output">All named products, editions, bundles, SKUs — target buyers, integrations, certifications, end-of-life signals.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Product-to-Capability Map Agent</div>
+          <div class="detail-agent-output">Maps each product to functional capability clusters. Produces structured table for cross-product comparison.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">AI / ML / GenAI Capabilities Agent</div>
+          <div class="detail-agent-output">LLM integrations, proprietary models, fine-tuning, RAG, copilot features, AI roadmap signals per product.</div>
+        </div>
+      </div>
+      <div class="contract-note"><strong>Collaboration:</strong> Cluster B feeds product names to Clusters C, D, and E. Orchestrator waits for catalog completeness before dispatching architecture agents.</div>
+    </div>
+
+    <div class="cluster-detail" id="detail-c">
+      <span class="close-btn" onclick="closeCluster('c')">✕ close</span>
+      <div class="cluster-detail-title" style="color:var(--purple-light)">Cluster C — Architecture & Technical Due Diligence (Phase 3 · Runs parallel to D)</div>
+      <div class="detail-agents">
+        <div class="detail-agent">
+          <div class="detail-agent-name">Product Architecture Agent</div>
+          <div class="detail-agent-output">Per-product: cloud-native / on-prem / hybrid, microservices, monolith, data flow, API surface from official docs.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Information Architecture Agent</div>
+          <div class="detail-agent-output">Data models, storage, retention, data residency, multi-tenancy isolation, classification.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Application Architecture Agent</div>
+          <div class="detail-agent-output">Frontend stack, backend stack, SDK/CLI, APIs (REST/GraphQL/gRPC), event-driven patterns.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Security Architecture Agent</div>
+          <div class="detail-agent-output">Certifications (SOC2, ISO27001, FedRAMP), RBAC, encryption in transit/at rest, pen-test posture.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Standards & Interoperability Agent</div>
+          <div class="detail-agent-output">Open standards adoption, connector ecosystem, iPaaS, webhook support, data portability.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Resiliency & DR Agent</div>
+          <div class="detail-agent-output">SLA commitments, RTO/RPO, multi-region, failover, incident history from status pages.</div>
+        </div>
+      </div>
+      <div class="contract-note"><strong>Collaboration:</strong> References product names from Cluster B. Feeds security posture and compliance findings to Cluster E (risk / competitive).</div>
+    </div>
+
+    <div class="cluster-detail" id="detail-d">
+      <span class="close-btn" onclick="closeCluster('d')">✕ close</span>
+      <div class="cluster-detail-title" style="color:var(--amber-light)">Cluster D — Ecosystem, Customers & Public Sector (Phase 3 · Runs parallel to C)</div>
+      <div class="detail-agents">
+        <div class="detail-agent">
+          <div class="detail-agent-name">Customer Segments Agent</div>
+          <div class="detail-agent-output">Named customer logos vs inferred segments — case studies, G2/Gartner reviews, public PR mentions only.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Suppliers, Cloud & Partners Agent</div>
+          <div class="detail-agent-output">AWS/Azure/GCP dependency, ISV partners, resellers, OEM relationships, ecosystem lock-in risk.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Gov Contracts & Public Sector Agent</div>
+          <div class="detail-agent-output">SAM.gov awards, SBIR, FedRAMP, ATO, marketplace listings — separates direct awards from partner-led resale.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Milestones & Acquisitions Agent</div>
+          <div class="detail-agent-output">Funding rounds, M&A history, major product launches, analyst recognitions, partnership announcements.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Case Studies & Benefits Agent</div>
+          <div class="detail-agent-output">Measurable ROI claims, named clients, before/after metrics from official vendor case study pages.</div>
+        </div>
+      </div>
+      <div class="contract-note"><strong>Collaboration:</strong> Customer signals feed Cluster E's competitive Pugh Matrix weighting. Public sector findings cross-referenced with Cluster C security certifications.</div>
+    </div>
+
+    <div class="cluster-detail" id="detail-e">
+      <span class="close-btn" onclick="closeCluster('e')">✕ close</span>
+      <div class="cluster-detail-title" style="color:var(--coral-light)">Cluster E — Competitive, Risk & Market Perception (Phase 4 · Runs after product + market evidence exists)</div>
+      <div class="detail-agents">
+        <div class="detail-agent">
+          <div class="detail-agent-name">ESG, Sustainability & Privacy Agent</div>
+          <div class="detail-agent-output">Carbon goals, DEI commitments, GDPR/CCPA posture, responsible AI disclosures, trust center review.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Analyst & Market Sentiment Agent</div>
+          <div class="detail-agent-output">Gartner, Forrester, IDC, G2, Capterra, Reddit/HN signals — tone, recency, outlier opinions.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Cybersecurity & Litigation Agent</div>
+          <div class="detail-agent-output">CVE history, breach disclosures, CISA advisories, SEC litigation flag, regulatory enforcement actions.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Forward-Looking Indicators Agent</div>
+          <div class="detail-agent-output">Product roadmap leaks, job postings analysis, patent filings, conference keynote themes.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Product Moat & Differentiation Agent</div>
+          <div class="detail-agent-output">Network effects, switching costs, data flywheel, patents, ecosystem lock-in — per named product.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Competitive Pugh Matrix Agent</div>
+          <div class="detail-agent-output">Weighted scoring matrix: vendor vs named competitors across capability dimensions. Sortable HTML table.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Strengths, Gaps & Risks Agent</div>
+          <div class="detail-agent-output">SWOT synthesis drawing evidence from all upstream clusters. Flags unresolved contradictions.</div>
+        </div>
+      </div>
+      <div class="contract-note"><strong>Collaboration:</strong> Draws from ALL upstream clusters. Conflict detection here surfaces back to orchestrator for resolution before Cluster F.</div>
+    </div>
+
+    <div class="cluster-detail" id="detail-f">
+      <span class="close-btn" onclick="closeCluster('f')">✕ close</span>
+      <div class="cluster-detail-title" style="color:var(--green-light)">Cluster F — Finalization & Synthesis (Phase 5 · Runs last, after all sections collected)</div>
+      <div class="detail-agents">
+        <div class="detail-agent">
+          <div class="detail-agent-name">Reference Normalization Agent</div>
+          <div class="detail-agent-output">Extracts raw URLs from all Markdown sections · deduplicates · assigns [1], [2], [3]... citations · inserts Reference Links section before Quality JSON.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Quality Evaluation Agent</div>
+          <div class="detail-agent-output">Runs all Quality Gate checks · produces Quality Document JSON as the final visible report section · section-level confidence scoring.</div>
+        </div>
+        <div class="detail-agent">
+          <div class="detail-agent-name">Markdown → HTML Conversion Agent</div>
+          <div class="detail-agent-output">Produces self-contained exhaustive_final_report.html: sticky header, clickable TOC, sortable tables, collapsible sections, clickable citations, print CSS — zero CDN dependencies.</div>
+        </div>
+      </div>
+      <div class="contract-note"><strong>Single output rule:</strong> Only one persistent artifact produced — artifacts/exhaustive_final_report.html. All intermediate Markdown is internal representation only.</div>
+    </div>
+
+    <!-- Collaboration flow band -->
+    <div class="collaboration-band">
+      <div class="collab-step">
+        <div class="collab-dot collab-dot-a">A</div>
+        <div class="collab-label">Identity &amp; financials anchors all evidence</div>
+      </div>
+      <div class="collab-arrow">→</div>
+      <div class="collab-step">
+        <div class="collab-dot collab-dot-b">B</div>
+        <div class="collab-label">Product names unlock C &amp; D</div>
+      </div>
+      <div class="collab-arrow">→</div>
+      <div class="collab-step">
+        <div class="collab-dot collab-dot-c">C</div>
+        <div class="collab-label">Arch feeds security posture to E</div>
+      </div>
+      <div class="collab-arrow">+</div>
+      <div class="collab-step">
+        <div class="collab-dot collab-dot-d">D</div>
+        <div class="collab-label">Customer signals weight Pugh Matrix</div>
+      </div>
+      <div class="collab-arrow">→</div>
+      <div class="collab-step">
+        <div class="collab-dot collab-dot-e">E</div>
+        <div class="collab-label">Competitive synthesis + conflict detection</div>
+      </div>
+      <div class="collab-arrow">→</div>
+      <div class="collab-step">
+        <div class="collab-dot collab-dot-f">F</div>
+        <div class="collab-label">Normalize · validate · convert to HTML</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="connector-arrow">↓</div>
+    <span class="connector-label">Section-ready Markdown with raw evidence URLs</span>
+  </div>
+
+  <!-- ── 4. LLM Provider Layer ── -->
+  <div class="llm-layer">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="font-size:13px;font-weight:600;color:var(--blue-light)">LLM Provider Layer</div>
+      <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:var(--blue-dim);color:var(--blue-light);border:1px solid rgba(26,109,191,0.22);">Configurable per run</span>
+    </div>
+    <div class="stage-desc" style="margin-bottom:10px;">Each agent calls the configured provider via API. Providers are swappable — same orchestration logic across all backends.</div>
+    <div class="llm-providers">
+      <div class="llm-provider">
+        <div class="llm-name">OpenAI</div>
+        <div class="llm-models">GPT-4o · GPT-4 Turbo</div>
+      </div>
+      <div class="llm-provider">
+        <div class="llm-name">Anthropic</div>
+        <div class="llm-models">Claude Sonnet 4 · Opus 4</div>
+      </div>
+      <div class="llm-provider">
+        <div class="llm-name">Gemini</div>
+        <div class="llm-models">1.5 Pro · 2.0 Flash</div>
+      </div>
+      <div class="llm-provider">
+        <div class="llm-name">Perplexity</div>
+        <div class="llm-models">sonar-pro (web-grounded)</div>
+      </div>
+      <div class="llm-provider" style="border-style:dashed;">
+        <div class="llm-name" style="color:var(--text2)">Offline Scaffold</div>
+        <div class="llm-models">No API key required</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="connector-arrow">↓</div>
+    <span class="connector-label">LLM responses with inline raw URLs</span>
+  </div>
+
+  <!-- ── 5. Reference Normalizer ── -->
+  <div class="pipe-stage theme-amber" style="border-radius:8px;">
+    <div class="pipe-icon" style="background:var(--amber-dim);">🔗</div>
+    <div class="pipe-content">
+      <div class="pipe-name" style="color:var(--amber-light);">Reference Normalizer</div>
+      <div class="pipe-detail">Extracts all raw URLs generated inline by the model · deduplicates across sections · assigns sequential [1], [2], [3]... citation numbers · replaces claim-level raw URLs with numbered references · places Reference Links section immediately before Quality Document JSON</div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="connector-arrow">↓</div>
+    <span class="connector-label">Numbered citations applied</span>
+  </div>
+
+  <!-- ── 6. Markdown Assembly ── -->
+  <div class="pipe-stage theme-amber" style="border-radius:8px;">
+    <div class="pipe-icon" style="background:var(--amber-dim);">📄</div>
+    <div class="pipe-content">
+      <div class="pipe-name" style="color:var(--amber-light);">Markdown Report Assembly</div>
+      <div class="pipe-detail">Orchestrator consolidates all 29 required sections in order · deduplicates repeated claims · resolves conflicts using evidence hierarchy (SEC → official pages → analyst → news) · inserts "Not found in public sources reviewed" for missing evidence · produces exhaustive_final_report.md (intermediate only)</div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="connector-arrow">↓</div>
+    <span class="connector-label">Complete Markdown report</span>
+  </div>
+
+  <!-- ── 7. Quality Gate ── -->
+  <div class="quality-gate">
+    <div class="qg-header">
+      <div style="font-size:20px;">🔍</div>
+      <div class="qg-title">Quality Gate — Pre-Conversion Evaluation</div>
+    </div>
+    <div class="stage-desc" style="margin-bottom:14px;">All checks must pass before HTML conversion is triggered. Failed checks block conversion; partial Markdown with fallback markers is preferred over hallucinated content.</div>
+
+    <div class="qg-grid">
+      <div class="qg-check">
+        <div class="qg-icon qg-icon-pass">✓</div>
+        <div>
+          <div class="qg-check-label">Section completeness</div>
+          <div class="qg-check-detail">All 29 required sections present. Missing sections must contain explicit fallback block, not blank or omitted.</div>
+        </div>
+      </div>
+      <div class="qg-check">
+        <div class="qg-icon qg-icon-pass">✓</div>
+        <div>
+          <div class="qg-check-label">Citation coverage</div>
+          <div class="qg-check-detail">Every factual claim cited with [n] or marked "Not found in public sources reviewed". Zero uncited assertions.</div>
+        </div>
+      </div>
+      <div class="qg-check">
+        <div class="qg-icon qg-icon-pass">✓</div>
+        <div>
+          <div class="qg-check-label">Reference link integrity</div>
+          <div class="qg-check-detail">Every raw URL resolved to a numbered reference. Reference Links section appears immediately before Quality Document JSON.</div>
+        </div>
+      </div>
+      <div class="qg-check">
+        <div class="qg-icon qg-icon-pass">✓</div>
+        <div>
+          <div class="qg-check-label">Table validity</div>
+          <div class="qg-check-detail">All Markdown tables have correct column alignment, no broken pipes. Pugh Matrix must exist when competitive analysis is attempted.</div>
+        </div>
+      </div>
+      <div class="qg-check">
+        <div class="qg-icon qg-icon-warn">!</div>
+        <div>
+          <div class="qg-check-label">Financial visual presence</div>
+          <div class="qg-check-detail">Public-company financial charts (revenue, EBITDA, ARR trends) must be represented when ticker / SEC CIK is known.</div>
+        </div>
+      </div>
+      <div class="qg-check">
+        <div class="qg-icon qg-icon-fail">✗</div>
+        <div>
+          <div class="qg-check-label">No unsupported claims</div>
+          <div class="qg-check-detail">Zero invented customers, certifications, architecture details, SEC specifics, or executive credentials. Hard block on hallucination.</div>
+        </div>
+      </div>
+      <div class="qg-check">
+        <div class="qg-icon qg-icon-fail">✗</div>
+        <div>
+          <div class="qg-check-label">No rogue sub-agent artifacts</div>
+          <div class="qg-check-detail">No sub-agent output includes HTML, CSS, JavaScript, separate JSON artifacts, or intermediate file instructions. Single-output rule enforced.</div>
+        </div>
+      </div>
+      <div class="qg-check">
+        <div class="qg-icon qg-icon-pass">✓</div>
+        <div>
+          <div class="qg-check-label">Quality Document JSON</div>
+          <div class="qg-check-detail">Final visible section must be Quality JSON: section-level confidence scores (high/medium/low), unresolved gaps, evidence limitations, overall quality score.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qg-score">
+      <div class="qg-score-title">Quality Document JSON — Section-level confidence scoring</div>
+      <div class="qg-score-bars">
+        <div class="qg-bar-row">
+          <div class="qg-bar-label">Evidence authenticity</div>
+          <div class="qg-bar-track"><div class="qg-bar-fill" style="width:90%;background:var(--green)"></div></div>
+          <div class="qg-bar-pct">High</div>
+        </div>
+        <div class="qg-bar-row">
+          <div class="qg-bar-label">Citation completeness</div>
+          <div class="qg-bar-track"><div class="qg-bar-fill" style="width:85%;background:var(--green)"></div></div>
+          <div class="qg-bar-pct">High</div>
+        </div>
+        <div class="qg-bar-row">
+          <div class="qg-bar-label">Unsupported claims</div>
+          <div class="qg-bar-track"><div class="qg-bar-fill" style="width:5%;background:var(--coral)"></div></div>
+          <div class="qg-bar-pct">Low</div>
+        </div>
+        <div class="qg-bar-row">
+          <div class="qg-bar-label">Section coverage</div>
+          <div class="qg-bar-track"><div class="qg-bar-fill" style="width:100%;background:var(--green)"></div></div>
+          <div class="qg-bar-pct">29/29</div>
+        </div>
+        <div class="qg-bar-row">
+          <div class="qg-bar-label">Architecture depth</div>
+          <div class="qg-bar-track"><div class="qg-bar-fill" style="width:72%;background:var(--amber)"></div></div>
+          <div class="qg-bar-pct">Med</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qg-outcome">
+      <div class="qg-pass">✓ All checks pass → trigger HTML conversion</div>
+      <div class="qg-fail">✗ Checks fail → orchestrator retries failed sections (max 2 retries) → fallback markers inserted</div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="connector-arrow">↓</div>
+    <span class="connector-label">Quality-validated Markdown</span>
+  </div>
+
+  <!-- ── 8. HTML Converter ── -->
+  <div class="pipe-stage" style="background:rgba(91,79,207,0.04);border:1px solid rgba(91,79,207,0.16);border-radius:8px;">
+    <div class="pipe-icon" style="background:var(--purple-dim);">⚙️</div>
+    <div class="pipe-content">
+      <div class="pipe-name" style="color:var(--purple-light);">HTML Converter</div>
+      <div class="pipe-detail">Converts validated Markdown into self-contained interactive HTML · embeds all CSS and JS inline · zero CDN / external dependencies · adds: sticky header, clickable TOC, section search/filter, expand/collapse controls, sortable tables, due-diligence cards, product matrices, clickable citations, reference backlinks, print-friendly CSS</div>
+    </div>
+  </div>
+
+  <!-- connector -->
+  <div class="connector">
+    <div class="connector-arrow">↓</div>
+    <span class="connector-label">Single user-facing artifact</span>
+  </div>
+
+  <!-- ── 9. Final Deliverable ── -->
+  <div class="final-stage">
+    <div class="final-badge">Final Deliverable</div>
+    <div class="final-title">artifacts/exhaustive_final_report.html</div>
+    <div style="font-size:12px;color:var(--text2);margin-top:4px;">Self-contained · Interactive · Evidence-backed · Zero external dependencies</div>
+    <div class="final-features">
+      <span class="final-feature">📋 29 required sections</span>
+      <span class="final-feature">🔗 Clickable citations</span>
+      <span class="final-feature">📊 Sortable Pugh Matrix</span>
+      <span class="final-feature">🏗 Architecture due diligence</span>
+      <span class="final-feature">💰 Financial visuals</span>
+      <span class="final-feature">🛡 Risk & SEC scan</span>
+      <span class="final-feature">⚖️ Competitive analysis</span>
+      <span class="final-feature">📄 Quality Document JSON</span>
+      <span class="final-feature">🖨 Print-friendly CSS</span>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);">
+  VendorIQ by <a href="https://www.linkedin.com/in/arvindradhakrishnen/" style="color:var(--text2);text-decoration:none;" target="_blank">Arvind Radhakrishnen</a> ·
+  <a href="https://github.com/arvindrkrishnen/VendorIQ" style="color:var(--text2);text-decoration:none;" target="_blank">github.com/arvindrkrishnen/VendorIQ</a> · MIT License
+</div>
+
+</div><!-- /diagram-wrapper -->
+
+<script>
+  function toggleCluster(id) {
+    const detail = document.getElementById('detail-' + id);
+    const isOpen = detail.classList.contains('open');
+    document.querySelectorAll('.cluster-detail').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.cluster').forEach(c => c.classList.remove('active'));
+    if (!isOpen) {
+      detail.classList.add('open');
+      document.querySelector('.cluster-' + id).classList.add('active');
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function closeCluster(id) {
+    document.getElementById('detail-' + id).classList.remove('open');
+    document.querySelector('.cluster-' + id).classList.remove('active');
+  }
+</script>
+
+</body>
+</html>
