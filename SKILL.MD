@@ -114,7 +114,11 @@ The orchestrator must use the playbook to:
 - validate the final Markdown before HTML conversion;
 - produce only the final persistent HTML artifact required by this skill.
 
-## Required Sub-Agent Orchestration
+## New: Model Compatibility Notes
+- Optimized for ChatGPT/OpenAI.
+- For Groq and Gemini:  In chat mode, use sequential execution if parallel orchestration in playbooks fails to produce comprehensive output. Ensure all sections from SECTION_TASKS in orchestrator are covered for full report comprehensiveness.
+
+## Required Sub-Agent Orchestration - for OpenAI / ChatGPT 
 
 The skill must trigger each major report section through a specialized sub-agent. The orchestrator owns the final output and must coordinate the sub-agents, normalize references, assemble the report, validate quality, and trigger HTML conversion.
 
