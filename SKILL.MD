@@ -8,7 +8,29 @@ VendorIQ generates one exhaustive, evidence-backed vendor-analysis report for a 
 
 The skill supports detailed due diligence across company identity, public/private status, financial metrics, valuation narrative, executive leadership, business model, revenue model, product and service catalog, product-by-product technology architecture, AI/ML/GenAI capabilities, customer and supplier ecosystem, government and public-sector signals, ESG/privacy posture, analyst sentiment, cybersecurity/litigation signals, SEC filing scan, future actions, competitive landscape, product moat, differentiation, and Pugh Matrix.
 
+## One-Shot Trigger Prompt (Recommended for Groq, ChatGPT, Gemini, Claude)
+Use this GitHub repository as the VendorIQ skill package: https://github.com/arvindrkrishnen/VendorIQ
+Read README.md and SKILL.MD first, then guardrails/, agents/, playbooks/, and templates/.
+Execute the Universal Vendor Analysis Skill for vendor: [INSERT VENDOR NAME HERE]
+Optional ticker: [INSERT TICKER IF KNOWN]
+Optional website: [INSERT WEBSITE IF KNOWN]
+Follow the package rules exactly:
 
+Use the agents and playbooks as the execution plan.
+Use web browsing/search if available.
+Generate the full report content as Markdown first.
+Every factual claim in the Markdown report must include a numbered citation such as [1], [2], or [3].
+Every numbered citation must resolve to a source URL in the Reference Links section.
+Do not invent customers, suppliers, government contracts, certifications, SEC details, product names, APIs, architecture details, financial metrics, leadership credentials, or analyst commentary.
+After the Markdown report is complete, convert the Markdown into one self-contained interactive HTML artifact named exhaustive_final_report.html.
+Embed the Pugh Matrix and all due-diligence matrices as sortable HTML tables.
+Put Reference Links immediately before Quality Document JSON.
+Make Quality Document JSON the final visible section in the HTML report.
+
+Produce ONLY the final self-contained exhaustive_final_report.html file as output.
+
+## Groq / Gemini Optimization Note
+If full parallel multi-agent orchestration is not supported by the model, fall back to sequential execution of sections while still strictly following the Package Rules and producing the final self-contained HTML report.
 
 ## Required Output Flow
 
