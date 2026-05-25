@@ -1,4 +1,4 @@
-# Sec Filings Agent
+# Business Model Agent
 
 ## Output Format
 
