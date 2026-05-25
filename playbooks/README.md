@@ -1,3 +1,3 @@
-# Playbooks Folder
+# Playbooks
 
-This folder contains independently maintainable execution playbooks for online and local modes.
+VendorIQ playbooks define how agents produce Markdown sections. All playbooks produce Markdown only. HTML is produced only after Markdown validation passes.

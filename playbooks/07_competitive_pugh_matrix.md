@@ -1,89 +1,17 @@
 # Playbook 07: Competitive Product Moat and Pugh Matrix
 
-Use `competitive_pugh_matrix_agent`.
+Agent: competitive_pugh_matrix_agent. Identify competitors by product category, separate direct competitors from substitutes, compare products across architecture maturity, deployment, scalability, resiliency, security, API maturity, ecosystem, data architecture, AI/ML, workflow depth, implementation complexity, switching cost, customer proof, public-sector readiness, roadmap, and moat durability.
 
-## Objective
+Required tables: Competitors by Product Category, Product-Level Pugh Matrix, Competitive Moat Matrix. Use 1-5 scoring or N/A when evidence is insufficient.
 
-Create a product-level competitive due-diligence view. The analysis must compare the vendor’s major products against relevant competitors and substitutes. It must evaluate technology, architecture, integration, data, AI, security, compliance, workflow, implementation, customer proof, and moat durability.
+## Output Format
 
-## Required Steps
+Return Markdown only. Do not produce HTML, CSS, JavaScript, final files, or standalone JSON.
 
-1. Identify competitors by product category.
-2. Separate direct competitors from adjacent substitutes.
-3. For each major vendor product, identify:
-   - relevant competitors;
-   - where the vendor wins;
-   - where the vendor is neutral;
-   - where the vendor loses;
-   - architecture differentiators;
-   - integration differentiators;
-   - data / AI moat comparison;
-   - security / compliance comparison;
-   - workflow depth comparison;
-   - customer proof comparison;
-   - switching-cost comparison;
-   - pricing / packaging comparison where public;
-   - key due-diligence questions.
-4. Build a product-level Pugh Matrix.
-5. Build a competitive moat matrix.
-6. Add battlecard bullets for each major product.
-7. Cite source URLs for every competitor, product, capability, score rationale, and differentiator.
+## Minimum Depth
 
-## Product-Level Pugh Matrix Criteria
-
-Use these criteria where evidence exists:
-
-- Product-market fit.
-- Architecture maturity.
-- Deployment flexibility.
-- Cloud / hybrid / on-prem / edge support.
-- Scalability.
-- Resiliency / DR.
-- Security and compliance.
-- API maturity.
-- Integration ecosystem.
-- Data architecture.
-- AI / ML / automation capability.
-- Workflow depth.
-- Implementation complexity.
-- Switching cost.
-- Customer proof.
-- Public-sector readiness.
-- Roadmap / R&D signal.
-- Technical moat durability.
-- Commercial moat durability.
-
-## Scoring
-
-Use a 1–5 score:
-
-- 5 = clear, evidence-backed advantage.
-- 4 = likely advantage with good evidence.
-- 3 = parity or insufficient difference.
-- 2 = weakness vs. competitor.
-- 1 = material gap.
-- N/A = insufficient evidence.
-
-## Required Tables
-
-### Competitors by Product Category
-
-| Product Category | Vendor Product | Direct Competitors | Adjacent Substitutes | Evidence |
-|---|---|---|---|---|
-
-### Product-Level Pugh Matrix
-
-| Product | Criterion | Vendor Score | Competitor Benchmark | Why It Matters | Evidence |
-|---|---|---:|---|---|---|
-
-### Competitive Moat Matrix
-
-| Vendor Product | Primary Competitor | Vendor Moat | Competitor Advantage | Moat Durability | Risk of Erosion | Evidence |
-|---|---|---|---|---|---|---|
+In exhaustive mode, this playbook must contribute at least 500 words of narrative analysis excluding tables unless public evidence is unavailable. If evidence is unavailable, explain what was searched, what was not found, and what due-diligence questions remain.
 
 ## Guardrails
 
-- Do not invent competitors or product capabilities.
-- Do not score without evidence; use `N/A`.
-- Distinguish direct competitor from substitute.
-- Include raw URLs while drafting; the orchestrator will convert them to numbered references.
+Do not invent facts. Include raw URLs while drafting; the orchestrator will convert them to numbered references. Use `Not found in public sources reviewed` when evidence is unavailable.

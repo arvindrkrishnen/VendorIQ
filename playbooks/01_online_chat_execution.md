@@ -1,21 +1,15 @@
 # Playbook 01: Online Chat Execution
 
-## Goal
-Execute the skill when the user uploads the zip to ChatGPT, Gemini AI Studio, or Claude Online, or when the user points the model to a GitHub repository.
+Execute VendorIQ in online chat. Read the full repo instruction package, run each playbook, require each sub-agent to return section-ready Markdown only, assemble exhaustive_final_report.md, validate it, append Quality Document JSON, and only then convert to exhaustive_final_report.html.
 
-## Steps
-1. Read `README.md`, `skills.md`, `agents/agent_registry.md`, `guardrails/README.md`, and this playbook.
-2. Resolve the vendor name, ticker, and website from the user prompt.
-3. Use web search/browsing if available.
-4. Run each section through the appropriate sub-agent definition in `agents/`.
-5. Use official and primary evidence where possible.
-6. Assemble a single Markdown report named `exhaustive_final_report.md`.
-7. Embed the Pugh Matrix as a Markdown table.
-8. Make `Quality Document JSON` the final section.
-9. Do not create or ask the user to download separate JSON artifacts.
+## Output Format
 
-## Passing Criteria
-- Final response/file is Markdown.
-- All required sections are present.
-- Each factual claim includes a URL or not-found marker.
-- The output is one final report.
+Return Markdown only. Do not produce HTML, CSS, JavaScript, final files, or standalone JSON.
+
+## Minimum Depth
+
+In exhaustive mode, this playbook must contribute at least 500 words of narrative analysis excluding tables unless public evidence is unavailable. If evidence is unavailable, explain what was searched, what was not found, and what due-diligence questions remain.
+
+## Guardrails
+
+Do not invent facts. Include raw URLs while drafting; the orchestrator will convert them to numbered references. Use `Not found in public sources reviewed` when evidence is unavailable.
