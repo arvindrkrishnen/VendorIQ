@@ -72,38 +72,51 @@ Optional:
 
 ## Required Sub-Agent Orchestration
 
-The skill must trigger each major report section through a sub-agent.
+The skill must trigger each major section through a sub-agent. 
 
-Required agents include:
-- identity and SEC resolution;
-- market position;
-- business model;
-- financial metrics and valuation narrative;
-- leadership credentials;
-- products and services;
-- product-by-product architecture;
-- product moat and defensibility;
-- customer and supplier intelligence;
-- government contracts and public-sector signals;
-- SEC filing scan;
-- future actions;
-- architecture and technology;
-- security and compliance;
-- AI / ML / GenAI by product;
-- competitive landscape;
-- product-level Pugh Matrix;
-- reference normalization;
-- Markdown report assembly;
-- Markdown-to-HTML conversion;
-- quality evaluation.
+Required agents include identity + financial metrics, executive leadership, market position, business model, product/service catalog, architecture, information architecture, application architecture, security architecture, interoperability, resiliency/DR, AI/ML/GenAI, product moat, customers, suppliers, government contracts, milestones, case studies, ESG/privacy, analyst sentiment, cybersecurity/litigation, SEC filing scan, future actions, competitive landscape, Pugh Matrix, reference normalization, Markdown assembly, Markdown-to-HTML conversion, and quality evaluation.
+
+
+## Combined Identity and Financial Metrics Requirement
+
+Combine the former vendor identity section with the former financial metrics and valuation narrative. The combined section must be titled:
+
+```text
+Vendor Identity, Public Status, Financial Metrics and Valuation Narrative
+```
+
+For public companies with ticker data, include:
+
+- vendor legal identity, ticker, exchange, website, headquarters, public/private status, SEC CIK, and latest filing basis;
+- last four quarterly revenue, profitability / net income, and EPS where public;
+- last three fiscal years revenue, profitability / net income, and EPS where public;
+- monthly stock-price close for the last three years;
+- visualizations for quarterly revenue/profitability, annual revenue/profitability/EPS, and monthly stock price changes;
+- references from Yahoo Finance, Investing.com, Bloomberg, FactSet, Morningstar, Fidelity, SEC site, issuer filings, and investor relations where available.
+
+If any metric is unavailable, state `Not found in public sources reviewed`.
+
+## Executive Leadership Requirement
+
+Include a dedicated section titled:
+
+```text
+Executive Leadership and Credentials
+```
+
+For each leader, include verified name, current role, prior roles, public credentials, strategic relevance, and source URLs. Do not infer experience from titles alone.
 
 ## Report Quality Requirements
 
-Each section must be elaborated, not summarized. The Markdown assembly and final HTML report must include:
+Each section must be elaborated, not summarized. In exhaustive mode, each section should contain 500+ words of narrative analysis unless reliable public evidence is unavailable. Every factual claim must include a raw source URL while drafting. The orchestrator will normalize URLs into numbered references.
+
+The Markdown assembly and final HTML report must include:
+
 - annual-report-led company overview for public companies;
 - business model and revenue model from annual report, investor report, or official company sources;
-- leadership credentials and strategic relevance;
-- financial metrics and valuation narrative for public companies;
+- executive leadership credentials;
+- financial metrics and valuation narrative using Yahoo Finance, Investing.com, Bloomberg, FactSet, Morningstar, Fidelity, issuer filings, and investor relations where available;
+- the required financial and stock-price visualizations;
 - exhaustive product catalog;
 - product-by-product technical due diligence;
 - product-by-product architecture due diligence;
@@ -111,170 +124,39 @@ Each section must be elaborated, not summarized. The Markdown assembly and final
 - product-to-capability map;
 - key customers and customer segments mapped to products where possible;
 - key suppliers, cloud providers, ecosystem dependencies, and partners mapped to products where possible;
-- recent government contracts, agency awards, FedRAMP/public-sector marketplace status, or explicit `Not found in public sources reviewed`;
-- SEC filing scan in bulleted format for public companies;
+- recent government contracts, public-sector awards, FedRAMP/public-sector marketplace status, or explicit `Not found in public sources reviewed`;
+- SEC filing scan for public companies;
 - future actions and forward-looking indicators;
 - product-level competitive analysis;
 - Pugh Matrix;
 - Reference Links section with numbered links;
 - Quality Document JSON as the final visible section.
 
-## Markdown Assembly Requirements
-
-The Markdown report must:
-- contain all required sections;
-- use numbered references such as `[1]`, `[2]`, and `[3]`;
-- include a `Reference Links` section;
-- place `Reference Links` immediately before `Quality Document JSON`;
-- place `Quality Document JSON` as the final Markdown section;
-- render Pugh Matrix and due-diligence matrices as Markdown tables;
-- include `Not found in public sources reviewed` where evidence is unavailable.
-
-## Interactive HTML Conversion Requirements
-
-The converted HTML report must:
-- start with `<!doctype html>`;
-- include `<html lang="en">`;
-- include viewport metadata;
-- include internal CSS in a `<style>` block;
-- include internal JavaScript in a `<script>` block;
-- include semantic `<header>`, `<nav>`, `<main>`, `<section>`, and `<footer>` elements;
-- include a sticky header;
-- include a clickable table of contents;
-- include a section search/filter box;
-- include collapsible major sections;
-- include expand-all and collapse-all buttons;
-- convert Markdown tables into sortable HTML tables;
-- include due-diligence cards where useful;
-- include linked citations and reference backlinks;
-- include print CSS;
-- use sufficient contrast and accessible button labels.
-
-The HTML report must not require:
-- external CSS;
-- external JavaScript;
-- CDN links;
-- remote fonts;
-- external images or assets.
-
-## Product and Architecture Due-Diligence Requirements
-
-For every major product where public evidence exists, include:
-- product purpose and target buyer;
-- business process / value-chain fit;
-- deployment model;
-- tenant model;
-- core architecture components;
-- data architecture;
-- integration architecture;
-- API / SDK / developer ecosystem;
-- standards and interoperability;
-- AI / ML / automation architecture;
-- security, privacy, and compliance architecture;
-- observability and operations;
-- scalability, resiliency, backup, DR, failover, RPO/RTO, and SLA signals;
-- implementation complexity and migration risks;
-- ecosystem dependencies;
-- product maturity;
-- product limitations and open questions;
-- technical moat;
-- data moat;
-- workflow moat;
-- integration moat;
-- ecosystem moat;
-- compliance moat;
-- switching-cost moat;
-- distribution moat;
-- IP/patent signals where public;
-- customer proof and measurable outcomes.
-
-If information is not public, state:
-
-```text
-Not found in public sources reviewed.
-```
-
-## Competitive Due-Diligence Requirements
-
-Competitive analysis must be product-specific.
-
-For each major vendor product, compare against relevant competitors and substitutes across:
-- product-market fit;
-- architecture maturity;
-- deployment flexibility;
-- scalability;
-- resiliency / DR;
-- security and compliance;
-- API maturity;
-- integration ecosystem;
-- data architecture;
-- AI / ML / automation capability;
-- workflow depth;
-- implementation complexity;
-- switching cost;
-- customer proof;
-- public-sector readiness;
-- roadmap / R&D signal;
-- technical moat durability;
-- commercial moat durability.
-
 ## Evidence Requirements
 
-Every factual claim must include a numbered reference such as `[1]`, `[2]`, or `[3]`.
-
-The Markdown report must include:
-
-```markdown
-## Reference Links
-```
-
-The converted HTML report must include the same references as clickable links.
-
 Preferred evidence order:
-1. SEC filings, official annual reports, quarterly reports, and investor relations pages.
-2. Official company website, product pages, product documentation, developer/API documentation, architecture documentation, trust/security/privacy pages, leadership pages, and customer stories.
-3. Proxy statements and official executive biographies for leadership credentials.
+
+1. SEC filings, official annual reports, quarterly reports, investor relations pages, investor presentations, and proxy statements.
+2. Official company website, product pages, product documentation, API/developer documentation, architecture documentation, trust/security/privacy pages, leadership pages, and customer stories.
+3. Yahoo Finance, Investing.com, Bloomberg, FactSet, Morningstar, Fidelity, and reputable financial/analyst sources.
 4. Government procurement portals, FedRAMP marketplace, agency award notices, and marketplace listings.
-5. Bloomberg, FactSet, Yahoo Finance, Investing.com, and reputable financial/analyst sources.
-6. Reputable market-research, standards, technology-review, and news sources.
+5. Reputable news, standards, technology-review, and market-research sources.
 
 Do not invent data. Use `Not found in public sources reviewed` when evidence is unavailable.
 
-## Public Company Financial Metrics
+## Product and Architecture Due-Diligence Requirements
 
-For public companies, attempt to include:
-- EPS;
-- P/E;
-- PEG;
-- free cash flow;
-- cash and cash equivalents;
-- total debt;
-- debt as % of cash;
-- revenue growth;
-- margin signals;
-- liquidity narrative;
-- valuation narrative.
+For every major product where public evidence exists, include product purpose, target buyer, workflow fit, deployment model, tenant model, core components, data architecture, integration architecture, API / SDK ecosystem, standards, AI / ML / automation architecture, security, privacy, compliance, observability, resiliency, backup, DR, failover, RPO/RTO, SLA signals, implementation complexity, ecosystem dependencies, product maturity, limitations, technical moat, data moat, workflow moat, integration moat, ecosystem moat, compliance moat, switching-cost moat, distribution moat, IP/patent signals where public, customer proof, and measurable outcomes.
 
-Use this formula where source data is available:
+## Competitive Due-Diligence Requirements
 
-```text
-Debt as % of Cash = Total Debt / Cash and Cash Equivalents * 100
-```
+Competitive analysis must be product-specific. For each major vendor product, compare relevant competitors across product-market fit, architecture maturity, deployment flexibility, scalability, resiliency/DR, security and compliance, API maturity, integration ecosystem, data architecture, AI / ML / automation capability, workflow depth, implementation complexity, switching cost, customer proof, public-sector readiness, roadmap/R&D signal, technical moat durability, and commercial moat durability.
 
-## Leadership Credentials
+## Interactive HTML Conversion Requirements
 
-Use annual report, proxy statement, company leadership pages, investor reports, official biographies, and LinkedIn or public profiles where available.
-
-For each leader, include:
-- current role;
-- prior roles;
-- education or certifications where verified;
-- board memberships where verified;
-- strategic relevance to the company.
+The converted HTML report must be self-contained and include internal CSS, internal JavaScript, sticky header, clickable table of contents, section search/filter, collapsible sections, expand/collapse controls, sortable HTML tables, clickable citations, chart visualizations, reference backlinks, and print-friendly CSS. It must not depend on external CSS, JavaScript, CDN links, remote fonts, external images, or external assets.
 
 ## Local Provider Support
-
-The Python orchestrator supports:
 
 | Provider | Provider ID | API key |
 |---|---|---|
@@ -286,18 +168,4 @@ The Python orchestrator supports:
 
 ## Completion Definition
 
-A run is complete only when:
-- the Markdown report content has been generated or assembled;
-- the Markdown report has been converted to HTML;
-- the final HTML report exists;
-- the final artifact is named `exhaustive_final_report.html`;
-- every required section is present;
-- factual claims include numbered references, raw URLs converted to numbered references, or explicit not-found markers;
-- all numbered references resolve in `Reference Links`;
-- `Reference Links` appears immediately before `Quality Document JSON`;
-- public-company financial metrics and leadership credentials are attempted;
-- product-by-product technology and architecture due diligence is attempted;
-- product moat and competitive moat are attempted;
-- product-level Pugh Matrix is converted into an HTML table;
-- Quality Document JSON is the final visible section;
-- no extra persistent user-facing output files are required.
+A run is complete only when Markdown is generated, references are normalized, validation is executed, final HTML exists as `exhaustive_final_report.html`, every required section is present, financial and stock visualizations are included for public tickers where available, every factual claim is cited or marked not found, product moat and differentiation are detailed, Pugh Matrix is converted into an HTML table, and Quality Document JSON is the final visible section.
