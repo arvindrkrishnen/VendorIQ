@@ -8,6 +8,8 @@ VendorIQ generates one exhaustive, evidence-backed vendor-analysis report for a 
 
 The skill supports detailed due diligence across company identity, public/private status, financial metrics, valuation narrative, executive leadership, business model, revenue model, product and service catalog, product-by-product technology architecture, AI/ML/GenAI capabilities, customer and supplier ecosystem, government and public-sector signals, ESG/privacy posture, analyst sentiment, cybersecurity/litigation signals, SEC filing scan, future actions, competitive landscape, product moat, differentiation, and Pugh Matrix.
 
+
+
 ## Required Output Flow
 
 VendorIQ follows a two-stage output flow:
@@ -100,6 +102,18 @@ python src/universal_vendor_orchestrator.py \
   Follow SKILL.MD strictly but execute sections sequentially using the SECTION_TASKS list from src/universal_vendor_orchestrator.py.
   Generate one section at a time, collect all, then assemble Markdown, normalize references, and convert to self-contained HTML.
   Ensure every section is 500+ words where evidence exists, with proper citations.
+
+Use the agents and playbooks as the execution plan.
+Use web browsing/search if available.
+Generate the full report content as Markdown first.
+Every factual claim in the Markdown report must include a numbered citation such as [1], [2], or [3].
+Every numbered citation must resolve to a source URL in the Reference Links section.
+Do not invent customers, suppliers, government contracts, certifications, SEC details, product names, APIs, architecture details, financial metrics, leadership credentials, or analyst commentary.
+After the Markdown report is complete, convert the Markdown into one self-contained interactive HTML artifact named exhaustive_final_report.html.
+Embed the Pugh Matrix and all due-diligence matrices as sortable HTML tables.
+Put Reference Links immediately before Quality Document JSON.
+Make Quality Document JSON the final visible section in the HTML report.
+
   ```
 
 For ChatGPT/OpenAI, VendorIQ must invoke the dedicated playbook below whenever the required sub-agent workflow is executed:
@@ -181,6 +195,19 @@ Each agent must return:
 - required Markdown tables where useful;
 - not-found markers where evidence is unavailable;
 - quality notes where evidence is weak or incomplete.
+
+## Requirements - Follow the package rules:
+
+Use the agents and playbooks as the execution plan.
+Use web browsing/search if available.
+Generate the full report content as Markdown first.
+Every factual claim in the Markdown report must include a numbered citation such as [1], [2], or [3].
+Every numbered citation must resolve to a source URL in the Reference Links section.
+Do not invent customers, suppliers, government contracts, certifications, SEC details, product names, APIs, architecture details, financial metrics, leadership credentials, or analyst commentary.
+After the Markdown report is complete, convert the Markdown into one self-contained interactive HTML artifact named exhaustive_final_report.html.
+Embed the Pugh Matrix and all due-diligence matrices as sortable HTML tables.
+Put Reference Links immediately before Quality Document JSON.
+Make Quality Document JSON the final visible section in the HTML report.
 
 ## Minimum Depth Requirements
 
