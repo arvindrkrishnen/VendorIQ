@@ -93,7 +93,16 @@ python src/universal_vendor_orchestrator.py \
 
 ## Parallel Sub-Agent Orchestration Playbook
 
-VendorIQ must invoke the dedicated playbook below whenever the required sub-agent workflow is executed:
+**For Chat Interfaces (Groq Chat or Gemini AI Studio):**
+- If full multi-agent orchestration fails or report is incomplete, use this simplified sequential prompt:
+  ```
+  Use the VendorIQ skill from https://github.com/arvindrkrishnen/VendorIQ.
+  Follow SKILL.MD strictly but execute sections sequentially using the SECTION_TASKS list from src/universal_vendor_orchestrator.py.
+  Generate one section at a time, collect all, then assemble Markdown, normalize references, and convert to self-contained HTML.
+  Ensure every section is 500+ words where evidence exists, with proper citations.
+  ```
+
+For ChatGPT/OpenAI, VendorIQ must invoke the dedicated playbook below whenever the required sub-agent workflow is executed:
 
 ```text
 playbooks/sub-agent-co-ordination-playbook.md
