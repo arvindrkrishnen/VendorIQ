@@ -124,6 +124,15 @@ If evidence is unavailable, write:
 Not found in public sources reviewed
 ```
 
+## Agent Output Rule
+
+All agents and sub-agents must return Markdown only. Agents must not produce HTML, CSS, JavaScript, separate JSON artifacts, or files. Each agent returns section-ready Markdown, raw evidence URLs while drafting, required Markdown tables, not-found markers, and quality notes where evidence is weak.
+
+## Minimum Depth Requirements
+
+For exhaustive mode, each playbook must contribute at least 500 words of narrative analysis excluding tables unless public evidence is unavailable. Product and architecture playbooks should be substantially longer.
+
+
 ## Final Section Order
 
 The final visible content sections must end in this order:
