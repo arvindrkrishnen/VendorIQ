@@ -7,7 +7,9 @@
 
 VendorIQ is a reusable AI skill that generates evidence-backed vendor strategy and technology due-diligence intelligence for any target company. It researches and organizes a vendor’s identity, business model, product portfolio, product-level technology architecture, AI/GenAI capabilities, customer segments, partner ecosystem, public-sector signals, security and ESG posture, risks, competitors, strengths, gaps, financial metrics, leadership credentials, product moat, and a weighted Pugh Matrix.
 
-## Final Output Flow
+Architecture is given here: https://github.com/arvindrkrishnen/VendorIQ/blob/main/vendor_IQ_Architecture.png
+
+## Output Flow
 
 VendorIQ follows a two-step output flow:
 
