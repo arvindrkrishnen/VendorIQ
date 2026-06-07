@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>VendorIQ Exhaustive Final Report — ASML Holding N.V.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#f7f8fb;--card:#ffffff;--ink:#1f2937;--muted:#64748b;--line:#dbe3ef;
+  --accent:#0f766e;--accent2:#1d4ed8;--warn:#b45309;--bad:#b91c1c;--good:#047857;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#0f766e,#1d4ed8);color:#fff;padding:18px 24px;box-shadow:0 8px 22px rgba(15,23,42,.18)}
+header h1{margin:0;font-size:24px}
+header p{margin:4px 0 0;color:#e0f2fe}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.toolbar input{flex:1;min-width:260px;border:0;border-radius:10px;padding:11px 13px}
+button{border:0;border-radius:10px;padding:10px 12px;cursor:pointer;background:#e0f2fe;color:#0f172a;font-weight:650}
+.container{display:grid;grid-template-columns:300px 1fr;gap:18px;padding:18px;max-width:1500px;margin:auto}
+nav{position:sticky;top:104px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;max-height:calc(100vh - 130px);overflow:auto}
+nav a{display:block;color:#0f172a;text-decoration:none;padding:7px 8px;border-radius:8px;font-size:14px}
+nav a:hover{background:#e0f2fe}
+main{min-width:0}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:14px;box-shadow:0 8px 20px rgba(15,23,42,.04);overflow:hidden}
+summary{cursor:pointer;padding:16px 18px;font-size:18px;font-weight:750;background:#f8fafc;border-bottom:1px solid var(--line)}
+.content{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfdff}
+.card .k{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.card .v{font-size:20px;font-weight:800;margin-top:4px}
+.badge{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:750;margin:2px;background:#ecfeff;color:#155e75}
+.badge.warn{background:#fffbeb;color:var(--warn)}
+.badge.good{background:#ecfdf5;color:var(--good)}
+.badge.bad{background:#fef2f2;color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:9px;vertical-align:top}
+th{background:#eef6ff;cursor:pointer;text-align:left}
+tr:nth-child(even) td{background:#fbfdff}
+.refs li{margin-bottom:8px;word-break:break-word}
+.small{font-size:13px;color:var(--muted)}
+.score{font-weight:800}
+@media(max-width:950px){.container{grid-template-columns:1fr}nav{position:relative;top:0}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}header h1{font-size:20px}}
+@media print{header,nav,.toolbar{display:none}.container{display:block;padding:0}section{break-inside:avoid;box-shadow:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>VendorIQ Exhaustive Final Report — ASML Holding N.V.</h1>
+  <p>AI-generated vendor intelligence report | Evidence-led assessment | Prepared June 6, 2026</p>
+  <div class="toolbar">
+    <input id="search" placeholder="Search sections, tables, risks, products, suppliers, customers...">
+    <button onclick="toggleAll(true)">Expand all</button>
+    <button onclick="toggleAll(false)">Collapse all</button>
+    <button onclick="window.print()">Print / Save PDF</button>
+  </div>
+</header>
+
+<div class="container">
+<nav>
+  <strong>Table of contents</strong>
+  <a href="#s1">1. Title & Methodology</a>
+  <a href="#s2">2. Vendor Identity</a>
+  <a href="#s3">3. Executive Thesis</a>
+  <a href="#s4">4. Company Overview</a>
+  <a href="#s5">5. Business Model</a>
+  <a href="#s6">6. Product Catalog</a>
+  <a href="#s7">7. Capability Map</a>
+  <a href="#s8">8. Technology Due Diligence</a>
+  <a href="#s9">9. Information Architecture</a>
+  <a href="#s10">10. Application Architecture</a>
+  <a href="#s11">11. Security Architecture</a>
+  <a href="#s12">12. Standards & Interoperability</a>
+  <a href="#s13">13. Resiliency</a>
+  <a href="#s14">14. AI / ML / Automation</a>
+  <a href="#s15">15. Product Moat</a>
+  <a href="#s16">16. Customers</a>
+  <a href="#s17">17. Suppliers & Ecosystem</a>
+  <a href="#s18">18. Public Sector</a>
+  <a href="#s19">19. Milestones</a>
+  <a href="#s20">20. Case Studies</a>
+  <a href="#s21">21. ESG & Responsible Business</a>
+  <a href="#s22">22. Market Sentiment</a>
+  <a href="#s23">23. Cyber / Legal / Regulatory</a>
+  <a href="#s24">24. SEC Filing Scan</a>
+  <a href="#s25">25. Future Indicators</a>
+  <a href="#s26">26. Competitive Pugh Matrix</a>
+  <a href="#s27">27. Strengths, Gaps, Risks</a>
+  <a href="#s28">28. References</a>
+  <a href="#s29">29. Quality Document JSON</a>
+</nav>
+
+<main id="report">
+
+<section id="s1" open><summary>1. Title Page and Evidence Methodology</summary><div class="content">
+<h2>ASML Holding N.V. — VendorIQ Decision Intelligence Report</h2>
+<p><strong>Scope:</strong> public-company vendor analysis for ASML Holding N.V., focused on lithography systems, metrology and inspection, computational lithography, customer support, ecosystem dependencies, risks, and competitive position.</p>
+<p><strong>Method:</strong> This report follows the VendorIQ repository’s two-step execution model: generate an evidence-backed Markdown-style report first, then convert it into one self-contained interactive HTML artifact. The VendorIQ README states the skill researches identity, product portfolio, technology architecture, AI/GenAI capabilities, customer segments, ecosystem, public-sector signals, risks, competitors, and a Pugh Matrix, with the final user-facing artifact as <code>exhaustive_final_report.html</code> [1]. The skills file requires one persistent deliverable, use of browsing/search where available, numbered citations, explicit “Not found in public sources reviewed” markers, and Quality Document JSON as the final section [2].</p>
+<p><strong>Evidence hierarchy:</strong> ASML 2025 Annual Report / SEC Form 20-F and ASML investor/product pages are treated as primary evidence; official competitor product pages and reputable news are used as supporting evidence.</p>
+</div></section>
+
+<section id="s2" open><summary>2. Vendor Identity, Ticker, Website, Headquarters, Public/Private Status</summary><div class="content">
+<div class="grid">
+  <div class="card"><div class="k">Legal name</div><div class="v">ASML Holding N.V.</div></div>
+  <div class="card"><div class="k">Public status</div><div class="v">Public</div></div>
+  <div class="card"><div class="k">Ticker</div><div class="v">ASML</div></div>
+  <div class="card"><div class="k">SEC CIK</div><div class="v">0000937966</div></div>
+  <div class="card"><div class="k">Primary listing</div><div class="v">Euronext Amsterdam</div></div>
+  <div class="card"><div class="k">U.S. listing</div><div class="v">NASDAQ shares</div></div>
+  <div class="card"><div class="k">Headquarters</div><div class="v">Veldhoven, Netherlands</div></div>
+  <div class="card"><div class="k">Core market</div><div class="v">Semiconductor equipment</div></div>
+</div>
+<p>ASML’s ordinary shares are listed on Euronext Amsterdam and also trade on NASDAQ under ticker ASML; ASML identifies Euronext Amsterdam as the principal trading market [3]. The company’s Form 20-F filing is associated with CIK 0000937966 [4]. ASML’s latest reported annual metrics include €32.7 billion total net sales, 52.8% gross margin, €4.7 billion R&D, and more than 44,000 employees in 2025 [5].</p>
+</div></section>
+
+<section id="s3" open><summary>3. Executive Thesis with Evidence-Linked Conclusions</summary><div class="content">
+<p><strong>Decision thesis:</strong> ASML is a strategically critical semiconductor equipment vendor with an unusually strong moat in advanced lithography. Its EUV platforms are positioned as enabling infrastructure for advanced logic, memory, and AI-driven semiconductor demand; its DUV, metrology/inspection, computational lithography, refurbished systems, and service business broaden the portfolio beyond one product line [6][7].</p>
+<p><strong>Financial signal:</strong> ASML exited 2025 with record-level disclosed annual net sales of €32.7 billion and Q1 2026 total net sales of €8.8 billion, indicating continued demand entering 2026 [8][9].</p>
+<p><strong>Primary risk:</strong> The same technology leadership that creates the moat also creates geopolitical and export-control exposure. ASML’s 2025 Annual Report states Dutch, U.S., Chinese rare-earth, and EU export-control developments may affect sales volume, mix, and timing [10].</p>
+<p><strong>Procurement implication:</strong> For advanced-node chipmakers, ASML is not a normal substitutable vendor; it is a capacity, roadmap, yield, and geopolitical dependency. A buying decision should evaluate not only tool performance and price but also export-license feasibility, service coverage, supplier constraints, roadmap alignment, and total fab integration risk.</p>
+</div></section>
+
+<section id="s4"><summary>4. Company Overview and Market Position</summary><div class="content">
+<p>ASML describes its core role as providing chipmakers with the ability to mass produce patterns on silicon, enabling smaller, faster, and more energy-efficient chips [11]. Its product portfolio integrates lithography systems, computational lithography software, and metrology and inspection products [6].</p>
+<p>Market position is strongest in EUV. ASML states its EUV technology is unique to ASML and supports Moore’s Law by enabling chipmakers to print the most intricate layers on advanced chips [7]. ASML’s report also acknowledges competition in DUV systems from Nikon and Canon, as well as competition from adjacent patterning application providers such as Applied Materials and KLA-Tencor [12].</p>
+<table class="sortable">
+<thead><tr><th>Dimension</th><th>Assessment</th><th>Evidence</th></tr></thead>
+<tbody>
+<tr><td>Strategic role</td><td>Mission-critical supplier to advanced semiconductor manufacturing</td><td>ASML states its technology is fundamental to mass producing semiconductor chips [11].</td></tr>
+<tr><td>EUV position</td><td>Highly differentiated / unique supplier position</td><td>ASML describes EUV as unique to ASML [7].</td></tr>
+<tr><td>Portfolio breadth</td><td>EUV + DUV + refurbished + metrology/inspection + computational lithography + support</td><td>ASML product page lists all major portfolio components [6].</td></tr>
+<tr><td>Competitive exposure</td><td>Direct competition in DUV; adjacent competition in patterning applications and process control</td><td>ASML annual report names Nikon, Canon, Applied Materials, and KLA-Tencor in competitive context [12].</td></tr>
+</tbody>
+</table>
+</div></section>
+
+<section id="s5"><summary>5. Business Model and Revenue Model</summary><div class="content">
+<p>ASML’s revenue model combines high-value system sales, service and field options, software/time-based licenses, warranties, and customer support. The 2025 Annual Report states the 2025 net-sales increase was driven by greater NXE and NXT immersion adoption, EXE systems delivered and installed at more customers, and higher service and field-option sales, partially offset by lower volumes of other DUV systems [13].</p>
+<table class="sortable">
+<thead><tr><th>Revenue stream</th><th>Description</th><th>Strategic implication</th></tr></thead>
+<tbody>
+<tr><td>System sales</td><td>EUV, DUV, metrology/inspection and refurbished systems sold to chip manufacturers.</td><td>Capital-equipment cycle exposure; large order timing can move quarterly results.</td></tr>
+<tr><td>Installed-base management</td><td>Service, upgrades, field options, and customer support for systems in fabs.</td><td>Creates recurring and semi-recurring economics across long tool lifecycles.</td></tr>
+<tr><td>Software / computational lithography</td><td>Software and services to improve pattern fidelity and chip yield.</td><td>Strengthens system-level lock-in and holistic lithography value proposition.</td></tr>
+<tr><td>Warranty / support obligations</td><td>Extended warranties and time-based licenses are addressed as performance obligations in the annual report [14].</td><td>Long-term customer intimacy and fab uptime dependency.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s6"><summary>6. Detailed Product, Service, Platform, and Technical Capability Catalog</summary><div class="content">
+<table class="sortable">
+<thead><tr><th>Portfolio</th><th>Products / platforms</th><th>Capability</th><th>Decision relevance</th></tr></thead>
+<tbody>
+<tr><td>EUV lithography</td><td>NXE and EXE systems, including TWINSCAN NXE:3800E, NXE:3600D, NXE:3400C, EXE:5000, EXE:5200B</td><td>EUV systems use 13.5 nm light; EXE High-NA systems use 0.55 NA optics and support advanced logic and memory nodes [7].</td><td>Core for advanced-node logic, DRAM, and AI-related roadmap execution.</td></tr>
+<tr><td>DUV lithography</td><td>Dry and immersion DUV systems, including NXT immersion platforms</td><td>DUV systems remain foundational for many chip layers and are used alongside EUV for years [6][7].</td><td>High-volume manufacturing, mature nodes, and multi-layer fab integration.</td></tr>
+<tr><td>Refurbished systems</td><td>PAS 5500 and TWINSCAN classic systems</td><td>ASML refurbishes legacy systems; ASML says almost every lithography system it has shipped remains in customer-fab use [6].</td><td>Lifecycle extension, mature-node capacity, lower-cost expansion.</td></tr>
+<tr><td>Metrology & inspection</td><td>Optical metrology, e-beam inspection, pattern measurement</td><td>ASML’s metrology and inspection portfolio spans R&D through mass production [6].</td><td>Yield, overlay, defect reduction, process control.</td></tr>
+<tr><td>Computational lithography</td><td>Software-driven lithography optimization</td><td>ASML describes computational lithography as minimizing physical and chemical effects that interfere with chip quality [6].</td><td>Design-to-manufacturing quality, yield optimization, process windows.</td></tr>
+<tr><td>Customer support</td><td>Service engineers, applications specialists, customer support network</td><td>ASML states it has around 10,000 customer support employees supporting systems in customer fabs [6].</td><td>Fab uptime, tool availability, production continuity.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s7"><summary>7. Product-to-Capability Map</summary><div class="content">
+<table class="sortable">
+<thead><tr><th>Capability</th><th>EUV</th><th>DUV</th><th>Metrology / Inspection</th><th>Computational Lithography</th><th>Support</th></tr></thead>
+<tbody>
+<tr><td>Advanced-node patterning</td><td class="score">High</td><td>Medium</td><td>Medium</td><td>High</td><td>Medium</td></tr>
+<tr><td>Mature-node patterning</td><td>Low</td><td class="score">High</td><td>Medium</td><td>Medium</td><td>High</td></tr>
+<tr><td>Yield / overlay improvement</td><td>Medium</td><td>Medium</td><td class="score">High</td><td class="score">High</td><td>Medium</td></tr>
+<tr><td>Lifecycle extension</td><td>Medium</td><td>High</td><td>Medium</td><td>Medium</td><td class="score">High</td></tr>
+<tr><td>Fab integration risk reduction</td><td>Medium</td><td>Medium</td><td>High</td><td>High</td><td class="score">High</td></tr>
+</tbody></table>
+<p>Capability scores are VendorIQ interpretive ratings based on ASML product descriptions and annual-report disclosures, not ASML-published scores [6][7].</p>
+</div></section>
+
+<section id="s8"><summary>8. Product-by-Product Technology and Architecture Due Diligence</summary><div class="content">
+<table class="sortable">
+<thead><tr><th>Product group</th><th>Architecture observations</th><th>Technical due-diligence questions</th><th>Risk flags</th></tr></thead>
+<tbody>
+<tr><td>EUV NXE</td><td>NXE uses 13.5 nm EUV light, NA 0.33, and supports high-volume manufacturing for 7 nm, 5 nm, and 3 nm logic nodes, per ASML [7].</td><td>What node layers are targeted? What throughput and overlay are required? What fab readiness exists for EUV materials, masks, resist, and contamination controls?</td><td>Export license, uptime, high power use, supply-chain constraints, specialized service dependency.</td></tr>
+<tr><td>EUV EXE / High-NA</td><td>EXE uses 0.55 NA High-NA optics and is intended to support 2 nm and sub-2 nm logic and leading-edge DRAM roadmap needs [7].</td><td>Is the buyer in R&D, pilot, or high-volume production phase? Does process technology justify High-NA cost and learning curve?</td><td>Early adoption risk, ecosystem readiness, limited installed-base maturity versus NXE.</td></tr>
+<tr><td>DUV immersion / dry</td><td>DUV remains core across advanced and mature manufacturing and will continue to coexist with EUV [6][7].</td><td>What layers can be solved with DUV multi-patterning versus EUV? How does total patterning cost compare?</td><td>Competition from Nikon/Canon; China export controls for advanced DUV immersion equipment.</td></tr>
+<tr><td>Metrology / inspection</td><td>Supports chip manufacturing from R&D to mass production [6].</td><td>How tightly integrated are ASML metrology outputs with fab MES, process-control, yield-management systems?</td><td>Adjacent competition from KLA and Applied Materials process-control/patterning ecosystems.</td></tr>
+<tr><td>Computational lithography</td><td>Software-intensive layer for simulation, correction, and pattern-quality improvement [6].</td><td>What data interfaces, model validation, change control, and security boundaries are needed?</td><td>Data quality, software validation, IP protection, model governance.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s9"><summary>9. Information Architecture Assessment</summary><div class="content">
+<p>Public sources reviewed do not disclose detailed ASML internal information architecture for product telemetry, customer fab data flows, or internal data platforms. However, ASML’s product strategy implies a data-intensive operating model across computational lithography, metrology/inspection, service, and installed-base management [6].</p>
+<ul>
+<li><strong>Confirmed information domains:</strong> system performance data, metrology and inspection measurements, computational lithography inputs/outputs, service and field-option data, supplier quality data, export-control compliance records.</li>
+<li><strong>Key due-diligence requirement:</strong> map what data leaves customer fabs, what data is processed by ASML support/software teams, where it is stored, how it is anonymized, and what contractual restrictions apply.</li>
+<li><strong>Public evidence gap:</strong> Detailed data architecture diagrams, API documentation, data residency controls, and customer-specific telemetry governance were not found in public sources reviewed.</li>
+</ul>
+</div></section>
+
+<section id="s10"><summary>10. Application Architecture Assessment</summary><div class="content">
+<p>ASML’s public product pages support an architecture view where hardware systems, embedded software, computational lithography applications, metrology/inspection workflows, and customer support services operate as an integrated manufacturing ecosystem [6][7].</p>
+<table class="sortable">
+<thead><tr><th>Layer</th><th>Likely components</th><th>Public evidence status</th></tr></thead>
+<tbody>
+<tr><td>Equipment control</td><td>Scanner control, wafer stage control, reticle handling, laser/source management</td><td>ASML describes key EUV components such as light source, optical column, reticle, vacuum chamber, wafer handler, and wafer stage [7].</td></tr>
+<tr><td>Process optimization</td><td>Computational lithography, metrology feedback, inspection analytics</td><td>Supported by ASML product-category descriptions [6].</td></tr>
+<tr><td>Service operations</td><td>Installed-base support, service engineering, field options, warranty obligations</td><td>ASML discloses around 10,000 customer-support employees [6].</td></tr>
+<tr><td>Customer integration</td><td>Fab process integration, MES / yield systems, secure data exchange</td><td>Not found in public sources reviewed at implementation detail level.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s11"><summary>11. Security Architecture Assessment</summary><div class="content">
+<p>ASML’s 2025 Annual Report states it prioritizes integrity and compliance, including information security, cyber resilience, and export controls [10]. It also lists policy coverage across privacy, responsible AI, anti-fraud, export control and sanctions, and competition-law compliance [15].</p>
+<p><strong>Security due-diligence focus areas:</strong> secure remote support, customer-fab data protection, insider-risk controls, supply-chain security, export-control workflows, vulnerability disclosure, software update integrity, and segregation between customer environments.</p>
+<p><strong>Evidence gap:</strong> Public sources reviewed did not provide detailed security architecture, SOC reports, penetration-test summaries, or product-specific cybersecurity certifications. Treat these as NDA due-diligence items.</p>
+</div></section>
+
+<section id="s12"><summary>12. Technology Standards and Interoperability Assessment</summary><div class="content">
+<p>Public ASML materials show compatibility with semiconductor manufacturing workflows but do not provide complete public API or standards documentation for integration with fab systems. The annual report references power-saving measurements under SEMI S23 methodology for energy-efficiency reporting, indicating use of semiconductor equipment measurement standards in at least sustainability metrics [16].</p>
+<ul>
+<li><strong>Interoperability strengths:</strong> Long-standing deployment in leading customer fabs; integrated product portfolio across lithography, metrology, software, and service.</li>
+<li><strong>Interoperability questions:</strong> SEMI standard support, fab automation interfaces, data schemas, tool-to-host protocols, cybersecurity controls, version management, and change-impact governance.</li>
+<li><strong>Procurement ask:</strong> require ASML to provide interface-control documents, supported SEMI standards, API documentation, release-management process, and cyber/data-handling commitments under NDA.</li>
+</ul>
+</div></section>
+
+<section id="s13"><summary>13. Resiliency, Disaster Recovery, and Stability Assessment</summary><div class="content">
+<p>ASML’s own business resiliency depends materially on a complex supplier base. The 2025 Annual Report discloses 5,100 suppliers, including approximately 900 product-related suppliers and 4,200 non-product suppliers; it also states that 272 business-critical suppliers generate 89% of product-related spend [17]. This means supplier resilience is a core operational risk and buying criterion.</p>
+<table class="sortable">
+<thead><tr><th>Resiliency dimension</th><th>Assessment</th><th>Evidence / due-diligence implication</th></tr></thead>
+<tbody>
+<tr><td>Installed-base support</td><td>Strong</td><td>ASML has around 10,000 customer support employees [6].</td></tr>
+<tr><td>Supply-chain concentration</td><td>Material risk</td><td>Business-critical suppliers account for a large share of product-related spend [17].</td></tr>
+<tr><td>Geopolitical continuity</td><td>Material risk</td><td>Export controls can affect sales volume, mix, and timing [10].</td></tr>
+<tr><td>Customer concentration</td><td>Material risk</td><td>ASML says it sells lithography systems to a relatively small number of customers, creating customer concentration risk [18].</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s14"><summary>14. AI, Machine Learning, Automation, and GenAI Capabilities by Product</summary><div class="content">
+<p>ASML’s public evidence supports AI/automation relevance at two levels: customer-market demand and ASML’s internal/external technology posture. ASML’s 2025 Annual Report attributes 2025 sales growth partly to leading-edge foundry investments for AI demand [13]. ASML also disclosed a €1.3 billion investment in Mistral AI through a reputable news report, indicating strategic AI ecosystem interest [19].</p>
+<table class="sortable">
+<thead><tr><th>Area</th><th>AI / automation relevance</th><th>Evidence status</th></tr></thead>
+<tbody>
+<tr><td>Computational lithography</td><td>Software-driven optimization and modeling; likely data/model intensive.</td><td>ASML product page confirms computational lithography’s role in minimizing effects that degrade chip quality [6].</td></tr>
+<tr><td>Metrology / inspection</td><td>Pattern measurement and inspection workflows can feed yield-learning loops.</td><td>ASML confirms metrology and inspection portfolio across R&D to mass production [6].</td></tr>
+<tr><td>AI demand driver</td><td>Advanced logic and memory capacity for AI infrastructure drives customer investment.</td><td>Annual report links NXE/NXT adoption to AI-related foundry investments [13].</td></tr>
+<tr><td>GenAI capability</td><td>Public product-level GenAI capabilities not clearly disclosed.</td><td>Not found in public sources reviewed.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s15"><summary>15. Product Moat, Differentiation, and Defensibility Analysis</summary><div class="content">
+<table class="sortable">
+<thead><tr><th>Moat source</th><th>Strength</th><th>Why it matters</th><th>Evidence</th></tr></thead>
+<tbody>
+<tr><td>EUV uniqueness</td><td class="score">Very high</td><td>ASML states EUV technology is unique to ASML; this is a direct barrier for advanced-node customers.</td><td>[7]</td></tr>
+<tr><td>High-NA roadmap</td><td class="score">High</td><td>EXE supports 2 nm and sub-2 nm roadmap needs.</td><td>[7]</td></tr>
+<tr><td>Integrated ecosystem</td><td class="score">High</td><td>Lithography, metrology, computational lithography, and support create system-level value.</td><td>[6]</td></tr>
+<tr><td>Installed base and support</td><td class="score">High</td><td>Installed-base services and 10,000 support employees strengthen switching costs.</td><td>[6]</td></tr>
+<tr><td>Supplier specialization</td><td class="score">High but risky</td><td>Specialized suppliers deepen capability but create dependency and resilience concerns.</td><td>[17]</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s16"><summary>16. Key Customers and Customer Segments</summary><div class="content">
+<p><strong>Customer segments:</strong> leading-edge foundry, logic, DRAM, memory, mature-node semiconductor manufacturers, R&D institutes, and fabs requiring service/upgrades. ASML says NXE systems are used in high-volume manufacturing of advanced logic and memory chips, while DUV supports advanced logic/memory and other chip innovation [6][7].</p>
+<p><strong>Named public customer evidence:</strong> ASML has publicly named Intel, Samsung, and TSMC in the context of its customer co-investment program and lithography usage [20][21][22]. ASML and Intel also announced High-NA collaboration, including Intel’s purchase order for the TWINSCAN EXE:5200 system [23].</p>
+<p><strong>Customer concentration risk:</strong> ASML states it sells lithography systems to a relatively small number of customers; its three largest customers accounted for €1.3 billion, or 35.4%, of accounts receivable and finance receivables at December 31, 2025 [18].</p>
+<table class="sortable">
+<thead><tr><th>Customer / segment</th><th>Evidence status</th><th>Decision implication</th></tr></thead>
+<tbody>
+<tr><td>Intel</td><td>Official ASML High-NA collaboration / purchase order evidence [23].</td><td>High-NA validation and roadmap signal.</td></tr>
+<tr><td>TSMC</td><td>Official ASML co-investment and historical EUV delivery evidence [20][24].</td><td>Foundry-market validation.</td></tr>
+<tr><td>Samsung</td><td>Official ASML co-investment evidence [22].</td><td>Memory and logic ecosystem validation.</td></tr>
+<tr><td>Other leading chipmakers</td><td>ASML refers broadly to world-leading chipmakers and customer fabs [6][11].</td><td>Do not infer undisclosed customer contracts without direct evidence.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s17"><summary>17. Key Suppliers, Cloud Providers, Technology Partners, Channel Partners, and Ecosystem Dependencies</summary><div class="content">
+<p>ASML’s supplier ecosystem is highly material. The company reports 5,100 suppliers in 2025, composed of about 900 product-related suppliers and 4,200 non-product suppliers; its annual report says suppliers are critical to innovation and the supply chain is central to technology, quality, affordability, and sustainability [17].</p>
+<table class="sortable">
+<thead><tr><th>Dependency type</th><th>Evidence-backed facts</th><th>Risk / implication</th></tr></thead>
+<tbody>
+<tr><td>Product suppliers</td><td>About 900 product-related suppliers [17].</td><td>Specialized part constraints can slow system delivery.</td></tr>
+<tr><td>Business-critical suppliers</td><td>272 business-critical suppliers generate 89% of product-related spend [17].</td><td>High concentration and substitution risk.</td></tr>
+<tr><td>Non-product suppliers</td><td>About 4,200 non-product suppliers [17].</td><td>Broad operational spend and ESG/compliance management burden.</td></tr>
+<tr><td>Strategic technology partner</td><td>ASML’s EUV page states it acquired Cymer to accelerate EUV source development [7].</td><td>Laser/source capability is core to EUV defensibility.</td></tr>
+<tr><td>Cloud providers</td><td>Not found in public sources reviewed.</td><td>Require NDA inquiry for cloud/software delivery and data-residency architecture.</td></tr>
+<tr><td>Channel partners</td><td>Not found in public sources reviewed for direct reseller/channel model.</td><td>ASML’s business appears primarily direct-to-chipmaker based on product/service model; do not infer channel contracts.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s18"><summary>18. Government Contracts, Public-Sector Awards, FedRAMP Status, Marketplaces, and Procurement Vehicles</summary><div class="content">
+<p><strong>Direct ASML government contracts:</strong> Not found in public sources reviewed.</p>
+<p><strong>FedRAMP status:</strong> Not applicable / not found in public sources reviewed. ASML is a semiconductor equipment manufacturer, not a public cloud SaaS provider in the reviewed sources.</p>
+<p><strong>Public-sector signals:</strong> ASML participates in ecosystems shaped by government industrial policy. Reuters reported on June 5, 2026 that ASML CEO Christophe Fouquet supported most European Commission technological-sovereignty proposals but argued strategic projects eligible for state aid should be industry-led rather than directed by the Commission [25]. Reuters also reported that imec acquired a rare ASML High-NA EUV machine for its NanoIC pilot line, partially funded by public investment including the EU Chips Act [26]. These are ecosystem and policy signals, not direct ASML government-contract evidence.</p>
+</div></section>
+
+<section id="s19"><summary>19. Major Milestones, Acquisitions, Partnerships, and Recognitions</summary><div class="content">
+<table class="sortable">
+<thead><tr><th>Year / period</th><th>Milestone</th><th>Evidence</th></tr></thead>
+<tbody>
+<tr><td>2006</td><td>ASML shipped first EUV demo tools to CNSE Albany and imec, according to ASML’s EUV history page.</td><td>[7]</td></tr>
+<tr><td>2012</td><td>Intel, Samsung, and TSMC participated in ASML’s customer co-investment program for next-generation lithography R&D.</td><td>[20][22][23]</td></tr>
+<tr><td>2016</td><td>ASML states EUV reached a turning point as customers began ordering NXE:3400 in higher numbers.</td><td>[7]</td></tr>
+<tr><td>2020</td><td>ASML celebrated shipment of its 100th EUV system.</td><td>[7]</td></tr>
+<tr><td>2023</td><td>First High-NA EUV system was delivered in December 2023, per ASML.</td><td>[7]</td></tr>
+<tr><td>2025</td><td>Record reported annual net sales of €32.7bn and R&D of €4.7bn.</td><td>[8]</td></tr>
+<tr><td>2026</td><td>Q1 2026 total net sales of €8.8bn and gross margin of 53.0%.</td><td>[9]</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s20"><summary>20. Case Studies and Measurable Client Benefits</summary><div class="content">
+<p><strong>Intel High-NA collaboration:</strong> ASML and Intel announced in 2022 that Intel placed the first purchase order for ASML’s TWINSCAN EXE:5200 system, described as an EUV high-volume production system with high numerical aperture and more than 200 wafers per hour productivity [23]. Intel later described the High-NA EUV tool as built by ASML and as the first commercial lithography system of its kind in the world [27].</p>
+<p><strong>imec NanoIC pilot-line signal:</strong> Reuters reported that imec acquired an ASML High-NA EUV machine valued at about $400 million for its NanoIC pilot line, giving researchers and chip companies access to next-generation patterning technology [26].</p>
+<p><strong>Evidence limitation:</strong> Public sources reviewed did not provide detailed ROI metrics, yield percentages, or customer-specific savings attributable to ASML tools beyond public performance/platform descriptions. Treat measurable client benefits as an NDA diligence request unless tied to an official case study.</p>
+</div></section>
+
+<section id="s21"><summary>21. ESG, Sustainability, Privacy, and Responsible-Business Posture</summary><div class="content">
+<p>ASML reports supplier-responsibility activity through the Responsible Business Alliance self-assessment process. In 2025, 90% of in-scope suppliers completed the RBA self-assessment and 100% of suppliers identified as overall high risk were evaluated with follow-up action agreed [28]. ASML also reports scope 3 product-use emissions and supplier-emissions challenges, including 6,443 kt CO2e emissions from use of sold products in 2025 [29].</p>
+<table class="sortable">
+<thead><tr><th>ESG area</th><th>Status</th><th>Risk / action</th></tr></thead>
+<tbody>
+<tr><td>Responsible supply chain</td><td>RBA SAQ completion target met at 90%; all high-risk suppliers evaluated [28].</td><td>Continue supplier due diligence; verify remediation evidence for high-risk suppliers.</td></tr>
+<tr><td>Climate / product use</td><td>Product-use emissions remain material; ASML reports 6,443 kt CO2e from use of sold products in 2025 [29].</td><td>Evaluate energy use per wafer pass, power infrastructure, and customer sustainability impact.</td></tr>
+<tr><td>Supplier decarbonization</td><td>ASML reports challenges getting top suppliers to commit to CO2e reduction by 2030 [30].</td><td>Monitor supplier readiness and carbon-cost exposure.</td></tr>
+<tr><td>Privacy</td><td>Policies include privacy and responsible AI, but detailed customer-data architecture not found publicly [15].</td><td>Require contractual data-handling, retention, and access controls under NDA.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s22"><summary>22. Analyst Reviews, Market Sentiment, and External Perception</summary><div class="content">
+<p>ASML benefits from strong external perception as a core AI-infrastructure enabler because advanced AI chips require leading-edge semiconductor manufacturing capacity. AP reported that ASML’s 2025 record net profit and revenue were driven by AI-related demand, while also noting job cuts and export-restriction context [31]. Reuters coverage in 2025 and 2026 highlights both strong AI-related demand signals and China/export-control uncertainty [25][32].</p>
+<p><strong>Balanced market view:</strong> Bull case rests on AI-driven advanced logic/memory demand, High-NA roadmap, and lithography moat. Bear case rests on export controls, China demand normalization, tariff uncertainty, customer concentration, and the timing/capex cyclicality of advanced-node investment.</p>
+</div></section>
+
+<section id="s23"><summary>23. Cybersecurity Incidents, Vulnerabilities, Regulatory Issues, and Litigation Signals</summary><div class="content">
+<table class="sortable">
+<thead><tr><th>Signal type</th><th>Finding</th><th>Evidence / action</th></tr></thead>
+<tbody>
+<tr><td>Export controls</td><td>Material ongoing issue. ASML disclosed 2025 Dutch, U.S., China rare-earth, and EU export-control developments.</td><td>Assess license feasibility, country exposure, and contractual contingency [10].</td></tr>
+<tr><td>Cybersecurity incidents</td><td>Not found in public sources reviewed for current material cybersecurity incident requiring disclosure.</td><td>Request incident history, vulnerability disclosure policy, SOC/ISO evidence under NDA.</td></tr>
+<tr><td>Litigation</td><td>Not exhaustively reviewed beyond annual-report risk scan; no material procurement-blocking litigation identified in public sources reviewed.</td><td>Run legal counsel review for specific jurisdiction and contract structure.</td></tr>
+<tr><td>Supply-chain minerals / due diligence</td><td>ASML reports conflict-minerals diligence limitations due to incomplete supplier data.</td><td>Review responsible minerals controls for regulated procurement [33].</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s24"><summary>24. SEC Filing Scan in Bulleted Format</summary><div class="content">
+<ul>
+<li><strong>Latest annual filing reviewed:</strong> ASML Holding N.V. 2025 Annual Report / Form 20-F, CIK 0000937966 [4][5].</li>
+<li><strong>2025 operating scale:</strong> €32.7bn total net sales, 52.8% gross margin, €4.7bn R&D, 535 system sales, 5,100 suppliers, more than 44,000 employees [5].</li>
+<li><strong>Revenue growth driver:</strong> 2025 net sales increased €4.4bn, or 15.6%, from 2024, driven by NXE and NXT immersion adoption, EXE systems delivered and installed at more customers, and higher service/field option sales [13].</li>
+<li><strong>Customer concentration:</strong> ASML sells to a relatively small number of customers; three largest customers represented 35.4% of accounts receivable and finance receivables at year-end 2025 [18].</li>
+<li><strong>Competitive risk:</strong> ASML faces DUV competition from Nikon and Canon and adjacent competition from Applied Materials and KLA-Tencor [12].</li>
+<li><strong>Export-control risk:</strong> ASML states changes in export controls may materially affect sales volume, mix, and timing [10].</li>
+<li><strong>Supplier dependence:</strong> 272 business-critical suppliers generate 89% of product-related spend [17].</li>
+</ul>
+</div></section>
+
+<section id="s25"><summary>25. Future Actions and Forward-Looking Indicators</summary><div class="content">
+<table class="sortable">
+<thead><tr><th>Indicator</th><th>Why it matters</th><th>What to monitor</th></tr></thead>
+<tbody>
+<tr><td>High-NA EXE adoption</td><td>Determines ASML’s next advanced-node growth curve.</td><td>EXE:5200B orders, production qualification, Intel/TSMC/Samsung/DRAM adoption signals.</td></tr>
+<tr><td>Export-control changes</td><td>Can change revenue mix, shipment timing, and China exposure.</td><td>Dutch, U.S., EU, China rules; China rare-earth suspension through Nov. 10, 2026 as disclosed by ASML [10].</td></tr>
+<tr><td>AI infrastructure capex</td><td>AI demand supports leading-edge logic and high-bandwidth memory investment.</td><td>TSMC, Samsung, Intel, SK Hynix, Micron capex and node roadmaps; ASML bookings.</td></tr>
+<tr><td>Supplier readiness</td><td>ASML’s growth depends on capacity and reliability of specialized suppliers.</td><td>Business-critical supplier bottlenecks, Zeiss/Cymer ecosystem, rare-earth/magnet risks.</td></tr>
+<tr><td>Alternative lithography</td><td>Long-term competitive disruption risk.</td><td>Canon NIL, xLight FEL, Lace BEUV, China NIL programs; production viability and defect rates.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s26"><summary>26. Competitive Landscape, Product Moat, and Pugh Matrix</summary><div class="content">
+<p>Competitor set is based on ASML’s own competitive-risk disclosure and official competitor product pages. ASML identifies Nikon and Canon as DUV competitors and Applied Materials and KLA-Tencor as providers of applications that support or enhance complex patterning solutions [12]. Nikon offers ArF immersion scanners such as NSR-S636E [34]. Canon offers semiconductor lithography and nanoimprint lithography systems, including FPA-1200NZ2C / NIL positioning [35]. Applied Materials offers patterning and pattern-shaping solutions for advanced chips [36]. KLA provides process-control and yield-management solutions [37].</p>
+
+<table class="sortable">
+<thead><tr><th>Criteria</th><th>Weight</th><th>ASML</th><th>Nikon</th><th>Canon</th><th>Applied Materials</th><th>KLA</th></tr></thead>
+<tbody>
+<tr><td>EUV / advanced-node lithography leadership</td><td>25%</td><td class="score">5</td><td>1</td><td>1</td><td>2</td><td>2</td></tr>
+<tr><td>DUV lithography competitiveness</td><td>15%</td><td class="score">5</td><td>4</td><td>3</td><td>1</td><td>1</td></tr>
+<tr><td>Metrology / process-control breadth</td><td>15%</td><td>3</td><td>2</td><td>2</td><td>4</td><td class="score">5</td></tr>
+<tr><td>Computational / patterning ecosystem</td><td>15%</td><td class="score">5</td><td>2</td><td>2</td><td>4</td><td>4</td></tr>
+<tr><td>Installed-base service moat</td><td>10%</td><td class="score">5</td><td>3</td><td>3</td><td>4</td><td>4</td></tr>
+<tr><td>Supply-chain / geopolitical risk profile</td><td>10%</td><td>2</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+<tr><td>Roadmap defensibility</td><td>10%</td><td class="score">5</td><td>3</td><td>3</td><td>4</td><td>4</td></tr>
+<tr><td><strong>Weighted score / 5</strong></td><td>100%</td><td class="score">4.50</td><td>2.45</td><td>2.25</td><td>3.00</td><td>3.10</td></tr>
+</tbody></table>
+<p class="small">Scoring is VendorIQ assessment based on public evidence, not an official analyst rating. ASML leads for lithography-specific advanced-node needs; KLA and Applied Materials are stronger comparators for process-control and adjacent patterning workflows rather than direct EUV scanner replacement.</p>
+</div></section>
+
+<section id="s27"><summary>27. Strengths, Gaps, Risks, and Differentiation</summary><div class="content">
+<div class="grid">
+  <div class="card"><div class="k">Strength</div><div class="v">EUV moat</div><p>ASML describes EUV as unique to ASML [7].</p></div>
+  <div class="card"><div class="k">Strength</div><div class="v">Portfolio breadth</div><p>EUV, DUV, metrology, computational lithography, refurbished systems, support [6].</p></div>
+  <div class="card"><div class="k">Risk</div><div class="v">Export controls</div><p>Potentially material impact on sales volume, mix, and timing [10].</p></div>
+  <div class="card"><div class="k">Risk</div><div class="v">Supplier concentration</div><p>272 business-critical suppliers generate 89% of product-related spend [17].</p></div>
+</div>
+<table class="sortable">
+<thead><tr><th>Category</th><th>Key points</th><th>Recommended buyer action</th></tr></thead>
+<tbody>
+<tr><td>Strengths</td><td>EUV uniqueness; High-NA roadmap; integrated holistic lithography; support scale; strong 2025 / Q1 2026 financials.</td><td>Treat ASML as strategic roadmap partner, not transactional equipment vendor.</td></tr>
+<tr><td>Gaps</td><td>Limited public disclosure on software architecture, data governance, customer telemetry, and cybersecurity certifications.</td><td>Require NDA technical architecture and security diligence.</td></tr>
+<tr><td>Risks</td><td>Export controls, customer concentration, supplier bottlenecks, China exposure, rare-earth and magnet risk, cyclical capex.</td><td>Build legal, geopolitical, and supply-chain clauses into sourcing strategy.</td></tr>
+<tr><td>Differentiation</td><td>No direct like-for-like public competitor for EUV High-NA scanner capability; competitors are stronger in DUV, NIL, process-control, and adjacent patterning.</td><td>For advanced-node fabs, evaluate alternatives as complements or partial substitutes, not full replacements.</td></tr>
+</tbody></table>
+</div></section>
+
+<section id="s28"><summary>28. Reference Links</summary><div class="content">
+<ol class="refs">
+<li>VendorIQ README — https://raw.githubusercontent.com/arvindrkrishnen/VendorIQ/main/README.md</li>
+<li>VendorIQ skills.md — https://raw.githubusercontent.com/arvindrkrishnen/VendorIQ/main/skills.md</li>
+<li>ASML shares — https://www.asml.com/investors/shares</li>
+<li>SEC EDGAR ASML filing index — https://www.sec.gov/Archives/edgar/data/937966/0000937966-25-000009-index.htm</li>
+<li>ASML 2025 Annual Report / Form 20-F — https://www.sec.gov/Archives/edgar/data/937966/000162828026011377/asml-2025xannualxreportx.htm</li>
+<li>ASML products — https://www.asml.com/en/products</li>
+<li>ASML EUV lithography systems — https://www.asml.com/en/products/euv-lithography-systems</li>
+<li>ASML Q4 2025 and full-year financial results — https://www.asml.com/en/investors/financial-results/q4-2025</li>
+<li>ASML Q1 2026 financial results — https://www.asml.com/en/investors/financial-results/q1-2026</li>
+<li>ASML 2025 Annual Report export controls section — same Form 20-F source, lines around export controls.</li>
+<li>ASML homepage — https://www.asml.com/</li>
+<li>ASML 2025 Annual Report competition disclosure — same Form 20-F source.</li>
+<li>ASML 2025 Annual Report financial discussion — same Form 20-F source.</li>
+<li>ASML 2025 Annual Report revenue recognition / performance obligations — same Form 20-F source.</li>
+<li>ASML 2025 Annual Report governance policies — same Form 20-F source.</li>
+<li>ASML 2025 Annual Report SEMI S23 energy methodology — same Form 20-F source.</li>
+<li>ASML 2025 Annual Report supplier base and supplier spend — same Form 20-F source.</li>
+<li>ASML 2025 Annual Report customer concentration — same Form 20-F source.</li>
+<li>AP News: ASML invests in Mistral AI — https://apnews.com/article/c62e3c9102f5ddd4969f3741235ea79d</li>
+<li>ASML TSMC customer co-investment — https://www.asml.com/news/press-releases/2012/tsmc-joins-asmls-customer-co-investment-program-for-innovation</li>
+<li>ASML story: Busting ASML myths — https://www.asml.com/news/stories/2022/busting-asml-myths</li>
+<li>ASML Samsung customer co-investment — https://www.asml.com/news/press-releases/2012/samsung-joins-asmls-customer-co-investment-program-for-innovation-completing-the-program</li>
+<li>ASML / Intel High-NA collaboration — https://www.asml.com/news/press-releases/2022/intel-and-asml-strengthen-their-collaboration-to-drive-high-na-into-manufacturing-in-2025</li>
+<li>ASML TSMC EUV delivery — https://www.asml.com/news/press-releases/2010/tsmc-to-take-delivery-of-an-asml-euv-lithography-system</li>
+<li>Reuters: ASML CEO on EU Commission strategic projects — https://www.reuters.com/business/asml-ceo-says-eu-commission-should-not-try-direct-strategic-projects-2026-06-05/</li>
+<li>Reuters: imec secures ASML High-NA EUV tool — https://www.reuters.com/business/belgiums-imec-secures-rare-asml-high-na-euv-tool-drive-next-generation-chips-2026-03-18/</li>
+<li>Intel High-NA EUV press kit — https://newsroom.intel.com/press-kit/intel-high-na-euv</li>
+<li>ASML 2025 Annual Report responsible supply chain — same Form 20-F source.</li>
+<li>ASML 2025 Annual Report product-use emissions — same Form 20-F source.</li>
+<li>ASML 2025 Annual Report supplier decarbonization — same Form 20-F source.</li>
+<li>AP News: ASML 2025 profit and AI demand — https://apnews.com/article/446babea4e88330a7c493412644fa3f3</li>
+<li>Reuters: ASML AI demand and China outlook — https://www.reuters.com/business/media-telecom/asmls-third-quarter-bookings-above-estimates-2025-10-15/</li>
+<li>ASML 2025 Annual Report conflict minerals due diligence — same Form 20-F source.</li>
+<li>Nikon semiconductor lithography lineup — https://www.nikon.com/business/semi/lineup/</li>
+<li>Canon semiconductor lithography equipment — https://global.canon/en/product/indtech/semicon/</li>
+<li>Applied Materials patterning — https://www.appliedmaterials.com/us/en/semiconductor/markets-and-inflections/patterning.html</li>
+<li>KLA official site — https://www.kla.com/</li>
+</ol>
+</div></section>
+
+<section id="s29" open><summary>29. Quality Document JSON</summary><div class="content">
+<pre>{
+  "vendor": "ASML Holding N.V.",
+  "report_name": "exhaustive_final_report.html",
+  "generated_date": "2026-06-06",
+  "skill": "VendorIQ / universal-vendor-analysis",
+  "output_type": "self-contained interactive HTML",
+  "citation_model": "numbered references with source URLs",
+  "primary_sources_used": [
+    "ASML 2025 Annual Report / SEC Form 20-F",
+    "ASML investor relations pages",
+    "ASML product pages",
+    "Official competitor product pages",
+    "Reuters and AP for current external signals"
+  ],
+  "sections_required": 29,
+  "sections_completed": 29,
+  "pugh_matrix_included": true,
+  "government_contracts_handling": "No direct ASML government contracts found in public sources reviewed; public-sector ecosystem signals separated from direct contract evidence.",
+  "known_limitations": [
+    "No NDA-level product architecture, API, telemetry, security certification, or customer-specific ROI data was available from public sources reviewed.",
+    "Named customer evidence is limited to public ASML/Intel/TSMC/Samsung disclosures and should not be treated as a full customer list.",
+    "Pugh Matrix is an evidence-informed VendorIQ assessment, not an official analyst rating."
+  ],
+  "unsupported_claim_policy": "Items not found in public sources are explicitly marked as Not found in public sources reviewed.",
+  "quality_status": "PASS_WITH_PUBLIC_SOURCE_LIMITATIONS"
+}</pre>
+</div></section>
+
+</main>
+</div>
+
+<script>
+function toggleAll(open){document.querySelectorAll('section').forEach(s=>s.open=open)}
+document.getElementById('search').addEventListener('input', function(){
+  const q=this.value.toLowerCase().trim();
+  document.querySelectorAll('section').forEach(s=>{
+    const hit=s.innerText.toLowerCase().includes(q);
+    s.style.display = hit || !q ? '' : 'none';
+    if(q && hit) s.open = true;
+  });
+});
+document.querySelectorAll('table.sortable th').forEach((th, idx)=>{
+  th.addEventListener('click', ()=>{
+    const table=th.closest('table'), tbody=table.querySelector('tbody');
+    const rows=[...tbody.querySelectorAll('tr')];
+    const asc = th.dataset.asc !== 'true';
+    rows.sort((a,b)=>{
+      const A=a.children[idx].innerText.replace(/[€,%]/g,'').trim();
+      const B=b.children[idx].innerText.replace(/[€,%]/g,'').trim();
+      const nA=parseFloat(A), nB=parseFloat(B);
+      if(!isNaN(nA) && !isNaN(nB)) return asc ? nA-nB : nB-nA;
+      return asc ? A.localeCompare(B) : B.localeCompare(A);
+    });
+    rows.forEach(r=>tbody.appendChild(r));
+    th.dataset.asc = asc;
+  });
+});
+</script>
+</body>
+</html>
