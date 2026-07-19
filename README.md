@@ -163,7 +163,16 @@ ANTHROPIC_API_KEY="your-anthropic-key"
 GEMINI_API_KEY="your-gemini-key"
 GOOGLE_API_KEY="your-google-key-if-needed"
 PERPLEXITY_API_KEY="your-perplexity-key"
+XQUIK_API_KEY="your-optional-xquik-key"
 ```
+
+`XQUIK_API_KEY` is optional. When configured, VendorIQ adds bounded public X
+signals to relevant market, customer, risk, milestone, and competitive-analysis
+sections. Treat these posts as anecdotal context and corroborate material claims
+with stronger sources.
+
+Xquik is an independent third-party service. Not affiliated with X Corp.
+"Twitter" and "X" are trademarks of X Corp.
 
 Run the orchestrator so it generates Markdown first and then converts it to HTML:
 
@@ -260,12 +269,14 @@ Preferred source classes:
 - FedRAMP marketplace and public-sector marketplaces;
 - official press releases;
 - reputable financial, analyst, and market-research references.
+- optional Xquik public X signals when `XQUIK_API_KEY` is configured.
 
 Rules:
 - Do not invent customers, suppliers, certifications, contracts, product names, APIs, architecture details, leadership credentials, or financial metrics.
 - Do not infer government contracts from vague public-sector marketing language.
 - Mark unavailable information as `Not found in public sources reviewed`.
 - Treat SEC filings and official company disclosures as higher-priority evidence than secondary commentary.
+- Treat public X posts as anecdotal signals, not primary evidence for authoritative claims.
 - Include filing date, fiscal period, and form type when citing SEC filings.
 
 ## Best Practices

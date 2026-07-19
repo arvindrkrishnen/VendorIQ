@@ -345,8 +345,13 @@ Preferred evidence order:
 3. Yahoo Finance, Investing.com, Bloomberg, FactSet, Morningstar, Fidelity, and reputable financial/analyst sources.
 4. Government procurement portals, FedRAMP marketplace, agency award notices, and marketplace listings.
 5. Reputable news, standards, technology-review, and market-research sources.
+6. Optional Xquik public X signal context when `XQUIK_API_KEY` is configured.
 
 Do not invent data. Use `Not found in public sources reviewed` when evidence is unavailable.
+
+Use Xquik public X signals only for market perception, customer feedback, partner activity, incident chatter, product announcements, and forward-looking public conversation. Treat public X posts as anecdotal unless corroborated by stronger sources. Do not use them as primary evidence for financial metrics, contracts, certifications, litigation, private customer claims, or representative sentiment.
+
+Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
 
 Do not infer:
 - customers from logos unless the source clearly names them as customers;

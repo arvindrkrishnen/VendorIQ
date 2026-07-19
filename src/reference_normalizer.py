@@ -6,7 +6,7 @@ from typing import Dict, List
 class ReferenceRecord:
     id:int; url:str; section:str
 class ReferenceManager:
-    URL_PATTERN=re.compile(r"https?://[^\s)\]>",'`]+")
+    URL_PATTERN=re.compile(r"""https?://[^\s)\]>",'`]+""")
     def __init__(self): self.url_to_id:Dict[str,int]={}; self.records:List[ReferenceRecord]=[]
     @staticmethod
     def clean_url(url:str)->str: return url.rstrip(".,;:)")
@@ -18,4 +18,4 @@ class ReferenceManager:
     def replace_urls_with_refs(self,markdown:str,section:str)->str: return self.URL_PATTERN.sub(lambda m:self.register(m.group(0),section), markdown)
     def render_reference_links(self)->str:
         if not self.records: return "## Reference Links\n\n- No URLs detected. Rerun with a web-enabled provider."
-        return "## Reference Links\n\n"+"\n".join(f"[{r.id}] {r.url} — {r.section}" for r in self.records)
+        return "## Reference Links\n\n"+"\n".join(f"[{r.id}] {r.url} - {r.section}" for r in self.records)
