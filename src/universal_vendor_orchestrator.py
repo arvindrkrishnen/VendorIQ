@@ -14,6 +14,7 @@ from markdown_validator import validate_markdown_report
 from market_data import fetch_financial_snapshot, financial_snapshot_to_markdown, snapshot_to_json
 from provider_clients import ProviderConfig, ProviderError, generate_section_markdown
 from reference_normalizer import ReferenceManager
+from xquik_signals import XQUIK_SIGNAL_AGENTS, collect_xquik_signal_markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MD = ROOT / "artifacts" / "exhaustive_final_report.md"
@@ -90,6 +91,12 @@ def run_sections(config: RunConfig) -> tuple[list[SectionResult], dict]:
     financial_snapshot = fetch_financial_snapshot(config.ticker) if config.ticker else None
     financial_markdown = financial_snapshot_to_markdown(financial_snapshot) if financial_snapshot else ""
     financial_json = snapshot_to_json(financial_snapshot) if financial_snapshot else {}
+    xquik_signal_markdown = collect_xquik_signal_markdown(
+        config.vendor,
+        ticker=config.ticker,
+        website=config.website,
+        competitors=config.competitors,
+    )
 
     if config.provider == "offline" and config.depth == "exhaustive":
         raise RuntimeError("Offline provider cannot generate an exhaustive report. Use openai, anthropic, gemini, or perplexity.")
@@ -97,14 +104,21 @@ def run_sections(config: RunConfig) -> tuple[list[SectionResult], dict]:
     provider_config = _provider_config(config)
     results: list[SectionResult] = []
     for agent, title in SECTION_TASKS:
+        context_parts = []
+        if agent == "identity_financial_agent" and financial_markdown:
+            context_parts.append(financial_markdown)
+        if agent in XQUIK_SIGNAL_AGENTS and xquik_signal_markdown:
+            context_parts.append(xquik_signal_markdown)
+        context_markdown = "\n\n".join(context_parts)
         try:
-            md = generate_section_markdown(provider_config, agent, title, financial_markdown if agent == "identity_financial_agent" else "")
+            md = generate_section_markdown(provider_config, agent, title, context_markdown)
         except ProviderError as exc:
             raise RuntimeError(str(exc)) from exc
         except Exception as exc:
             md = f"## {title}\n\nProvider execution failed for `{agent}`: {exc}\n\nNot found in public sources reviewed.\n"
-        if agent == "identity_financial_agent" and financial_markdown and financial_markdown not in md:
-            md = md.rstrip() + "\n\n" + financial_markdown
+        for context_part in context_parts:
+            if context_part and context_part not in md:
+                md = md.rstrip() + "\n\n" + context_part
         results.append(SectionResult(agent=agent, title=title, markdown=md, evidence_urls=[]))
     return results, financial_json
 

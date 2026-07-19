@@ -10,6 +10,13 @@ def _slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-") or "section"
 
 
+def _unique_slug(text: str, slug_counts: Dict[str, int]) -> str:
+    base_slug = _slug(text)
+    slug_counts[base_slug] = slug_counts.get(base_slug, 0) + 1
+    occurrence = slug_counts[base_slug]
+    return base_slug if occurrence == 1 else f"{base_slug}-{occurrence}"
+
+
 def _esc(text: Any) -> str:
     return html.escape("" if text is None else str(text))
 
@@ -90,6 +97,7 @@ def convert_markdown_report_to_self_contained_html(markdown: str, title: str = "
     blocks: List[str] = []
     lines = markdown.splitlines()
     toc: List[str] = []
+    slug_counts: Dict[str, int] = {}
     i = 0
     section_open = False
 
@@ -111,7 +119,8 @@ def convert_markdown_report_to_self_contained_html(markdown: str, title: str = "
             while i < len(lines) and not lines[i].startswith("```"):
                 code_lines.append(lines[i])
                 i += 1
-            blocks.append(f'<pre class="code">{_esc("\n".join(code_lines))}</pre>')
+            code_block = "\n".join(code_lines)
+            blocks.append(f'<pre class="code">{_esc(code_block)}</pre>')
         elif line.startswith("|"):
             table_lines = []
             while i < len(lines) and lines[i].startswith("|"):
@@ -122,7 +131,7 @@ def convert_markdown_report_to_self_contained_html(markdown: str, title: str = "
         elif line.startswith("#"):
             level = len(line) - len(line.lstrip("#"))
             text = line[level:].strip()
-            slug = _slug(text)
+            slug = _unique_slug(text, slug_counts)
             if level <= 2:
                 if section_open:
                     blocks.append("</div></section>")
@@ -130,7 +139,7 @@ def convert_markdown_report_to_self_contained_html(markdown: str, title: str = "
                 section_open = True
                 toc.append(f'<li><a href="#{slug}">{_esc(text)}</a></li>')
             else:
-                blocks.append(f'<h{min(level,6)}>{_esc(text)}</h{min(level,6)}>')
+                blocks.append(f'<h{min(level,6)} id="{slug}">{_esc(text)}</h{min(level,6)}>')
                 toc.append(f'<li class="toc-sub"><a href="#{slug}">{_esc(text)}</a></li>')
         elif line.strip().startswith("-"):
             items = []
